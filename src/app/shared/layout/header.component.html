@@ -1,0 +1,9 @@
+<header class="header">
+  <nav class="menu menu--primary-menu">
+    <ul>
+      <li *ngFor="let item of primaryMenuItems" class="menu__item menu__item--{{item.id}}">
+        <a href="#">{{item.title}}</a>
+      </li>
+    </ul>
+  </nav>
+</header>
