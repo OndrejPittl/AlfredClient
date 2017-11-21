@@ -10,6 +10,7 @@ import { ProfileComponent } from './profile/profile.component';
 import { DiscoverComponent } from './discover/discover.component';
 import { FriendsComponent } from './friends/friends.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { PostComponent } from './shared/post/post.component';
 
 
 const appRoutes: Routes = [{
@@ -43,12 +44,13 @@ const appRoutes: Routes = [{
     ProfileComponent,
     DiscoverComponent,
     FriendsComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    PostComponent
   ],
   imports: [
     RouterModule.forRoot(
       appRoutes,
-      { enableTracing: true }   // <-- debugging purposes only
+      { enableTracing: false }   // <-- debugging purposes only
     ),
     BrowserModule
   ],

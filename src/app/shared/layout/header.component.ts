@@ -12,16 +12,20 @@ export class HeaderLayoutComponent implements OnInit {
     this.primaryMenuItems = [
       {
         id: 'general-feed',
-        title: 'general feed',
+        slug: 'home',
+        title: '#general',
       }, {
         id: 'friends-feed',
-        title: 'friends feed',
+        slug: 'friends',
+        title: '#friends',
       }, {
-        id: 'discover',
-        title: 'discover',
+        id: 'personal-feed',
+        slug: 'personal',
+        title: '#personal',
       }, {
         id: 'profile',
-        title: 'profile',
+        slug: 'profile/alfred-nobel',
+        title: 'Alfred Nobel',
       }
     ];
   }

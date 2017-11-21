@@ -1,0 +1,82 @@
+// main: ./main.less
+
+// main: ./main.less
+
+/**
+*	Font-size & line-height.
+*/
+.font-size(@font--size) {
+	font-size: extract(@font--size, 1);
+	line-height: extract(@font--size, 2);
+}
+
+/**
+*	CSS common Transition.
+*/
+.transition(@property) {
+	.trans(@property, 0.3s);
+}
+
+/**
+*	CSS slow Transition.
+*/
+.transitionSlow(@property) {
+	.trans(@property, 0.75s);
+}
+
+.transitionFast(@property) {
+	.trans(@property, 0.1s);
+}
+
+.trans(@props, @time) {
+	.prefix(transition, @props @time ease-out);
+}
+
+
+/**
+*	CSS Transition.
+*/
+.transitions(...) {
+	.prefix(transition, @arguments);
+}
+
+
+
+/**
+*	CSS Transform.
+*/
+.transform(@transformation) {
+	.prefix(transform, @transformation);
+}
+
+.property_(@property, @value) {
+    _: ~"; @{property}:" @value;
+}
+
+/**
+*	Prefix CSS property.
+*/
+.prefix(@property, @value) {
+	.property_('-webkit-@{property}', @value);
+	.property_(   '-moz-@{property}', @value);
+	.property_(    '-ms-@{property}', @value);
+	.property_(     '-o-@{property}', @value);
+	.property_(          @property,   @value);
+}
+
+
+
+.clearfix() {
+    *zoom: 1;
+
+    &:before,
+    &:after {
+        display: table;
+        line-height: 0;
+        content: "";
+    }
+
+    &:after {
+        clear: both;
+    }
+}

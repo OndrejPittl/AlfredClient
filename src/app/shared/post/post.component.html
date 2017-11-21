@@ -1,0 +1,21 @@
+<div class="post">
+  <div class="post__container">
+    <header class="post__header">
+      <span *ngIf="post.rating" class="post__rating">{{post.rating}}</span>
+      <a *ngIf="post.images" href="#"><img class="post__image" src="{{post.images[0]}}" alt=""></a>
+    </header>
+    <div *ngIf="post.title || post.body" class="post__content">
+      <h3 *ngIf="post.title" class="post__title">
+        <a href="#">{{post.title}}</a>
+      </h3>
+      <p *ngIf="post.body" class="post__body">{{post.body}}</p>
+    </div>
+    <footer class="post__footer">
+      <ul *ngIf="post.tags" class="post__tag-list">
+        <li class="post__tag" *ngFor="let tag of post.tags">
+          <a href="#">{{tag}}</a>
+        </li>
+      </ul>
+    </footer>
+  </div>
+</div>
