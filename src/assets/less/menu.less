@@ -1,0 +1,51 @@
+// main: ./main.less
+
+.menu {
+  &__list {
+    .clearfix;
+    border-bottom: 2px solid @color--primary;
+  }
+
+  &__item {
+    .font-size(@font-size--menu);
+    float: left;
+    font-weight: @font-weight--semibold;
+    list-style: none;
+
+    &+&:before {
+      color: @color--primary;
+      content: '/';
+      margin: 0 25px 0 30px;
+    }
+
+    &--active a {
+      color: @color--secondary;
+    }
+
+    a {
+      color: @color--primary;
+    }
+  }
+
+  &--primary {
+    .menu__item+.menu__item:last-of-type:before {
+      display: none;
+    }
+    .menu__item:last-of-type {
+      float: right;
+    }
+  }
+
+  &--secondary {
+    .menu__list {
+      border-bottom: 1px solid @color--primary;
+      display: inline-block;
+      margin: 5px auto;
+      padding: 5px 20px;
+    }
+
+    .menu__item {
+      .font-size(@font-size--footer);
+    }
+  }
+}

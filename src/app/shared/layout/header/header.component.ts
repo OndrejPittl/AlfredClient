@@ -13,15 +13,15 @@ export class HeaderLayoutComponent implements OnInit {
       {
         id: 'general-feed',
         slug: 'home',
-        title: '#general',
+        title: 'general',
       }, {
         id: 'friends-feed',
         slug: 'friends',
-        title: '#friends',
+        title: 'friends',
       }, {
         id: 'personal-feed',
         slug: 'personal',
-        title: '#personal',
+        title: 'personal',
       }, {
         id: 'profile',
         slug: 'profile/alfred-nobel',

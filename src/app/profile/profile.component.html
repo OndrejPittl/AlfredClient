@@ -1,3 +1,60 @@
 <div class="content">
-  <h1>Profile</h1>
+
+  <input type="checkbox" id="profile-edit" class="profile__edit-checkbox" hidden>
+  <div class="profile">
+    <form class="form" action="">
+      <div class="form__row">
+        <div class="form__col">
+          <div class="form__image"></div>
+          <label class="btn btn--tiny btn--link">Upload<input type="file" hidden></label>
+        </div>
+      </div>
+      <div class="form__row">
+        <div class="form__col">
+          <input class="form-control" type="text" placeholder="first name" value="{{profile.firstName}}">
+          <span class="form__msg form__msg--error">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</span>
+        </div>
+        <div class="form__col">
+          <input class="form-control" type="text" placeholder="last name" value="{{profile.lastName}}">
+          <span class="form__msg form__msg--error">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</span>
+        </div>
+      </div>
+      <div class="form__row">
+        <div class="form__col">
+          <input class="form-control" type="text" placeholder="email" value="{{profile.email}}">
+          <span class="form__msg form__msg--error">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</span>
+        </div>
+      </div>
+      <div class="form__row">
+        <div class="form__col">
+          <input class="form-control" type="password" placeholder="password">
+          <span class="form__msg form__msg--error">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</span>
+        </div>
+        <div class="form__col">
+          <input class="form-control" type="password" placeholder="password">
+          <span class="form__msg form__msg--error">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</span>
+        </div>
+      </div>
+      <div class="form__row">
+        <div class="form__col">
+          <button class="btn btn--wide" type="submit" form="" value="Sign In">Approve edits</button>
+          <label for="profile-edit" class="btn btn--wide btn--red btn--tiny">Cancel</label>
+        </div>
+      </div>
+    </form>
+
+    <div class="profile__info">
+      <!-- <div class="profile__photo" style="background:url({{profile.photo}})"></div> -->
+      <div class="profile__photo" style="background-image:url(http://via.placeholder.com/1000x1000)"></div>
+      <div>
+
+        <h2>{{profile.firstName}} {{profile.lastName}}</h2>
+        <p>{{profile.email}}</p>
+        <label for="profile-edit" class="btn btn--tiny">Edit</label>
+      </div>
+    </div>
+  </div>
+  <div class="feed" data-columns>
+    <app-post-item *ngFor="let post of profile.posts" [post]="post"></app-post-item>
+  </div>
 </div>

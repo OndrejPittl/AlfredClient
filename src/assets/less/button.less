@@ -1,0 +1,40 @@
+// main: ./main.less
+
+.btn {
+  background-color: fade(@color--secondary, 70%);
+  border: 1px solid @color--secondary;
+  border-radius: 3px;
+  color: @color--white;
+  cursor: pointer;
+  margin: 15px 0;
+  padding: 10px;
+
+  &:hover {
+    .transition(background-color);
+    background-color: fade(@color--secondary, 100%);
+    color: @color--white;
+  }
+
+  &--tiny {
+    padding: 3px 10px;
+  }
+
+  &--link {
+    background-color: transparent;
+    border: none;
+    text-decoration: underline;
+  }
+
+  &--wide {
+    width: 100%;
+  }
+
+  &--red {
+    background-color: fade(@color--red, 70%);
+    border: 1px solid @color--red;
+
+    &:hover {
+      background-color: fade(@color--red, 100%);
+    }
+  }
+}

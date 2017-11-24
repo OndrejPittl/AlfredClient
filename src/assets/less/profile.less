@@ -1,0 +1,54 @@
+// main: ./main.less
+
+.profile {
+  .transition(max-height);
+  margin: 0 auto;
+  max-height: 500px;
+  max-width: 600px;
+  text-align: center;
+
+  &__photo {
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    border-radius: 50%;
+    margin: 0 auto;
+    padding-top: 50%;
+    width: 50%;
+  }
+
+  &__info {
+    .transition(max-height);
+    max-height: 500px;
+    overflow: hidden;
+    // transition-delay: .3s;
+  }
+
+  &__edit-checkbox {
+    &:checked {
+      &+.profile {
+        max-height: 900px;
+
+        .form {
+          max-height: 900px;
+
+          &+.profile__info {
+            max-height: 0;
+          }
+        }
+      }
+    }
+  }
+
+  .form {
+    .transition(max-height);
+    max-height: 0;
+    overflow: hidden;
+
+    .btn--red {
+      margin: 0;
+    }
+  }
+
+
+}
