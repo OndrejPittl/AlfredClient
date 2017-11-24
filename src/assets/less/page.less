@@ -13,12 +13,33 @@
 
   &--profile {
     .header__logo {
-      height: 25vh;
       background-size: 150px;
+      height: 25vh;
     }
 
     .header__menu {
       display: none;
+    }
+  }
+
+  &--error {
+    .header__logo {
+      background-size: 300px;
+      height: 25vh;
+      margin: 15vh 0 5vh;
+    }
+
+    .header__menu {
+      display: none;
+    }
+
+    .content {
+      padding: 25px 0 50px;
+      text-align: center;
+
+      h1, h3 {
+        margin: 5px;
+      }
     }
   }
 }

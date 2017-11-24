@@ -1,7 +1,9 @@
 <div class="post">
   <div class="post__container">
     <header class="post__header">
-      <span *ngIf="post.rating" class="post__rating">{{post.rating}}</span>
+      <a href="" class="post__rating">
+        <span *ngIf="post.rating">{{post.rating}}</span>
+      </a>
       <a *ngIf="post.images" href="#"><img class="post__image" src="{{post.images[0]}}" alt=""></a>
     </header>
     <div *ngIf="post.title || post.body" class="post__content">

@@ -10,18 +10,22 @@ export class HeaderLayoutComponent implements OnInit {
 
   constructor() {
     this.primaryMenuItems = [
-      {
+      /*{
         id: 'general-feed',
         slug: 'home',
         title: 'general',
+      },*/ {
+        id: 'discover-feed',
+        slug: 'discover',
+        title: 'discover',
       }, {
         id: 'friends-feed',
         slug: 'friends',
         title: 'friends',
       }, {
-        id: 'personal-feed',
-        slug: 'personal',
-        title: 'personal',
+        id: 'rated-feed',
+        slug: 'rated',
+        title: 'rated',
       }, {
         id: 'profile',
         slug: 'profile/alfred-nobel',

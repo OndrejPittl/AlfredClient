@@ -42,9 +42,17 @@
   input {
     background-color: fade(@color--white, 70%);
     border: 1px solid @color--white;
-    height: 40px;
+    border-radius: 3px;
     text-align: center;
+  }
+
+  input:not([type=checkbox]) {
+    height: 40px;
     width: 100%;
+  }
+
+  input[type=checkbox] {
+    margin-right: 10px;
   }
 
   .invalid {
@@ -53,6 +61,54 @@
     }
   }
 
+  &--compact {
+    input:not([type=checkbox]) {
+      background-color: fade(@color--white, 20%);
+      border: 1px solid @color--primary;
+      color: @color--primary;
+      height: 30px;
+    }
 
+    ::-webkit-input-placeholder {
+      color: @color--primary;
+    }
+    ::-moz-placeholder {
+      color: @color--primary;
+    }
+    :-ms-input-placeholder {
+      color: @color--primary;
+    }
+    :-moz-placeholder {
+      color: @color--primary;
+    }
+
+    .btn {
+      background-color: fade(@color--secondary, 20%);
+      border: 1px solid @color--secondary;
+      color: @color--secondary;
+      height: 30px;
+      text-shadow: 0 0 3px fade(@color--black, 80%);
+    }
+  }
+
+
+  &--filter {
+    border-bottom: 1px solid @color--primary;
+    color: @color--primary;
+    max-width: inherit;
+    padding: 7px 0;
+
+    .form__row:first-of-type {
+      margin-top: 0;
+    }
+
+    .form__row:last-of-type {
+      margin-bottom: 0;
+    }
+
+    .btn {
+      margin: 0;
+    }
+  }
 
 }

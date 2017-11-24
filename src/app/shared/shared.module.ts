@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HeaderLayoutComponent } from './layout/header.component';
 import { FooterLayoutComponent } from './layout/footer.component';
+import { FilterFormComponent } from './forms/filter-form/filter-form.component';
 
 @NgModule({
   imports: [
@@ -9,7 +10,8 @@ import { FooterLayoutComponent } from './layout/footer.component';
   ],
   declarations: [
     HeaderLayoutComponent,
-    FooterLayoutComponent
+    FooterLayoutComponent,
+    FilterFormComponent
   ]
 })
 export class SharedModule { }

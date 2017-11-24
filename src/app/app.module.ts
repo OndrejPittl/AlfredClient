@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
 import {HeaderLayoutComponent} from './shared/layout/header/header.component';
@@ -15,6 +16,8 @@ import { PostItemComponent } from './shared/post-item/post-item.component';
 import { PostComponent } from './post/post.component';
 import { WelcomeComponent } from './welcome/welcome.component';
 import { MenuComponent } from './shared/layout/menu/menu.component';
+import { FilterFormComponent } from './shared/forms/filter-form/filter-form.component';
+import { RatedComponent } from './rated/rated.component';
 
 
 const appRoutes: Routes = [
@@ -40,6 +43,9 @@ const appRoutes: Routes = [
     path: 'discover',
     component: DiscoverComponent,
     data: { title: 'Discoveeeer' }
+  }, {
+    path: 'rated',
+    component: RatedComponent
   }, {
     path: 'friends',
     component: FriendsComponent,
@@ -67,14 +73,17 @@ const appRoutes: Routes = [
     PostItemComponent,
     PostComponent,
     WelcomeComponent,
-    MenuComponent
+    MenuComponent,
+    FilterFormComponent,
+    RatedComponent
   ],
   imports: [
     RouterModule.forRoot(
       appRoutes,
       { enableTracing: false }   // <-- debugging purposes only
     ),
-    BrowserModule
+    BrowserModule,
+    HttpModule
   ],
   providers: [],
   bootstrap: [AppComponent]

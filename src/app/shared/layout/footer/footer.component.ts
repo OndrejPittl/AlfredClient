@@ -19,9 +19,9 @@ export class FooterLayoutComponent implements OnInit {
         slug: 'friends',
         title: 'friends',
       }, {
-        id: 'personal-feed',
-        slug: 'personal',
-        title: 'personal',
+        id: 'discover-feed',
+        slug: 'discover',
+        title: 'discover',
       }
     ];
   }

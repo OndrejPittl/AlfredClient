@@ -21,21 +21,34 @@
   }
 
   &__rating {
-    background-color: hotpink;
-    border-radius: 15px;
-    //box-shadow: 0 0 7px fade(@color--black, 50%);
+    .transform(scale(.8));
+    background-color: @color--primary;
     color: @color--white;
     display: inline-block;
-    height: 30px;
-    line-height: 25px;
-    padding: 3px;
+    height: 50px;
+    line-height: 53px;
     position: absolute;
     right: 20px;
     text-align: center;
     top: 20px;
-    min-width: 30px;
+    width: 50px;
     z-index: 1;
+
+    -webkit-mask-image: url(../images/star.svg);
+    mask-image: url(../images/star.svg);
+
+    -webkit-transition: transform .25s, background-color .25s, color .25s;
+    -moz-transition: transform .25s, background-color .25s, color .25s;
+    -ms-transition: transform .25s, background-color .25s, color .25s;
+    -o-transition: transform .25s, background-color .25s, color .25s;
+    transition: transform .25s, background-color .25s, color .25s;
+
+    &:hover {
+      .transform(scale(1));
+      background-color: @color--secondary;
+    }
   }
+
 
   &__image {
     .transition(opacity);

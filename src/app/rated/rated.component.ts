@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-discover',
-  templateUrl: './discover.component.html'
+  selector: 'app-rated',
+  templateUrl: './rated.component.html'
 })
-export class DiscoverComponent implements OnInit {
+export class RatedComponent implements OnInit {
 
   posts;
 
