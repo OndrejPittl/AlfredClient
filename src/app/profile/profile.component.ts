@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import salvattore from 'salvattore'
+
+declare let $: any;
 
 @Component({
   selector: 'app-profile',
@@ -105,6 +108,7 @@ export class ProfileComponent implements OnInit {
   }
 
   ngOnInit() {
+    salvattore.recreateColumns($('.feed')[0]);
   }
 
 }

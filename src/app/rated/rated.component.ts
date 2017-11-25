@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import salvattore from 'salvattore'
+
+declare let $: any;
+
 
 @Component({
   selector: 'app-rated',
@@ -98,6 +102,7 @@ export class RatedComponent implements OnInit {
   }
 
   ngOnInit() {
+    salvattore.recreateColumns($('.feed')[0]);
   }
 
 }

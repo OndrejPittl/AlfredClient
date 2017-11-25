@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HeaderLayoutComponent } from './layout/header.component';
-import { FooterLayoutComponent } from './layout/footer.component';
+import { HeaderLayoutComponent } from './layout/header/header.component';
+import { FooterLayoutComponent } from './layout/footer/footer.component';
 import { FilterFormComponent } from './forms/filter-form/filter-form.component';
 
 @NgModule({

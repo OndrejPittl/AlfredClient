@@ -1,11 +1,11 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import {  NgModule} from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
-import {HeaderLayoutComponent} from './shared/layout/header/header.component';
-import {FooterLayoutComponent} from './shared/layout/footer/footer.component';
+import { HeaderLayoutComponent } from './shared/layout/header/header.component';
+import { FooterLayoutComponent } from './shared/layout/footer/footer.component';
 import { HomeComponent } from './home/home.component';
 import { ProfileComponent } from './profile/profile.component';
 import { DiscoverComponent } from './discover/discover.component';
@@ -18,44 +18,50 @@ import { WelcomeComponent } from './welcome/welcome.component';
 import { MenuComponent } from './shared/layout/menu/menu.component';
 import { FilterFormComponent } from './shared/forms/filter-form/filter-form.component';
 import { RatedComponent } from './rated/rated.component';
+import { TestService } from "./test.service";
 
 
 const appRoutes: Routes = [
   {
     path: 'welcome',
-    component: WelcomeComponent
+    component: WelcomeComponent,
+    data: { identifier: 'welcome' }
   }, {
-    /**
-    * General feed.
-    */
     path: 'home',
-    component: HomeComponent
+    component: HomeComponent,
+    data: { identifier: 'home' }
   }, {
     path: 'profile/:identifier',
-    component: ProfileComponent
+    component: ProfileComponent,
+    data: { identifier: 'profile' }
   }, {
     path: 'tag/:tag',
-    component: TagComponent
+    component: TagComponent,
+    data: { identifier: 'tag' }
   }, {
     path: 'post/:post',
-    component: PostComponent
+    component: PostComponent,
+    data: { identifier: 'post' }
   }, {
     path: 'discover',
     component: DiscoverComponent,
-    data: { title: 'Discoveeeer' }
+    data: { identifier: 'discover' }
   }, {
     path: 'rated',
-    component: RatedComponent
+    component: RatedComponent,
+    data: { identifier: 'rated' }
   }, {
     path: 'friends',
     component: FriendsComponent,
+    data: { identifier: 'friends' }
 }, {
-  path: '',
-  component: HomeComponent
-  //redirectTo: '/home'
+    path: '',
+    component: HomeComponent
+    //redirectTo: '/home'
 }, {
-  path: '**',
-    component: PageNotFoundComponent
+    path: '**',
+    component: PageNotFoundComponent,
+    data: { identifier: 'error' }
 }];
 
 
@@ -85,7 +91,9 @@ const appRoutes: Routes = [
     BrowserModule,
     HttpModule
   ],
-  providers: [],
+  providers: [
+    TestService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

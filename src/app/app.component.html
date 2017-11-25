@@ -1,4 +1,4 @@
-<div class="page">  <!-- welcome profile error -->
+<div class="page{{ !!identifier ? ' page--' + identifier : ''}}">
   <app-layout-header></app-layout-header>
   <section class="content-wrapper">
     <router-outlet></router-outlet>

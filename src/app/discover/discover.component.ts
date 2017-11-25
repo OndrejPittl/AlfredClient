@@ -1,4 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { TestService } from "../test.service";
+import salvattore from 'salvattore'
+
+declare let $: any;
+
 
 @Component({
   selector: 'app-discover',
@@ -8,7 +13,10 @@ export class DiscoverComponent implements OnInit {
 
   posts;
 
-  constructor() {
+  constructor(private test:TestService) {
+
+
+
     this.posts = [
       {
         title: 'How to treat a cat.',
@@ -97,7 +105,19 @@ export class DiscoverComponent implements OnInit {
     ];
   }
 
+
+
   ngOnInit() {
+    //this.test.getTestData().subscribe(posts => {
+      //this.posts = posts;
+      //console.log(JSON.stringify(posts));
+    //});
+
+
+    salvattore.recreateColumns($('.feed')[0]);
+
+
+
   }
 
 }
