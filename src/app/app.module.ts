@@ -1,68 +1,39 @@
+// core
 import { BrowserModule } from '@angular/platform-browser';
 import {  NgModule} from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HttpModule } from '@angular/http';
+import {FormsModule} from "@angular/forms";
 
+// config
+import { APP_ROUTES } from './config/routes';
+
+// components
 import { AppComponent } from './app.component';
 import { HeaderLayoutComponent } from './shared/layout/header/header.component';
 import { FooterLayoutComponent } from './shared/layout/footer/footer.component';
-import { HomeComponent } from './home/home.component';
-import { ProfileComponent } from './profile/profile.component';
-import { DiscoverComponent } from './discover/discover.component';
-import { FriendsComponent } from './friends/friends.component';
-import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { HomeComponent } from './components/home/home.component';
+import { ProfileComponent } from './components/profile/profile.component';
+import { DiscoverComponent } from './components/discover/discover.component';
+import { FriendsComponent } from './components/friends/friends.component';
+import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { TagComponent } from './tag/tag.component';
 import { PostItemComponent } from './shared/post-item/post-item.component';
-import { PostComponent } from './post/post.component';
-import { WelcomeComponent } from './welcome/welcome.component';
+import { PostComponent } from './components/post/post.component';
+import { WelcomeComponent } from './components/welcome/welcome.component';
 import { MenuComponent } from './shared/layout/menu/menu.component';
 import { FilterFormComponent } from './shared/forms/filter-form/filter-form.component';
-import { RatedComponent } from './rated/rated.component';
-import { TestService } from "./test.service";
+import { RatedComponent } from './components/rated/rated.component';
+import { PostFeedComponent } from './shared/post-feed/post-feed.component';
+import { UserFormComponent } from './shared/forms/user-form/user-form.component';
+
+// services
+import { PostService } from "./services/post.service";
+import { UserService } from "./services/user.service";
+import { EqualityValidatorDirective } from './directives/equality-validator.directive';
 
 
-const appRoutes: Routes = [
-  {
-    path: 'welcome',
-    component: WelcomeComponent,
-    data: { identifier: 'welcome' }
-  }, {
-    path: 'home',
-    component: HomeComponent,
-    data: { identifier: 'home' }
-  }, {
-    path: 'profile/:identifier',
-    component: ProfileComponent,
-    data: { identifier: 'profile' }
-  }, {
-    path: 'tag/:tag',
-    component: TagComponent,
-    data: { identifier: 'tag' }
-  }, {
-    path: 'post/:post',
-    component: PostComponent,
-    data: { identifier: 'post' }
-  }, {
-    path: 'discover',
-    component: DiscoverComponent,
-    data: { identifier: 'discover' }
-  }, {
-    path: 'rated',
-    component: RatedComponent,
-    data: { identifier: 'rated' }
-  }, {
-    path: 'friends',
-    component: FriendsComponent,
-    data: { identifier: 'friends' }
-}, {
-    path: '',
-    component: HomeComponent
-    //redirectTo: '/home'
-}, {
-    path: '**',
-    component: PageNotFoundComponent,
-    data: { identifier: 'error' }
-}];
+
 
 
 @NgModule({
@@ -81,18 +52,23 @@ const appRoutes: Routes = [
     WelcomeComponent,
     MenuComponent,
     FilterFormComponent,
-    RatedComponent
+    RatedComponent,
+    PostFeedComponent,
+    UserFormComponent,
+    EqualityValidatorDirective,
   ],
   imports: [
     RouterModule.forRoot(
-      appRoutes,
-      { enableTracing: false }   // <-- debugging purposes only
+      APP_ROUTES,
+      { enableTracing: false }
     ),
     BrowserModule,
+    FormsModule,
     HttpModule
   ],
   providers: [
-    TestService
+    PostService,
+    UserService
   ],
   bootstrap: [AppComponent]
 })

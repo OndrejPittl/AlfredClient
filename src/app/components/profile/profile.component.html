@@ -1,0 +1,23 @@
+<div class="content">
+
+  <div *ngIf="user">
+    <input type="checkbox" id="profile-edit" class="profile__edit-checkbox" hidden>
+    <div class="profile">
+      <app-user-form [user]="user"></app-user-form>
+
+      <div class="profile__info">
+        <!-- <div class="profile__photo" style="background:url({{user.photo}})"></div> -->
+        <div class="profile__photo" style="background-image:url(http://via.placeholder.com/1000x1000)"></div>
+        <div>
+
+          <h2>{{user.firstName}} {{user.lastName}}</h2>
+          <p>{{user.email}}</p>
+          <label for="profile-edit" class="btn btn--tiny">Edit</label>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="posts">
+    <app-post-feed [posts]="posts"></app-post-feed>
+  </div>
+</div>

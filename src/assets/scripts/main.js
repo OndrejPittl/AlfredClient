@@ -1,3 +1,4 @@
+
 var app = angular.module("alfred", []);
 
 app.controller('feedController', function($rootScope, $element) {
@@ -11,3 +12,6 @@ app.controller('feedController', function($rootScope, $element) {
 app.run(function($rootScope, $location) {
 
 });
+
+
+

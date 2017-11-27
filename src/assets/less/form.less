@@ -8,6 +8,10 @@
   &__row {
     &:extend(.flex);
     margin: 15px 0;
+
+    &+&--message {
+      margin-top: -14px;
+    }
   }
 
   &__col {
@@ -44,6 +48,11 @@
     border: 1px solid @color--white;
     border-radius: 3px;
     text-align: center;
+
+    &[disabled] {
+      background-color: fade(@color--white, 30%);
+      border: 1px solid fade(@color--white, 50%);
+    }
   }
 
   input:not([type=checkbox]) {
@@ -52,7 +61,9 @@
   }
 
   input[type=checkbox] {
+    //.transform(translate(0, 3px));
     margin-right: 10px;
+    margin-top: 7px;
   }
 
   .invalid {
@@ -87,7 +98,7 @@
       border: 1px solid @color--secondary;
       color: @color--secondary;
       height: 30px;
-      text-shadow: 0 0 3px fade(@color--black, 80%);
+      text-shadow: 0 0 3px fade(@color--black, 30%);
     }
   }
 
@@ -110,5 +121,21 @@
       margin: 0;
     }
   }
+}
 
+
+.ng-valid[required], .ng-valid.required,
+.ng-valid.ng-dirty:not(form) {
+  border-left: 5px solid @color--green;
+}
+
+.ng-invalid:not(form).ng-dirty,
+.ng-invalid[required] {
+  border-left: 5px solid @color--red; /* red */
+}
+
+.alert {
+  margin-bottom: 0;
+  margin-top: 7px;
+  padding: 7px;
 }

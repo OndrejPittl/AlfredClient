@@ -1,22 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { TestService } from "../test.service";
-import salvattore from 'salvattore'
-
-declare let $: any;
 
 
 @Component({
-  selector: 'app-discover',
-  templateUrl: './discover.component.html'
+  selector: 'app-rated',
+  templateUrl: './rated.component.html'
 })
-export class DiscoverComponent implements OnInit {
+export class RatedComponent implements OnInit {
 
   posts;
 
-  constructor(private test:TestService) {
-
-
-
+  constructor() {
     this.posts = [
       {
         title: 'How to treat a cat.',
@@ -105,19 +98,6 @@ export class DiscoverComponent implements OnInit {
     ];
   }
 
-
-
-  ngOnInit() {
-    //this.test.getTestData().subscribe(posts => {
-      //this.posts = posts;
-      //console.log(JSON.stringify(posts));
-    //});
-
-
-    salvattore.recreateColumns($('.feed')[0]);
-
-
-
-  }
+  ngOnInit() { }
 
 }

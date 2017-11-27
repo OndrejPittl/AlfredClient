@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { HeaderLayoutComponent } from './layout/header/header.component';
 import { FooterLayoutComponent } from './layout/footer/footer.component';
 import { FilterFormComponent } from './forms/filter-form/filter-form.component';
+import { PostFeedComponent } from './post-feed/post-feed.component';
+import { UserFormComponent } from './forms/user-form/user-form.component';
 
 @NgModule({
   imports: [
@@ -11,7 +13,9 @@ import { FilterFormComponent } from './forms/filter-form/filter-form.component';
   declarations: [
     HeaderLayoutComponent,
     FooterLayoutComponent,
-    FilterFormComponent
+    FilterFormComponent,
+    PostFeedComponent,
+    UserFormComponent
   ]
 })
 export class SharedModule { }
