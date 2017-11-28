@@ -1,4 +1,4 @@
-<form class="form" #userForm="ngForm" (ngSubmit)="isSignUp ? signUp($event) : doEdit($event)">
+<form class="form" id="{{formId}}" #userForm="ngForm" (ngSubmit)="isSignUp ? signUp($event) : doEdit($event)">
   {{diagnostic}}
 
   <div class="form__row">
@@ -20,16 +20,16 @@
   <div class="form__row">
     <div class="form__col">
       <input class="form-control" type="text" placeholder="e-mail" [(ngModel)]="user.email" name="email" #email="ngModel" email required>
-      <div [hidden]="email.valid || email.pristine" class="alert alert-danger">E-mail is required.</div>
+      <div [hidden]="email.valid || email.pristine" class="alert alert-danger">Valid e-mail is required.</div>
     </div>
   </div>
   <div class="form__row">
     <div class="form__col">
-      <input class="form-control" type="password" placeholder="password" [(ngModel)]="user.password" name="password" #password="ngModel" validateEqual="confirmPassword" reverse="true" minlength="5">
+      <input class="form-control" type="password" placeholder="password" [(ngModel)]="user.password" name="password" #password="ngModel" validateEqual="confirmPassword" reverse="true" minlength="5" [required]="isSignUp">
     </div>
     <div class="form__col">
       <!-- [hidden]="!password.value" -->
-      <input class="form-control" type="password" placeholder="password" [(ngModel)]="user.configmPassword" name="confirmPassword" validateEqual="password" #confirmPassword="ngModel" [disabled]="!password.value" [required]="password.value">
+      <input class="form-control" type="password" placeholder="password" [(ngModel)]="user.configmPassword" name="confirmPassword" validateEqual="password" #confirmPassword="ngModel" [disabled]="!password.value" [required]="isSignUp || password.value">
     </div>
   </div>
   <div class="form__row form__row--message">
@@ -41,7 +41,7 @@
 
   <div class="form__row">
     <div class="form__col">
-      <button class="btn btn--wide" type="submit" [disabled]="!userForm.form.valid">Approve edits</button>
+      <button class="btn btn--wide" type="submit" [disabled]="!userForm.form.valid">{{ isSignUp ? "Sign Up" : "Approve edit"}}</button>
       <!--<label for="profile-edit" class="btn btn--wide btn--red btn--tiny">Cancel</label>-->
     </div>
   </div>

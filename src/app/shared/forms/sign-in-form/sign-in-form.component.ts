@@ -4,37 +4,28 @@ import {User} from "../../../model/user";
 
 
 @Component({
-  selector: 'app-user-form',
-  templateUrl: './user-form.component.html'
+  selector: 'app-sign-in-form',
+  templateUrl: './sign-in-form.component.html'
 })
 
-export class UserFormComponent implements OnInit {
+export class SignInFormComponent implements OnInit {
 
   @Input() user = new User(0, "", "", "", "", "");
 
   @Input() formId: string = "";
-
-  isSignUp: boolean = true;
 
   submitted = false;
 
 
   constructor() { }
 
-  ngOnInit() {
-    this.isSignUp = this.user !== undefined;
-  }
+  ngOnInit() {}
 
   // TODO: Remove this when we're done
   get diagnostic() { return JSON.stringify(this.user); }
 
 
-  public signUp(event): void {
-    this.submitted = true;
-    console.log(this.user);
-  }
-
-  public doEdit(event): void {
+  public signIn(event): void {
     this.submitted = true;
     console.log(this.user);
   }

@@ -1,0 +1,26 @@
+<form class="form" id="{{formId}}" #userForm="ngForm" (ngSubmit)="signIn($event)">
+  {{diagnostic}}
+
+  <div class="form__row">
+    <div class="form__col">
+      <input class="form-control" type="text" placeholder="e-mail" [(ngModel)]="user.email" name="email" #email="ngModel" email required>
+      <div [hidden]="email.valid || email.pristine" class="alert alert-danger">Valid e-mail is required.</div>
+    </div>
+  </div>
+  <div class="form__row">
+    <div class="form__col">
+      <input class="form-control" type="password" placeholder="password" [(ngModel)]="user.password" name="password" #password="ngModel" validateEqual="confirmPassword" reverse="true" minlength="5" [required]="isSignUp">
+      <div *ngIf="password.hasError('minlength')" class="alert alert-danger">Password must be at least 5 characters long.</div>
+    </div>
+  </div>
+
+  <div class="form__row">
+    <div class="form__col">
+      <button class="btn btn--wide" type="submit" [disabled]="!userForm.form.valid">{{ isSignUp ? "Sign Up" : "Approve edit"}}</button>
+      <!--<label for="profile-edit" class="btn btn--wide btn--red btn--tiny">Cancel</label>-->
+    </div>
+  </div>
+</form>
+
+
+

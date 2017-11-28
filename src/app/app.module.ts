@@ -17,8 +17,8 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { DiscoverComponent } from './components/discover/discover.component';
 import { FriendsComponent } from './components/friends/friends.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
-import { TagComponent } from './tag/tag.component';
-import { PostItemComponent } from './shared/post-item/post-item.component';
+import { TagComponent } from './components/tag/tag.component';
+import { PostItemComponent } from './shared/post-feed/post-item.component';
 import { PostComponent } from './components/post/post.component';
 import { WelcomeComponent } from './components/welcome/welcome.component';
 import { MenuComponent } from './shared/layout/menu/menu.component';
@@ -26,6 +26,7 @@ import { FilterFormComponent } from './shared/forms/filter-form/filter-form.comp
 import { RatedComponent } from './components/rated/rated.component';
 import { PostFeedComponent } from './shared/post-feed/post-feed.component';
 import { UserFormComponent } from './shared/forms/user-form/user-form.component';
+import { SignInFormComponent } from './shared/forms/sign-in-form/sign-in-form.component';
 
 // services
 import { PostService } from "./services/post.service";
@@ -55,6 +56,7 @@ import { EqualityValidatorDirective } from './directives/equality-validator.dire
     RatedComponent,
     PostFeedComponent,
     UserFormComponent,
+    SignInFormComponent,
     EqualityValidatorDirective,
   ],
   imports: [

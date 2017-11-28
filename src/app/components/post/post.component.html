@@ -1,3 +1,28 @@
 <div class="content">
-  <app-post-item *ngIf="post" [post]="post"></app-post-item>
+  <div class="post" *ngIf="post">
+
+    <h2 *ngIf="post.title" class="post__title">{{post.title}}</h2>
+
+    <header class="post__header">
+      <a href="" class="post__rating">
+        <span *ngIf="post.rating">{{post.rating}}</span>
+      </a>
+      <img class="post__image" src="{{post.images[0]}}" alt="">
+      <ul *ngIf="post.tags" class="post__tag-list">
+        <li class="post__tag" *ngFor="let tag of post.tags">
+          <a routerLink="/tag/{{tag}}">#{{tag}}</a>
+        </li>
+      </ul>
+    </header>
+
+    <div *ngIf="post.body" class="post__content">
+      <p class="post__body">{{post.body}}</p>
+    </div>
+
+    <div class="post__foter">
+      <p class="post__author">– Alfred Nobel –</p>
+    </div>
+  </div>
 </div>
+
+

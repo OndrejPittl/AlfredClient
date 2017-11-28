@@ -5,6 +5,7 @@ import { FooterLayoutComponent } from './layout/footer/footer.component';
 import { FilterFormComponent } from './forms/filter-form/filter-form.component';
 import { PostFeedComponent } from './post-feed/post-feed.component';
 import { UserFormComponent } from './forms/user-form/user-form.component';
+import { SignInFormComponent } from './forms/sign-in-form/sign-in-form.component';
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import { UserFormComponent } from './forms/user-form/user-form.component';
     FooterLayoutComponent,
     FilterFormComponent,
     PostFeedComponent,
-    UserFormComponent
+    UserFormComponent,
+    SignInFormComponent
   ]
 })
 export class SharedModule { }

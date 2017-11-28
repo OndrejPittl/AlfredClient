@@ -7,8 +7,14 @@ import 'rxjs/add/operator/map'
 @Injectable()
 export class PostService {
 
-  constructor(private http:Http) {
+  constructor(private http:Http) { }
 
+
+  public getPost(id: number): Observable<IPost[]> {
+    return this.http.get('http://localhost:3000/posts/' + id)
+      .map(value => {
+        return value.json() || {}
+      });
   }
 
   public getAllPosts(): Observable<IPost[]> {
@@ -18,21 +24,17 @@ export class PostService {
       });
   }
 
-  public getPosts(userId: number): Observable<IPost[]> {
+  public getPostsByUser(userId: number): Observable<IPost[]> {
     return this.http.get('http://localhost:3000/posts?user_id=' + userId)
       .map(value => {
         return value.json() || {}
       });
   }
 
-  public getPost(id: number): Observable<IPost[]> {
-    return this.http.get('http://localhost:3000/posts/' + id)
+  public getPostByTag(tag: string): Observable<IPost[]> {
+    return this.http.get('http://localhost:3000/posts?tags_like=' + tag)
       .map(value => {
         return value.json() || {}
       });
   }
-
-
-
-
 }

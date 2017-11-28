@@ -3,7 +3,7 @@ import {Routes} from "@angular/router";
 import {WelcomeComponent} from "../components/welcome/welcome.component";
 import {HomeComponent} from "../components/home/home.component";
 import {ProfileComponent} from "../components/profile/profile.component";
-import {TagComponent} from "../tag/tag.component";
+import {TagComponent} from "../components/tag/tag.component";
 import {PostComponent} from "../components/post/post.component";
 import {DiscoverComponent} from "../components/discover/discover.component";
 import {RatedComponent} from "../components/rated/rated.component";
@@ -63,7 +63,7 @@ export const APP_ROUTES: Routes = [
      * Profile page.
      * Contains information about a person.
      */
-    path: 'user/:slug',
+    path: 'profile/:slug',
     component: ProfileComponent,
     data: { identifier: 'profile' }
   }, {

@@ -28,7 +28,7 @@ export class HeaderLayoutComponent implements OnInit {
         title: 'rated',
       }, {
         id: 'profile',
-        slug: 'user/alfred-nobel',
+        slug: 'profile/alfred-nobel',
         title: 'Alfred Nobel',
       }
     ];
