@@ -6,7 +6,7 @@ import { HttpModule } from '@angular/http';
 import {FormsModule} from "@angular/forms";
 
 // config
-import { APP_ROUTES } from './config/routes';
+import {appRoutes, routing, routingProviders} from './config/routes';
 
 // components
 import { AppComponent } from './app.component';
@@ -32,6 +32,8 @@ import { SignInFormComponent } from './shared/forms/sign-in-form/sign-in-form.co
 import { PostService } from "./services/post.service";
 import { UserService } from "./services/user.service";
 import { EqualityValidatorDirective } from './directives/equality-validator.directive';
+import {AuthGuard} from "./guards/auth.guard";
+import {AuthService} from "./services/auth.service";
 
 
 
@@ -60,17 +62,17 @@ import { EqualityValidatorDirective } from './directives/equality-validator.dire
     EqualityValidatorDirective,
   ],
   imports: [
-    RouterModule.forRoot(
-      APP_ROUTES,
-      { enableTracing: false }
-    ),
     BrowserModule,
     FormsModule,
-    HttpModule
+    HttpModule,
+    routing
   ],
   providers: [
     PostService,
-    UserService
+    UserService,
+    AuthService,
+    routingProviders,
+    AuthGuard
   ],
   bootstrap: [AppComponent]
 })

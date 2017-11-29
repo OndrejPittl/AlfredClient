@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import {AuthService} from "../../services/auth.service";
 
 
 @Component({
@@ -7,20 +8,13 @@ import { Router } from '@angular/router';
   templateUrl: './welcome.component.html'
 })
 export class WelcomeComponent implements OnInit {
-  router: Router;
-  loggedIn = true;
 
-  constructor() {
-
-
-    if(!this.loggedIn) {
-
-      // redirectuje do /, kde se nenačtou posty
-      this.router.navigate(["/home"]);
-    }
-  }
+  constructor(private authService: AuthService, private router: Router) { }
 
   ngOnInit() {
+    if(this.authService.isLoggedIn()) {
+      this.router.navigate(['discover']);
+    }
   }
 
 }

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {AuthService} from "../../../services/auth.service";
 
 @Component({
   selector: 'app-layout-header',
@@ -8,7 +9,7 @@ export class HeaderLayoutComponent implements OnInit {
   primaryMenuItems;
 
 
-  constructor() {
+  constructor(private authService: AuthService) {
     this.primaryMenuItems = [
       /*{
         id: 'general-feed',
@@ -35,6 +36,11 @@ export class HeaderLayoutComponent implements OnInit {
   }
 
   ngOnInit() {
+
+  }
+
+  logout() {
+    this.authService.logout();
   }
 
 }

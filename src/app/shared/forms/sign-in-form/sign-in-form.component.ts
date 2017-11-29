@@ -1,6 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 
 import {User} from "../../../model/user";
+import {ActivatedRoute, Params, Router, RoutesRecognized} from "@angular/router";
+import {AuthService} from "../../../services/auth.service";
 
 
 @Component({
@@ -14,21 +16,32 @@ export class SignInFormComponent implements OnInit {
 
   @Input() formId: string = "";
 
-  submitted = false;
+  private returnUrl: string;
+
+  private sub: any;
 
 
-  constructor() { }
+  //constructor(private router: Router, private storage: Storage) { }
+  constructor(private route: ActivatedRoute, private router: Router, private auth: AuthService) {}
 
-  ngOnInit() {}
+
+  ngOnInit() {
+    this.sub = this.route.queryParams.subscribe(params => {
+      this.returnUrl = params['url'];
+    });
+
+
+  }
+
+  public signIn(event): void {
+    this.auth.login(this.user.email, this.user.password);
+  }
+
+
+
 
   // TODO: Remove this when we're done
   get diagnostic() { return JSON.stringify(this.user); }
-
-
-  public signIn(event): void {
-    this.submitted = true;
-    console.log(this.user);
-  }
 
 
 }

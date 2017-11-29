@@ -28,7 +28,7 @@ export class PostService {
     return this.http.get('http://localhost:3000/posts?user_id=' + userId)
       .map(value => {
         return value.json() || {}
-      });
+    });
   }
 
   public getPostByTag(tag: string): Observable<IPost[]> {
