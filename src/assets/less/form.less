@@ -16,6 +16,7 @@
 
   &__col {
     &:extend(.flex__col);
+    position: relative;
 
     &+& {
       margin-left: 15px;
@@ -53,23 +54,27 @@
       background-color: fade(@color--white, 30%);
       border: 1px solid fade(@color--white, 50%);
     }
-  }
 
-  input:not([type=checkbox]) {
-    height: 40px;
-    width: 100%;
-  }
-
-  input[type=checkbox] {
-    //.transform(translate(0, 3px));
-    margin-right: 10px;
-    margin-top: 7px;
-  }
-
-  .invalid {
-    input {
-      border: 1px solid @color--red;
+    &:not([type=checkbox]) {
+      height: 40px;
+      width: 100%;
     }
+
+    &[type=checkbox] {
+      //.transform(translate(0, 3px));
+      margin-right: 10px;
+      margin-top: 7px;
+    }
+
+    &[name=tag] {
+      padding-left: 20px;
+    }
+  }
+
+  .input-icon {
+    left: 10px;
+    position: absolute;
+    top: 3px;
   }
 
   &--compact {
@@ -99,6 +104,12 @@
       color: @color--secondary;
       height: 30px;
       text-shadow: 0 0 3px fade(@color--black, 30%);
+
+      &[disabled] {
+        background-color: fade(@color--grey, 30%);
+        border: 1px solid fade(@color--grey, 50%);
+        color: fade(@color--grey, 70%);
+      }
     }
   }
 

@@ -1,6 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
 
-import {User} from "../../../model/user";
 import {ActivatedRoute, Params, Router, RoutesRecognized} from "@angular/router";
 import {AuthService} from "../../../services/auth.service";
 
@@ -12,7 +11,7 @@ import {AuthService} from "../../../services/auth.service";
 
 export class SignInFormComponent implements OnInit {
 
-  @Input() user = new User(0, "", "", "", "", "");
+  @Input() user = {};
 
   @Input() formId: string = "";
 
@@ -34,7 +33,7 @@ export class SignInFormComponent implements OnInit {
   }
 
   public signIn(event): void {
-    this.auth.login(this.user.email, this.user.password);
+    this.auth.login(this.user['email'], this.user['password']);
   }
 
 

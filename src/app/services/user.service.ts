@@ -8,9 +8,12 @@ import 'rxjs/add/operator/map'
 @Injectable()
 export class UserService {
 
-  constructor(private http:Http) {
+  private loggedInUser: any;
 
-  }
+
+
+  constructor(private http:Http) { }
+
 
   public getUser(slug: string): Observable<IUser[]> {
     return this.http.get('http://localhost:3000/users?slug=' + slug)
@@ -19,7 +22,12 @@ export class UserService {
       });
   }
 
-
+  public getUserByEmail(email: string): Observable<IUser> {
+    return this.http.get('http://localhost:3000/users?email=' + email)
+      .map(value => {
+        return value.json()[0] || {}
+      });
+  }
 
 
 }

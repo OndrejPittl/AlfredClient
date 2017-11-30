@@ -6,7 +6,7 @@ import { HttpModule } from '@angular/http';
 import {FormsModule} from "@angular/forms";
 
 // config
-import {appRoutes, routing, routingProviders} from './config/routes';
+import {appRoutes, routing, routingProviders} from './app.routing';
 
 // components
 import { AppComponent } from './app.component';
@@ -25,7 +25,7 @@ import { MenuComponent } from './shared/layout/menu/menu.component';
 import { FilterFormComponent } from './shared/forms/filter-form/filter-form.component';
 import { RatedComponent } from './components/rated/rated.component';
 import { PostFeedComponent } from './shared/post-feed/post-feed.component';
-import { UserFormComponent } from './shared/forms/user-form/user-form.component';
+import { SignUpFormComponent } from './shared/forms/sign-up-form/sign-up-form.component';
 import { SignInFormComponent } from './shared/forms/sign-in-form/sign-in-form.component';
 
 // services
@@ -57,7 +57,7 @@ import {AuthService} from "./services/auth.service";
     FilterFormComponent,
     RatedComponent,
     PostFeedComponent,
-    UserFormComponent,
+    SignUpFormComponent,
     SignInFormComponent,
     EqualityValidatorDirective,
   ],

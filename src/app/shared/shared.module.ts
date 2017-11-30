@@ -4,7 +4,7 @@ import { HeaderLayoutComponent } from './layout/header/header.component';
 import { FooterLayoutComponent } from './layout/footer/footer.component';
 import { FilterFormComponent } from './forms/filter-form/filter-form.component';
 import { PostFeedComponent } from './post-feed/post-feed.component';
-import { UserFormComponent } from './forms/user-form/user-form.component';
+import {SignUpFormComponent} from './forms/sign-up-form/sign-up-form.component';
 import { SignInFormComponent } from './forms/sign-in-form/sign-in-form.component';
 
 @NgModule({
@@ -16,7 +16,7 @@ import { SignInFormComponent } from './forms/sign-in-form/sign-in-form.component
     FooterLayoutComponent,
     FilterFormComponent,
     PostFeedComponent,
-    UserFormComponent,
+    SignUpFormComponent,
     SignInFormComponent
   ]
 })

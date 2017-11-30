@@ -1,16 +1,14 @@
 import { Component, OnInit, Input } from '@angular/core';
 
-import {User} from "../../../model/user";
-
 
 @Component({
-  selector: 'app-user-form',
-  templateUrl: './user-form.component.html'
+  selector: 'app-sign-up-form',
+  templateUrl: './sign-up-form.component.html'
 })
 
-export class UserFormComponent implements OnInit {
+export class SignUpFormComponent implements OnInit {
 
-  @Input() user = new User(0, "", "", "", "", "");
+  @Input() user = {};
 
   @Input() formId: string = "";
 

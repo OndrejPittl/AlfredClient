@@ -1,24 +1,42 @@
-import { Injectable } from '@angular/core';
+import {EventEmitter, Injectable, OnDestroy, Output} from '@angular/core';
 import {Router} from "@angular/router";
 import {Http} from "@angular/http";
 import {Observable} from "rxjs/Observable";
 import {Md5} from "ts-md5/dist/md5";
 import {IUser} from "../model/IUser";
+import {UserService} from "./user.service";
+import "rxjs/add/operator/takeWhile";
+import {Subject} from "rxjs/Subject";
 
 @Injectable()
-export class AuthService {
+export class AuthService implements OnDestroy {
+
+  private userLoggedIn = new Subject<IUser>();
+
+  userLoggedIn$ = this.userLoggedIn.asObservable();
 
   private storage: Storage = localStorage;
 
-  //public isLoggedIn: boolean = false;
-
   private redirectUrl: string;
 
+  private loggedUser: IUser;
 
-  constructor (private http: Http, private router: Router) { }
+  private alive: boolean = true;
+
+
+  constructor (private http: Http, private router: Router, private userService: UserService) {
+
+  }
 
 
   login(email: string, password: string): void {
+    //.takeWhile(() => this.alive)
+
+    this.userService.getUserByEmail(email).subscribe(user => {
+      this.loggedUser = user;
+      this.userLoggedIn.next(user);
+    });
+
     this.storage.setItem('loggedUser', email);
     this.router.navigate([this.redirectUrl || 'discover']);
     this.redirectUrl = null;
@@ -37,6 +55,24 @@ export class AuthService {
     this.storage.removeItem('loggedUser');
     this.router.navigate(['welcome']);
   }
+
+  ngOnDestroy() {
+    this.alive = false;
+  }
+
+  public getLoggedUser(): Observable<IUser> {
+    let email = this.storage.getItem('loggedUser') || "";
+    let s: Observable<IUser> = this.userService.getUserByEmail(email);
+
+    s.subscribe(
+    user => {
+      this.loggedUser = user;
+    });
+
+    return s;
+  }
+
+
 
   /*
   login(email, password): Observable<boolean> {

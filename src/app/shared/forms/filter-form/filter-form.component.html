@@ -1,18 +1,21 @@
-<form class="form form--compact form--filter" action="">
+<form class="form form--compact form--filter" #filterForm="ngForm" (ngSubmit)="filterPosts($event)">
+  {{diagnostic}}
+
   <div class="form__row">
     <div class="form__col">
-      <input class="form-control" type="text" placeholder="post tag">
+      <span class="input-icon">#</span>
+      <input class="form-control" type="text" placeholder="tag" [(ngModel)]="filter.tag" name="tag" (keydown.space)="$event.preventDefault()" required>
     </div>
     <div class="form__col">
-      <input type="number" value="" placeholder="minimum rating">
+      <input class="form-control" type="number" placeholder="minimum rating" [(ngModel)]="filter.rating" name="rating" value="0">
     </div>
     <div class="form__col">
       <div class="checkbox">
-        <label class="checkbox-inline"><input type="checkbox" value="">with photo</label>
+        <label class="checkbox-inline"><input type="checkbox" [(ngModel)]="filter.photo" name="photo">with photo</label>
       </div>
     </div>
     <div class="form__col">
-      <button class="btn btn--tiny btn--wide" type="submit" form="" value="Sign In">Search</button>
+      <button class="btn btn--tiny btn--wide" type="submit" [disabled]="!filterForm.form.valid">Search</button>
     </div>
   </div>
 </form>

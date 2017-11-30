@@ -6,9 +6,19 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FilterFormComponent implements OnInit {
 
+  filter: any = {};
+
   constructor() { }
 
   ngOnInit() {
+
   }
+
+  filterPosts(event: Event):void {
+
+  }
+
+  // TODO: Remove this when we're done
+  get diagnostic() { return JSON.stringify(this.filter); }
 
 }

@@ -16,7 +16,6 @@ export class DiscoverComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log("at discover");
     this.postService.getAllPosts().subscribe(posts => this.posts = posts );
   }
 

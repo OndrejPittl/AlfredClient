@@ -1,4 +1,4 @@
-<form class="form" id="{{formId}}" #userForm="ngForm" (ngSubmit)="signIn($event)">
+<form class="form" id="{{formId}}" #signInForm="ngForm" (ngSubmit)="signIn($event)">
   {{diagnostic}}
 
   <div class="form__row">
@@ -16,7 +16,7 @@
 
   <div class="form__row">
     <div class="form__col">
-      <button class="btn btn--wide" type="submit" [disabled]="!userForm.form.valid">{{ isSignUp ? "Sign Up" : "Approve edit"}}</button>
+      <button class="btn btn--wide" type="submit" [disabled]="!signInForm.form.valid">{{ isSignUp ? "Sign Up" : "Approve edit"}}</button>
       <!--<label for="profile-edit" class="btn btn--wide btn--red btn--tiny">Cancel</label>-->
     </div>
   </div>

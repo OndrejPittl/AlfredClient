@@ -3,6 +3,7 @@
 
 .post {
   .font-size(@font-size--paragraph);
+  text-align: center;
 
   /**
   *  Post details – page of a post.
@@ -10,6 +11,46 @@
 
   &__content {
     padding: 15px 0;
+    text-align: left;
+  }
+
+  &__header {
+    //display: inline-block;
+    position: relative;
+    text-align: center;
+  }
+
+  &__image {
+    width: 100%;
+  }
+
+  &__rating {
+    .transform(scale(.8));
+    background-color: @color--primary;
+    color: @color--white;
+    display: inline-block;
+    height: 50px;
+    line-height: 53px;
+    position: absolute;
+    right: 10px;
+    text-align: center;
+    top: 10px;
+    width: 50px;
+    z-index: 1;
+
+    -webkit-mask-image: url(../images/star.svg);
+    mask-image: url(../images/star.svg);
+
+    -webkit-transition: transform .25s, background-color .25s, color .25s;
+    -moz-transition: transform .25s, background-color .25s, color .25s;
+    -ms-transition: transform .25s, background-color .25s, color .25s;
+    -o-transition: transform .25s, background-color .25s, color .25s;
+    transition: transform .25s, background-color .25s, color .25s;
+
+    &:hover {
+      .transform(scale(1));
+      background-color: @color--secondary;
+    }
   }
 
   &__tag-list {
@@ -30,6 +71,10 @@
   &__author {
     .font-size(@font-size--footer);
     text-align: center;
+  }
+
+  &__footer {
+    margin-top: 15px;
   }
 
 
@@ -54,35 +99,6 @@
     &__content {
       padding-left: 10px;
       padding-right: 10px;
-    }
-
-    &__rating {
-      .transform(scale(.8));
-      background-color: @color--primary;
-      color: @color--white;
-      display: inline-block;
-      height: 50px;
-      line-height: 53px;
-      position: absolute;
-      right: 20px;
-      text-align: center;
-      top: 20px;
-      width: 50px;
-      z-index: 1;
-
-      -webkit-mask-image: url(../images/star.svg);
-      mask-image: url(../images/star.svg);
-
-      -webkit-transition: transform .25s, background-color .25s, color .25s;
-      -moz-transition: transform .25s, background-color .25s, color .25s;
-      -ms-transition: transform .25s, background-color .25s, color .25s;
-      -o-transition: transform .25s, background-color .25s, color .25s;
-      transition: transform .25s, background-color .25s, color .25s;
-
-      &:hover {
-        .transform(scale(1));
-        background-color: @color--secondary;
-      }
     }
 
     &__image {
@@ -119,6 +135,7 @@
       background-color: @color--grey;
       border-bottom-left-radius: 9px;
       border-bottom-right-radius: 9px;
+      margin-top: 0;
       padding: 10px 5px;
     }
   }

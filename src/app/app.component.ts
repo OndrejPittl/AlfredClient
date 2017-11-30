@@ -13,16 +13,12 @@ export class AppComponent {
   private identifier: string;
 
 
-  constructor(router:Router, route:ActivatedRoute) {
-    router.events
-      .filter(e => e instanceof NavigationEnd)
-      .forEach(e => {
-        this.identifier = route.root.firstChild.snapshot.data['identifier'];
-      });
-  }
+  constructor(private router:Router, private route:ActivatedRoute) { }
 
 
   ngOnInit() {
-
+    this.router.events
+      .filter(e => e instanceof NavigationEnd)
+      .forEach(e => this.identifier = this.route.root.firstChild.snapshot.data['identifier'] );
   }
 }

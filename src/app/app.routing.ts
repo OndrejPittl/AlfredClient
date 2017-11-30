@@ -1,16 +1,16 @@
 import {RouterModule, Routes} from "@angular/router";
 
-import {WelcomeComponent} from "../components/welcome/welcome.component";
-import {HomeComponent} from "../components/home/home.component";
-import {ProfileComponent} from "../components/profile/profile.component";
-import {TagComponent} from "../components/tag/tag.component";
-import {PostComponent} from "../components/post/post.component";
-import {DiscoverComponent} from "../components/discover/discover.component";
-import {RatedComponent} from "../components/rated/rated.component";
-import {FriendsComponent} from "../components/friends/friends.component";
-import {PageNotFoundComponent} from "../components/page-not-found/page-not-found.component";
+import {WelcomeComponent} from "./components/welcome/welcome.component";
+import {HomeComponent} from "./components/home/home.component";
+import {ProfileComponent} from "./components/profile/profile.component";
+import {TagComponent} from "./components/tag/tag.component";
+import {PostComponent} from "./components/post/post.component";
+import {DiscoverComponent} from "./components/discover/discover.component";
+import {RatedComponent} from "./components/rated/rated.component";
+import {FriendsComponent} from "./components/friends/friends.component";
+import {PageNotFoundComponent} from "./components/page-not-found/page-not-found.component";
 import {ModuleWithProviders} from "@angular/core";
-import {AuthGuard} from "../guards/auth.guard";
+import {AuthGuard} from "./guards/auth.guard";
 
 
 export const appRoutes: Routes = [

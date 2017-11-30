@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {appConfig} from "../../../app.config";
 
 @Component({
   selector: 'app-layout-footer',
@@ -9,24 +10,9 @@ export class FooterLayoutComponent implements OnInit {
   secondaryMenuItems;
 
   constructor() {
-    this.secondaryMenuItems = [
-      {
-        id: 'general-feed',
-        slug: 'home',
-        title: 'general',
-      }, {
-        id: 'friends-feed',
-        slug: 'friends',
-        title: 'friends',
-      }, {
-        id: 'discover-feed',
-        slug: 'discover',
-        title: 'discover',
-      }
-    ];
+    this.secondaryMenuItems = appConfig.menu.secondary;
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() { }
 
 }

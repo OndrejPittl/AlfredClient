@@ -3,5 +3,9 @@
     <li *ngFor="let item of menuItems" class="menu__item menu__item--{{item.id}}">
       <a routerLink="/{{item.slug}}" routerLinkActive="active">{{item.title}}</a>
     </li>
+
+    <li *ngIf="user && menuIdentifier == 'primary'" class="menu__item menu__item--{{profile}}">
+      <a routerLink="/profile/{{user.slug}}" routerLinkActive="active">{{user.first_name}} {{user.last_name}}</a>
+    </li>
   </ul>
 </nav>
