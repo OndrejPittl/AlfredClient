@@ -20,7 +20,7 @@ export class SignUpFormComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    this.isSignUp = this.user !== undefined;
+    this.isSignUp = this.user['email'] == undefined;
   }
 
   // TODO: Remove this when we're done

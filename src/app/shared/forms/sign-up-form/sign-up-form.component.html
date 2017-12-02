@@ -42,7 +42,7 @@
   <div class="form__row">
     <div class="form__col">
       <button class="btn btn--wide" type="submit" [disabled]="!signUpForm.form.valid">{{ isSignUp ? "Sign Up" : "Approve edit"}}</button>
-      <!--<label for="profile-edit" class="btn btn--wide btn--red btn--tiny">Cancel</label>-->
+      <label for="profile-edit" class="btn btn--wide btn--red btn--tiny" [hidden]="isSignUp">Cancel</label>
     </div>
   </div>
 </form>

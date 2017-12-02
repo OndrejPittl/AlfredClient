@@ -21,9 +21,13 @@
     "@angular/platform-browser": "^4.2.4",
     "@angular/platform-browser-dynamic": "^4.2.4",
     "@angular/router": "^4.2.4",
+    "angular-imagesloaded": "^1.0.0",
+    "angular2-masonry": "^0.4.0",
     "core-js": "^2.4.1",
+    "remodal": "^1.1.1",
     "rxjs": "^5.4.2",
     "salvattore": "^1.0.9",
+    "savvior": "^0.6.0",
     "ts-md5": "^1.2.2",
     "zone.js": "^0.8.14"
   },

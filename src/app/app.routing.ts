@@ -1,7 +1,6 @@
 import {RouterModule, Routes} from "@angular/router";
 
 import {WelcomeComponent} from "./components/welcome/welcome.component";
-import {HomeComponent} from "./components/home/home.component";
 import {ProfileComponent} from "./components/profile/profile.component";
 import {TagComponent} from "./components/tag/tag.component";
 import {PostComponent} from "./components/post/post.component";
@@ -18,7 +17,6 @@ export const appRoutes: Routes = [
   { path: 'discover',     component: DiscoverComponent,     data: { identifier: 'discover' },     canActivate: [AuthGuard] },
   { path: 'rated',        component: RatedComponent,        data: { identifier: 'rated' } },
   { path: 'friends',      component: FriendsComponent,      data: { identifier: 'friends' } },
-  { path: 'home',         component: HomeComponent,         data: { identifier: 'home' } },
   { path: 'profile/:slug',component: ProfileComponent,      data: { identifier: 'profile' } },
   { path: 'tag/:tag',     component: TagComponent,          data: { identifier: 'tag' } },
   { path: 'post/:id',     component: PostComponent,         data: { identifier: 'post' } },

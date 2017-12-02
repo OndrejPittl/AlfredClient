@@ -44,7 +44,43 @@
     }
   }
 
-  input {
+  &__hash {
+    cursor: pointer;
+
+    &:hover {
+      color: @color--red;
+    }
+
+    &:before {
+      content: "#";
+      display: inline-block;
+      margin-right: 1px;
+      opacity: .8;
+      position: relative;
+    }
+
+    &+& {
+      margin-left: 20px;
+    }
+  }
+
+  &__img {
+    cursor: pointer;
+
+    &:hover {
+      color: @color--red;
+    }
+  }
+
+  &__btn-group {
+    .flex-display();
+
+    .btn {
+      margin-left: 10px;
+    }
+  }
+
+  input, textarea {
     background-color: fade(@color--white, 70%);
     border: 1px solid @color--white;
     border-radius: 3px;
@@ -71,18 +107,34 @@
     }
   }
 
+  textarea {
+    display: block;
+  }
+
   .input-icon {
+    color: @color--primary;
     left: 10px;
     position: absolute;
     top: 3px;
   }
 
+  .btn[disabled] {
+    background-color: fade(@color--grey, 50%);
+    border: 1px solid fade(@color--grey, 90%);
+    color: fade(@color--grey, 70%);
+    cursor: default;
+  }
+
   &--compact {
-    input:not([type=checkbox]) {
+    input:not([type=checkbox]), textarea {
       background-color: fade(@color--white, 20%);
       border: 1px solid @color--primary;
       color: @color--primary;
       height: 30px;
+
+      &:active, &:focus {
+        background-color: fade(@color--white, 20%);
+      }
     }
 
     ::-webkit-input-placeholder {
@@ -103,13 +155,32 @@
       border: 1px solid @color--secondary;
       color: @color--secondary;
       height: 30px;
+      margin-bottom: 0;
+      margin-top: 0;
+      text-decoration: none;
       text-shadow: 0 0 3px fade(@color--black, 30%);
 
-      &[disabled] {
-        background-color: fade(@color--grey, 30%);
-        border: 1px solid fade(@color--grey, 50%);
-        color: fade(@color--grey, 70%);
+      &--red {
+        background-color: fade(@color--red, 20%);
+        border: 1px solid fade(@color--red, 30%);
+        color: fade(@color--red, 60%);
       }
+
+      &--green {
+        background-color: fade(@color--white, 20%);
+        border: 1px solid @color--primary;
+        color: @color--primary;
+
+        &:hover {
+          background-color: fade(@color--primary, 100%);
+          border: 1px solid fade(@color--primary, 100%);
+        }
+      }
+    }
+
+    .form__btn-group .btn {
+      margin-left: 15px;
+      width: 40%;
     }
   }
 
@@ -117,8 +188,9 @@
   &--filter {
     border-bottom: 1px solid @color--primary;
     color: @color--primary;
+    margin: 0 -25px 40px -25px;
     max-width: inherit;
-    padding: 7px 0;
+    padding: 7px 10px;
 
     .form__row:first-of-type {
       margin-top: 0;
@@ -131,6 +203,39 @@
     .btn {
       margin: 0;
     }
+
+    .form__col:last-of-type {
+      .flex-grow(0);
+    }
+  }
+
+
+  &--post {
+    border-bottom: 1px solid @color--primary;
+    color: @color--primary;
+    margin: 0 -25px 0 -25px;
+    max-width: inherit;
+    padding: 7px 10px;
+
+    textarea {
+      min-height: 50px;
+    }
+
+    label {
+      width: 100%;
+    }
+
+    .form__col {
+      .flex-grow(2);
+    }
+
+    .form__btn-group {
+      .flex-grow(3);
+    }
+
+    // .form__row:first-of-type .form__col:last-of-type {
+    //   .flex-grow (1);
+    // }
   }
 }
 

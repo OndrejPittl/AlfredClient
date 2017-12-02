@@ -11,7 +11,7 @@ export class DiscoverComponent implements OnInit {
 
   posts;
 
-  constructor(private postService:PostService, private route: ActivatedRoute) {
+  constructor(private postService:PostService) {
 
   }
 

@@ -1,0 +1,42 @@
+<form class="form form--compact form--post" #postForm="ngForm" (ngSubmit)="submitPost($event)" enctype='multipart/form-data'>
+  {{diagnostic}}
+  <div class="form__row">
+    <div class="form__col">
+      <input class="form-control" type="text" placeholder="title" [(ngModel)]="post.title" name="title" #title="ngModel">
+    </div>
+    <div class="form__col">
+      <div class="checkbox">
+        <label class="btn btn--tiny btn--link btn--green">
+          <span>Upload photo</span>
+          <input type="file" (change)="fileSelected($event.target.files[0])" name="images" hidden>
+        </label>
+      </div>
+    </div>
+    <div class="form__col form__btn-group">
+      <span class="input-icon">#</span>
+      <input class="form-control" type="text" placeholder="tag" [(ngModel)]="post.tag" name="tag" #tag="ngModel" (keydown.space)="$event.preventDefault()">
+      <button class="btn btn--tiny btn--wide" (click)="addTag()" [disabled]="!tag.value">Add tag</button>
+    </div>
+  </div>
+  <div class="form__row">
+    <div class="form__col">
+      <textarea class="form-control" placeholder="body" [(ngModel)]="post.body" name="body" #body="ngModel"></textarea>
+    </div>
+  </div>
+  <div class="form__row" *ngIf="post.images.length > 0">
+    <div class="form__col">
+      <span class="form__img" *ngFor="let i of post.images" (click)="removeImg($event)">{{i}}</span>
+    </div>
+  </div>
+  <div class="form__row" *ngIf="post.tags.length > 0">
+    <div class="form__col">
+      <span class="form__hash" *ngFor="let t of post.tags" (click)="removeTag($event)">{{t}}</span>
+    </div>
+  </div>
+  <div class="form__row">
+    <div class="form__col">
+      {{post.images.files}}
+      <button class="btn btn--tiny btn--wide" type="submit" [disabled]="!postForm.form.valid || post.tags.length <= 0 || (!body.value && post.images.length <= 0)">Submit</button>
+    </div>
+  </div>
+</form>

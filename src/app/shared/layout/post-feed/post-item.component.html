@@ -4,7 +4,9 @@
       <a href="" class="post__rating">
         <span *ngIf="post.rating">{{post.rating}}</span>
       </a>
-      <a *ngIf="post.images" routerLink="/post/{{post.id}}"><img class="post__image" src="{{post.images[0]}}" alt=""></a>
+      <a *ngIf="post.images && post.images.length > 0" routerLink="/post/{{post.id}}">
+        <img class="post__image" src="{{post.images[0]}}" alt=""> <!-- bc-imagesloaded -->
+      </a>
 
     </header>
     <div *ngIf="post.title || post.body" class="post__content">

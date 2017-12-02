@@ -1,9 +1,5 @@
-<div>
-  <app-filter-form></app-filter-form>
-  <div class="content">
-    <h2>What do your friends know?</h2>
-    <div *ngIf="posts">
-      <app-post-feed [posts]="posts"></app-post-feed>
-    </div>
+<div class="content">
+  <div *ngIf="posts">
+    <app-post-feed [posts]="posts" title="What do your friends know?"></app-post-feed>
   </div>
 </div>

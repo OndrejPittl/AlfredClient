@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {PostService} from "../../../services/post.service";
 
 @Component({
   selector: 'app-filter-form',
@@ -6,16 +7,20 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FilterFormComponent implements OnInit {
 
-  filter: any = {};
+  private filter: any = {};
 
-  constructor() { }
+  constructor(private postService: PostService) { }
 
   ngOnInit() {
 
   }
 
   filterPosts(event: Event):void {
+    this.postService.filterPosts(this.filter);
+  }
 
+  resetFilter(): void {
+    this.postService.filterPosts(null);
   }
 
   // TODO: Remove this when we're done
