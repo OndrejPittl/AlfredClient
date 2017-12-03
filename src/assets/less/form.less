@@ -109,6 +109,7 @@
 
   textarea {
     display: block;
+    //vertical-align:middle;
   }
 
   .input-icon {
@@ -211,7 +212,6 @@
 
 
   &--post {
-    border-bottom: 1px solid @color--primary;
     color: @color--primary;
     margin: 0 -25px 0 -25px;
     max-width: inherit;
@@ -225,6 +225,18 @@
       width: 100%;
     }
 
+    .btn:not(:disabled) {
+      background-color: fade(@color--secondary, 80%);
+      border: 1px solid @color--secondary;
+      box-shadow: 0 0 5px fade(@color--black, 10%);
+      color: @color--white;
+
+      &:hover {
+        background-color: fade(@color--secondary, 100%);
+        box-shadow: 0 0 5px fade(@color--black, 20%);
+      }
+    }
+
     .form__col {
       .flex-grow(2);
     }
@@ -233,9 +245,10 @@
       .flex-grow(3);
     }
 
-    // .form__row:first-of-type .form__col:last-of-type {
-    //   .flex-grow (1);
-    // }
+    [type=submit] {
+      height: 40px;
+      margin-top: 20px;
+    }
   }
 }
 

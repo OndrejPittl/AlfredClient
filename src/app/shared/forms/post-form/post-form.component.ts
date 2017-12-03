@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {PostService} from "../../../services/post.service";
 import {IPost} from "../../../model/IPost";
 
+declare let $: any;
 
 
 @Component({
@@ -14,19 +15,18 @@ export class PostFormComponent implements OnInit {
     id: -1,
     title: '',
     body: '',
-    images: [],
+    image: '',
     tags: [],
     rating: 0,
     tag: ''
   };
 
+
   constructor(private postService: PostService) { }
 
-  ngOnInit() {
+  ngOnInit() { }
 
-  }
-
-  addTag(): void {
+  addTag($event): void {
     this.post.tags.push(this.post.tag.toLowerCase());
     this.post.tag = '';
   }
@@ -36,14 +36,16 @@ export class PostFormComponent implements OnInit {
     this.removeFromArray(this.post.tags, clickedTag);
   }
 
-  fileSelected(image: any) {
-    this.post.images = [];
-    this.post.images.push(image.name);
+  fileSelected(image) {
+    if(image) {
+      this.post.image = image.name;
+    } else {
+      this.post.image = "";
+    }
   }
 
-  removeImg($event): any {
-    let clickedImg = $event.currentTarget.innerHTML;
-    this.removeFromArray(this.post.images, clickedImg);
+  removeImg(): any {
+    this.post.image = "";
   }
 
   private removeFromArray(array, item): void {
@@ -52,6 +54,7 @@ export class PostFormComponent implements OnInit {
       array.splice(index, 1);
     }
   }
+
 
   submitPost(): void {
 

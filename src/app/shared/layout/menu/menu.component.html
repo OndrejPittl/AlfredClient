@@ -1,11 +1,13 @@
 <nav class="menu{{!!menuIdentifier ? ' menu--' + menuIdentifier : ''}}">
   <ul class="menu__list">
-    <li *ngFor="let item of menuItems" class="menu__item menu__item--{{item.id}}">
-      <a routerLink="/{{item.slug}}" routerLinkActive="active">{{item.title}}</a>
+    <li *ngFor="let item of menuItems" class="menu__item menu__item--{{item.identifier}}">
+      <a *ngIf="item.isModal" [attr.data-remodal-target]="item.modalTarget">{{item.title}}</a>
+      <a *ngIf="!item.isModal" [routerLink]="item.slug" routerLinkActive="active">{{item.title}}</a>
     </li>
 
     <li *ngIf="user && menuIdentifier == 'primary'" class="menu__item menu__item--{{profile}}">
       <a routerLink="/profile/{{user.slug}}" routerLinkActive="active">{{user.first_name}} {{user.last_name}}</a>
     </li>
   </ul>
+  <app-post-form></app-post-form>
 </nav>

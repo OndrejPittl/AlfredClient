@@ -15,11 +15,12 @@ export const appConfig: any = {
         identifier: 'rated',
         slug: 'rated',
         title: 'rated',
-      }/*, {
-        identifier: 'profile',
-        slug: 'profile/alfred-nobel',
-        title: 'Alfred Nobel',
-      }*/
+      }, {
+        identifier: 'new-post',
+        title: 'new post',
+        modalTarget: 'new-post',
+        isModal: true
+      }
     ],
    'secondary': [
      {

@@ -2,6 +2,8 @@ import { Component, Input, OnInit } from '@angular/core';
 import {UserService} from "../../../services/user.service";
 import {AuthService} from "../../../services/auth.service";
 
+declare let $: any;
+
 @Component({
   selector: 'app-menu',
   templateUrl: './menu.component.html'
@@ -17,4 +19,5 @@ export class MenuComponent implements OnInit {
   constructor(private authService: AuthService) { }
 
   ngOnInit() { }
+
 }

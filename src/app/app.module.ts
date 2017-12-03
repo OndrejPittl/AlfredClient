@@ -25,6 +25,8 @@ import { RatedComponent } from './components/rated/rated.component';
 import { PostFeedComponent } from './shared/layout/post-feed/post-feed.component';
 import { SignUpFormComponent } from './shared/forms/sign-up-form/sign-up-form.component';
 import { SignInFormComponent } from './shared/forms/sign-in-form/sign-in-form.component';
+import {MasonryModule} from "angular2-masonry";
+import {PostFormComponent} from "./shared/forms/post-form/post-form.component";
 
 // services
 import { PostService } from "./services/post.service";
@@ -32,8 +34,7 @@ import { UserService } from "./services/user.service";
 import { EqualityValidatorDirective } from './directives/equality-validator.directive';
 import {AuthGuard} from "./guards/auth.guard";
 import {AuthService} from "./services/auth.service";
-import {MasonryModule} from "angular2-masonry";
-import {PostFormComponent} from "./shared/forms/post-form/post-form.component";
+
 
 
 @NgModule({
@@ -56,7 +57,7 @@ import {PostFormComponent} from "./shared/forms/post-form/post-form.component";
     SignUpFormComponent,
     SignInFormComponent,
     PostFormComponent,
-    EqualityValidatorDirective,
+    EqualityValidatorDirective
   ],
   imports: [
     MasonryModule,

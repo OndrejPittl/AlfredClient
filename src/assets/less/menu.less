@@ -1,11 +1,11 @@
 // main: ./main.less
 
 .menu {
+  color: @color--primary;
 
   &__list {
     .clearfix;
     border-bottom: 1px solid @color--primary;
-    padding: 10px 0;
 
     .header__menu & {
       padding-left: @page-content-padding;
@@ -15,14 +15,16 @@
 
   &__item {
     .font-size(@font-size--menu);
+    cursor: pointer;
     float: left;
     font-weight: @font-weight--semibold;
     list-style: none;
+    margin-bottom: -1px;
 
     &+&:before {
       color: @color--primary;
       content: '/';
-      margin: 0 25px 0 30px;
+      margin: 0;
     }
 
     &--active a {
@@ -30,7 +32,15 @@
     }
 
     a {
+      .transition(border);
+      border-bottom: 1px solid transparent;
       color: @color--primary;
+      display: inline-block;
+      padding: 5px 20px;
+
+      &:hover {
+        border-color: @color--secondary;
+      }
     }
   }
 
