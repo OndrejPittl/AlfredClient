@@ -1,10 +1,16 @@
-<app-filter-form></app-filter-form>
+<app-filter-form [params]="params"></app-filter-form>
 <h2 *ngIf="title">{{title}}</h2>
-<div class="feed{{!!modifier ? ' feed--' + modifier : ''}}"> <!-- data-columns -->
-  <!--<app-post-item *ngFor="let post of posts" [post]="post"></app-post-item>-->
+<div class="feed{{!!modifier ? ' feed--' + modifier : ''}}"
+     [class.feed--loading]="loadingPosts"
+     infiniteScroll
+     [infiniteScrollDistance]="1"
+     [infiniteScrollThrottle]="1000"
+     (scrolled)="loadPosts()">
   <masonry [useImagesLoaded]="true">
     <masonry-brick class="post-wrapper" *ngFor="let post of posts">
       <app-post-item [post]="post"></app-post-item>
     </masonry-brick>
   </masonry>
+  <p class="feed__note" [hidden]="loadingPosts">– no more posts –</p>
 </div>
+

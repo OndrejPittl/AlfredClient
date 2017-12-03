@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {PostService} from "../../../services/post.service";
 
 @Component({
@@ -7,7 +7,7 @@ import {PostService} from "../../../services/post.service";
 })
 export class FilterFormComponent implements OnInit {
 
-  private filter: any = {};
+  @Input() private params: any;
 
   constructor(private postService: PostService) { }
 
@@ -16,7 +16,7 @@ export class FilterFormComponent implements OnInit {
   }
 
   filterPosts(event: Event):void {
-    this.postService.filterPosts(this.filter);
+    this.postService.filterPosts(this.params);
   }
 
   resetFilter(): void {
@@ -24,6 +24,6 @@ export class FilterFormComponent implements OnInit {
   }
 
   // TODO: Remove this when we're done
-  get diagnostic() { return JSON.stringify(this.filter); }
+  get diagnostic() { return JSON.stringify(this.params); }
 
 }

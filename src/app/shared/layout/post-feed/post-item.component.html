@@ -7,7 +7,7 @@
       <a *ngIf="post.images && post.images.length > 0" routerLink="/post/{{post.id}}">
         <img class="post__image" src="{{post.images[0]}}" alt=""> <!-- bc-imagesloaded -->
       </a>
-
+      <p>ID: {{post.id}}</p>
     </header>
     <div *ngIf="post.title || post.body" class="post__content">
       <h3 *ngIf="post.title" class="post__title">

@@ -1,7 +1,8 @@
-<div class="modal remodal" data-remodal-id="new-post">
+<div class="modal remodal" data-remodal-id="new-post" #component>
   <button data-remodal-action="close" class="remodal-close"></button>
   <div class="modal__content">
     {{diagnostic}}
+    <h2>New post</h2>
     <form class="form form--compact form--post form--post-{{postType}}" #postForm="ngForm" (ngSubmit)="submitPost($event)" enctype='multipart/form-data'>
       <div class="form__row">
         <div class="form__col">
@@ -42,14 +43,14 @@
       </div>
       <div class="form__row">
         <div class="form__col">
-          <button data-remodal-action="confirm" class="btn btn--tiny btn--wide" type="submit" [disabled]="!postForm.form.valid || post.tags.length <= 0 || (!body.value && !post.image)">Submit</button>
+          <button class="btn btn--tiny btn--wide" type="submit" [disabled]="!postForm.form.valid || post.tags.length <= 0 || (!body.value && !post.image)">Submit</button>
         </div>
       </div>
-      <div class="form__row">
+      <div class="form__row" *ngIf="!body.value && !post.image || post.tags.length <= 0">
         <div class="form__col">
-          <ul class="form__errors">
-            <li *ngIf="!body.value && !post.image">Text and/or an image of a post missing.</li>
-            <li *ngIf="post.tags.length <= 0">At leaset one tag is required.</li>
+          <ul class="form__note">
+            <li *ngIf="!body.value && !post.image">Text and/or an image of a post is missing.</li>
+            <li *ngIf="post.tags.length <= 0">At least one tag is required.</li>
           </ul>
         </div>
       </div>

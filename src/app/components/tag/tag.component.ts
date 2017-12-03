@@ -8,23 +8,31 @@ import {ActivatedRoute} from "@angular/router";
 })
 export class TagComponent implements OnInit, OnDestroy {
 
-  private sub: any;
+  private title: string;
+
   private tag: string;
-  private posts: any[];
 
-  constructor(private route: ActivatedRoute, private postService: PostService) {
+  private params: any;
 
-  }
+
+  constructor(private route: ActivatedRoute, private postService: PostService) { }
 
   ngOnInit() {
-    this.sub = this.route.params.subscribe(params => {
-      this.tag = params['tag'];
-      this.postService.getPostByTag(this.tag).subscribe(posts => this.posts = posts );
+    this.route.params.subscribe(params => {
+      let tag = params['tag'];
+      //this.tag = params['tag'];
+      //this.postService.getPostByTag(this.tag).subscribe(posts => this.posts = posts );
+
+      this.title = 'Searching for a #' + tag + '';
+
+      this.params = {
+        'tag': params['tag']
+      };
     });
   }
 
   ngOnDestroy() {
-    this.sub.unsubscribe();
+
   }
 
 }

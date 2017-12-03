@@ -1,6 +1,7 @@
 <nav class="menu{{!!menuIdentifier ? ' menu--' + menuIdentifier : ''}}">
   <ul class="menu__list">
-    <li *ngFor="let item of menuItems" class="menu__item menu__item--{{item.identifier}}">
+
+    <li *ngFor="let item of menuItems" [hidden]="item.loggedOnly && !userLogged" class="menu__item menu__item--{{item.identifier}}">
       <a *ngIf="item.isModal" [attr.data-remodal-target]="item.modalTarget">{{item.title}}</a>
       <a *ngIf="!item.isModal" [routerLink]="item.slug" routerLinkActive="active">{{item.title}}</a>
     </li>

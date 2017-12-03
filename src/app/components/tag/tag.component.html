@@ -1,7 +1,6 @@
 <div class="content">
   <!--<app-filter-form></app-filter-form>-->
-  <h2>Searching for a #{{tag}}</h2>
-  <div *ngIf="posts">
-    <app-post-feed [posts]="posts"></app-post-feed>
+  <div *ngIf="params">
+    <app-post-feed [params]="params"></app-post-feed>
   </div>
 </div>

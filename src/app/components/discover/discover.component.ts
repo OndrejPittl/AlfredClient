@@ -9,6 +9,8 @@ import {ActivatedRoute} from "@angular/router";
 })
 export class DiscoverComponent implements OnInit {
 
+
+
   posts;
 
   constructor(private postService:PostService) {
@@ -16,7 +18,7 @@ export class DiscoverComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.postService.getAllPosts().subscribe(posts => this.posts = posts );
+    //this.postService.getAllPosts().subscribe(posts => this.posts = posts );
   }
 
 }

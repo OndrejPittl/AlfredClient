@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {PostService} from "../../../services/post.service";
 import {IPost} from "../../../model/IPost";
 
@@ -9,7 +9,7 @@ declare let $: any;
   selector: 'app-post-form',
   templateUrl: './post-form.component.html'
 })
-export class PostFormComponent implements OnInit {
+export class PostFormComponent implements OnInit, AfterViewInit {
 
   private post: any = {
     id: -1,
@@ -20,6 +20,11 @@ export class PostFormComponent implements OnInit {
     rating: 0,
     tag: ''
   };
+
+  @ViewChild('component') component: ElementRef;
+
+  private modal: any = null;
+
 
 
   constructor(private postService: PostService) { }
@@ -55,11 +60,15 @@ export class PostFormComponent implements OnInit {
     }
   }
 
-
   submitPost(): void {
-
+    this.modal.close();
   }
 
+  ngAfterViewInit() {
+    if(this.modal == null) {
+      this.modal = $(this.component.nativeElement).remodal();
+    }
+  }
 
 
   // TODO: Remove this when we're done

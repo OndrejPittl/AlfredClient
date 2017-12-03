@@ -11,91 +11,90 @@ import {Subject} from "rxjs/Subject";
 @Injectable()
 export class AuthService implements OnDestroy {
 
-  private userLoggedIn = new Subject<IUser>();
+  private static MD5_SALT: string = "_@lFr3D";
 
+  // observable event – user logged in
+  private userLoggedIn = new Subject<IUser>();
   userLoggedIn$ = this.userLoggedIn.asObservable();
 
   private storage: Storage = localStorage;
-
-  private redirectUrl: string;
 
   private loggedUser: IUser;
 
   private alive: boolean = true;
 
 
-  constructor (private http: Http, private router: Router, private userService: UserService) {
 
-  }
+  constructor (
+    private http: Http,
+    private router: Router,
+    private userService: UserService
+  ) {}
 
 
-  login(email: string, password: string): void {
-    //.takeWhile(() => this.alive)
 
-    this.userService.getUserByEmail(email).subscribe(user => {
-      this.loggedUser = user;
-      this.userLoggedIn.next(user);
+  authenticate(email: string, password: string): boolean {
+    let hash: string = AuthService.hashPassword(password);
+
+    console.log(email + " logging in...");
+
+    this.userService.authUser(email, hash).subscribe(user => {
+
+      if(!user) {
+        console.log("ERROR: No user with " + email + " was found.");
+        console.log(user);
+        return false;
+      } else {
+        console.log("User with " + email + " found: ");
+        console.log(user);
+      }
+
+      this.loggedUser = { ...user };
+
+      // ----------------------------------------
+      // @TODO: odebrat, server nebude posílat
+      this.loggedUser['password'] = '';
+      this.loggedUser['confirmPassword'] = '';
+      // ----------------------------------------
+
+      this.storage.setItem('token', user.token);
+
+
+      console.log("User logged, pinging observers:");
+      console.log(this.loggedUser);
+      this.userLoggedIn.next(this.loggedUser);
+
+      this.router.navigate(['discover']);
+      return true;
     });
 
-    this.storage.setItem('loggedUser', email);
-    this.router.navigate([this.redirectUrl || 'discover']);
-    this.redirectUrl = null;
-  }
-
-  storeRedirectUrl(url: string): void {
-    this.redirectUrl = url;
-  }
-
-  isLoggedIn(): boolean {
-    if(this.storage.getItem('loggedUser')) return true;
     return false;
   }
 
-  logout() {
-    this.storage.removeItem('loggedUser');
+  public static hashPassword(pwd: string): string {
+    return Md5.hashStr(pwd + AuthService.MD5_SALT).toString();
+  }
+
+  /**
+   * Kontrola tokenu na SRV?
+   * @returns {boolean}
+   */
+  public isLoggedIn(): boolean {
+    return !!this.storage.getItem('token');
+  }
+
+  public logout() {
+    this.storage.removeItem('token');
     this.router.navigate(['welcome']);
   }
 
-  ngOnDestroy() {
+  public getLoggedUser(): Observable<IUser> {
+    let token = this.storage.getItem('token') || "";
+    return this.userService.getUserByToken(token);
+  }
+
+  public ngOnDestroy() {
     this.alive = false;
   }
-
-  public getLoggedUser(): Observable<IUser> {
-    let email = this.storage.getItem('loggedUser') || "";
-    let s: Observable<IUser> = this.userService.getUserByEmail(email);
-
-    s.subscribe(
-    user => {
-      this.loggedUser = user;
-    });
-
-    return s;
-  }
-
-
-
-  /*
-  login(email, password): Observable<boolean> {
-    let pwd = Md5.hashStr(password);
-    const user = { email, pwd };
-
-    //return this.http.post('api/login', JSON.stringify(user)).map((res: Response) => {
-    return this.http.post('api/login', body)
-      .map(value => {
-        this.isLoggedIn = true;
-
-        if (this.redirectUrl) {
-          this.router.navigate([this.redirectUrl]);
-          this.redirectUrl = null;
-        }
-    });
-
-    return this.http.get('http://localhost:3000/posts?user_id=' + userId)
-      .map(value => {
-        return value.json() || {}
-      });
-  }
-  */
-
 
 }

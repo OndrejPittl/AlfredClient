@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {appConfig} from "../../../app.config";
+import {AuthService} from "../../../services/auth.service";
+import {IUser} from "../../../model/IUser";
 
 @Component({
   selector: 'app-layout-footer',
@@ -9,10 +11,19 @@ import {appConfig} from "../../../app.config";
 export class FooterLayoutComponent implements OnInit {
   secondaryMenuItems;
 
-  constructor() {
+  private userLogged: boolean;
+
+  constructor(private authService: AuthService) {
     this.secondaryMenuItems = appConfig.menu.secondary;
+    this.userLogged = this.authService.isLoggedIn();
+
+    this.authService.userLoggedIn$.subscribe(
+      user => this.userLogged = !!user
+    );
   }
 
-  ngOnInit() { }
+  ngOnInit() {
+
+  }
 
 }

@@ -34,6 +34,15 @@
     width: 60%;
   }
 
+  &__error {
+    color: @color--red;
+  }
+
+  &__note {
+    color: @color--dark-grey;
+    margin-top: 20px;
+  }
+
   &__msg {
     color: @color--primary;
     text-align: left;
@@ -139,16 +148,16 @@
     }
 
     ::-webkit-input-placeholder {
-      color: @color--primary;
+      color: fade(@color--primary, 40%);
     }
     ::-moz-placeholder {
-      color: @color--primary;
+      color: fade(@color--primary, 40%);
     }
     :-ms-input-placeholder {
-      color: @color--primary;
+      color: fade(@color--primary, 40%);
     }
     :-moz-placeholder {
-      color: @color--primary;
+      color: fade(@color--primary, 40%);
     }
 
     .btn {

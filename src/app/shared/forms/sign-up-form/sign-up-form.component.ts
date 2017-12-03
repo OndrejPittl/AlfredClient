@@ -1,4 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
+import {UserService} from "../../../services/user.service";
+import {AuthService} from "../../../services/auth.service";
+import {IUser} from "../../../model/IUser";
 
 
 @Component({
@@ -8,34 +11,38 @@ import { Component, OnInit, Input } from '@angular/core';
 
 export class SignUpFormComponent implements OnInit {
 
-  @Input() user = {};
+  @Input()
+  private user:IUser = {} as IUser;
 
-  @Input() formId: string = "";
+  @Input()
+  private formId: string;
 
-  isSignUp: boolean = true;
+  private valid:boolean = false;
 
-  submitted = false;
+  private isSignUpForm: boolean = true;
 
 
-  constructor() { }
+  constructor(private userService: UserService, private authService: AuthService) { }
+
 
   ngOnInit() {
-    this.isSignUp = this.user['email'] == undefined;
+    this.isSignUpForm = this.user['email'] == undefined;
+  }
+
+  public signUp(event): void {
+    this.userService.addUser(this.user).subscribe(
+      () => this.authService.authenticate(this.user['email'], this.user['password']),
+      error => this.valid = false
+    );
+  }
+
+  // TODO: editace údajů
+  public doEdit(event): void {
+    console.log("TODO: submitting edit of a user:");
+    console.log(this.user);
   }
 
   // TODO: Remove this when we're done
   get diagnostic() { return JSON.stringify(this.user); }
-
-
-  public signUp(event): void {
-    this.submitted = true;
-    console.log(this.user);
-  }
-
-  public doEdit(event): void {
-    this.submitted = true;
-    console.log(this.user);
-  }
-
 
 }

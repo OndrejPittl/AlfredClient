@@ -10,14 +10,27 @@ declare let $: any;
 })
 export class MenuComponent implements OnInit {
 
-  @Input() menuItems;
+  @Input()
+  private menuItems: any;
 
-  @Input() menuIdentifier : string;
+  @Input()
+  private menuIdentifier: string;
+
+  @Input()
+  private userLogged: boolean;
+
+
+
 
   private user: any;
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService) {
 
-  ngOnInit() { }
+  }
+
+  ngOnInit() {
+    console.log("mmm:");
+    console.log(this.userLogged)
+  }
 
 }

@@ -18,9 +18,10 @@ export class ProfileComponent implements OnInit, OnDestroy {
   /**
    * Current user's posts.
    */
-  private posts: any[];
+  //private posts: any[];
 
-  private sub: any;
+  private params: any;
+
 
   constructor(
     private userService: UserService,
@@ -30,22 +31,40 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
 
   ngOnInit() {
-    this.sub = this.route.params.subscribe(routeParams => {
+    this.route.params.subscribe(routeParams => {
 
       // user info
-      this.userService.getUser(routeParams['slug']).subscribe(user => {
-        this.user = user;
+      this.userService.getUserBySlug(routeParams['slug'])
+        .subscribe(
+          user => {
+            this.user = user;
 
-        // user posts info
-        this.postService.getPostsByUser(this.user.slug).subscribe(posts => {
-          this.posts = posts
-        });
-      });
-    });
+            // --------------------
+            // @TODO: odebrat, server nebude posílat
+            this.user['password'] = '';
+            this.user['confirmPassword'] = '';
+            // --------------------
+
+
+            this.params = {
+              author: this.user['slug']
+            };
+
+            // user posts info
+            /*this.postService.getPostsByUser(this.user.slug)
+              .subscribe(
+                posts => {
+                  this.posts = posts
+                }
+              );
+             */
+          }
+        );
+      }
+    );
   }
 
   ngOnDestroy() {
-    this.sub.unsubscribe();
   }
 
 

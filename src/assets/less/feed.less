@@ -2,12 +2,19 @@
 
 .feed  {
   .clearfix();
+  background-image: none;
+  background-position: center bottom 7px;
+  background-repeat: no-repeat;
+  background-size: 25px;
+  padding-bottom: 40px;
 
-  &[data-columns]::before {
-    content: '3 .column.size-1of3';
+  &--loading {
+    background-image: url('../images/loader.gif');
   }
 
-  &--single[data-columns]::before {
-    content: '1 .column.size-1of1';
+  &__note {
+    .font-size(@font-size--footer);
+    margin-top: 20px;
+    text-align: center;
   }
 }

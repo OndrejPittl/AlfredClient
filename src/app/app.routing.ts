@@ -14,9 +14,9 @@ import {AuthGuard} from "./guards/auth.guard";
 
 export const appRoutes: Routes = [
   { path: 'welcome',      component: WelcomeComponent,      data: { identifier: 'welcome' } },
-  { path: 'discover',     component: DiscoverComponent,     data: { identifier: 'discover' },     canActivate: [AuthGuard] },
-  { path: 'rated',        component: RatedComponent,        data: { identifier: 'rated' } },
-  { path: 'friends',      component: FriendsComponent,      data: { identifier: 'friends' } },
+  { path: 'discover',     component: DiscoverComponent,     data: { identifier: 'discover' },     /*canActivate: [AuthGuard]*/ },
+  { path: 'rated',        component: RatedComponent,        data: { identifier: 'rated' },         canActivate: [AuthGuard] },
+  { path: 'friends',      component: FriendsComponent,      data: { identifier: 'friends' },       canActivate: [AuthGuard] },
   { path: 'profile/:slug',component: ProfileComponent,      data: { identifier: 'profile' } },
   { path: 'tag/:tag',     component: TagComponent,          data: { identifier: 'tag' } },
   { path: 'post/:id',     component: PostComponent,         data: { identifier: 'post' } },

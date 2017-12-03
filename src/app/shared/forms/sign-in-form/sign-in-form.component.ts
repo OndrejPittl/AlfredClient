@@ -11,36 +11,47 @@ import {AuthService} from "../../../services/auth.service";
 
 export class SignInFormComponent implements OnInit {
 
-  @Input() user = {};
+  @Input()
+  private user = {};
 
-  @Input() formId: string = "";
+  @Input()
+  private formId: string;
+
+  private valid: boolean = true;
 
   private returnUrl: string;
 
-  private sub: any;
 
-
-  //constructor(private router: Router, private storage: Storage) { }
-  constructor(private route: ActivatedRoute, private router: Router, private auth: AuthService) {}
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private auth: AuthService
+  ) {}
 
 
   ngOnInit() {
-    this.sub = this.route.queryParams.subscribe(params => {
+    this.route.queryParams.subscribe(params => {
       this.returnUrl = params['url'];
     });
-
-
   }
 
   public signIn(event): void {
-    this.auth.login(this.user['email'], this.user['password']);
+
+    // autentizace
+    this.valid = this.auth.authenticate(
+      this.user['email'],
+      this.user['password']
+    );
+
+    // clear bound pwd
+    if(!this.valid) {
+      this.user = {
+        email: this.user['email']
+      };
+    }
   }
-
-
 
 
   // TODO: Remove this when we're done
   get diagnostic() { return JSON.stringify(this.user); }
-
-
 }

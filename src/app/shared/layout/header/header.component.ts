@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {AuthService} from "../../../services/auth.service";
 import {appConfig} from "../../../app.config";
 import {IUser} from "../../../model/IUser";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-layout-header',
@@ -9,20 +10,26 @@ import {IUser} from "../../../model/IUser";
 })
 export class HeaderLayoutComponent implements OnInit {
 
-  primaryMenuItems: any[];
+  public userLogged: boolean;
+
+  public primaryMenuItems: any[];
 
 
-  constructor(private authService: AuthService) {
+  constructor(private authService: AuthService, private router: Router) {
     this.primaryMenuItems = appConfig.menu.primary;
+    this.userLogged = authService.isLoggedIn();
 
-    if(authService.isLoggedIn()) {
+    if(this.userLogged) {
       authService.getLoggedUser().subscribe(user => {
         this.addUserProfileMenuItem(user);
+        console.log("header uuuser");
+        console.log(user);
       });
     }
 
     authService.userLoggedIn$.subscribe(
       user => {
+        this.userLogged = !!user;
         this.addUserProfileMenuItem(user);
       }
     );
@@ -40,8 +47,10 @@ export class HeaderLayoutComponent implements OnInit {
     });
   }
 
-  logout() {
-    this.authService.logout();
+  signInOut(e) {
+    e.preventDefault();
+    if(this.userLogged) this.authService.logout();
+    else this.router.navigate(['welcome']);
   }
 
 }

@@ -4,6 +4,7 @@ import { IPost } from "../model/IPost";
 import { Http } from "@angular/http";
 import 'rxjs/add/operator/map'
 import {Subject} from "rxjs/Subject";
+import {appConfig} from "../app.config";
 
 @Injectable()
 export class PostService {
@@ -11,20 +12,34 @@ export class PostService {
   private postsLoaded = new Subject<IPost[]>();
   postsLoaded$ = this.postsLoaded.asObservable();
 
+  private postApiEdnpoint: string = 'http://localhost:3000/posts';
 
 
   constructor(private http:Http) { }
 
 
   public getPost(id: number): Observable<IPost[]> {
-    return this.http.get('http://localhost:3000/posts/' + id)
+    return this.http.get(this.postApiEdnpoint + '/' + id)
       .map(value => {
         return value.json() || {}
       });
   }
 
-  public getAllPosts(): Observable<IPost[]> {
-    return this.http.get('http://localhost:3000/posts')
+  public getAllPosts(
+    params: any = {},
+    page: number = 1,
+    limit: number = appConfig.feed.limit): Observable<IPost[]> {
+
+
+    let p = this.processFilterParamQuery(params);
+
+    console.log(p);
+
+    let endpoint = this.postApiEdnpoint + '?' + p + '&_page=' + page + '&_limit=' + limit;
+
+    console.log(endpoint);
+
+    return this.http.get(endpoint)
       .map(value => {
         return value.json() || {}
       });
@@ -33,24 +48,24 @@ export class PostService {
 
   // @TODO: userId
   public getPostsByUser(slug: number): Observable<IPost[]> {
-    return this.http.get('http://localhost:3000/posts?author=' + slug)
+    return this.http.get(this.postApiEdnpoint + '?author=' + slug)
       .map(value => {
         return value.json() || {}
     });
   }
 
   public getPostByTag(tag: string): Observable<IPost[]> {
-    return this.http.get('http://localhost:3000/posts?tags_like=' + tag)
+    return this.http.get(this.postApiEdnpoint + '?tags_like=' + tag)
       .map(value => {
         return value.json() || {}
       });
   }
 
   public filterPosts(filter: any): void {
-    let endpoint: string = "http://localhost:3000/posts";
+    let endpoint: string = this.postApiEdnpoint;
 
     if(filter !== null) {
-      endpoint += this.processFilterParamQuery(filter);
+      endpoint += '?' + this.processFilterParamQuery(filter);
     }
 
     console.log(endpoint);
@@ -64,12 +79,13 @@ export class PostService {
   }
 
   private processFilterParamQuery(filter: any): string {
-    let query: string = '?';
+    let query: string = '';
 
     let params: any = {
       'tag': 'tags_like',
       'rating': 'rating_gte',
-      'photo': 'images_like'
+      'photo': 'images_like',
+      'author': 'author_like'
     };
 
     let i: number = 0;

@@ -1,4 +1,4 @@
-<form class="form" id="{{formId}}" #signUpForm="ngForm" (ngSubmit)="isSignUp ? signUp($event) : doEdit($event)">
+<form class="form" id="{{formId}}" #signUpForm="ngForm" (ngSubmit)="isSignUpForm ? signUp($event) : doEdit($event)">
   {{diagnostic}}
 
   <div class="form__row">
@@ -25,11 +25,11 @@
   </div>
   <div class="form__row">
     <div class="form__col">
-      <input class="form-control" type="password" placeholder="password" [(ngModel)]="user.password" name="password" #password="ngModel" validateEqual="confirmPassword" reverse="true" minlength="5" [required]="isSignUp">
+      <input class="form-control" type="password" placeholder="password" [(ngModel)]="user.password" name="password" #password="ngModel" validateEqual="confirmPassword" reverse="true" minlength="5" [required]="isSignUpForm">
     </div>
     <div class="form__col">
       <!-- [hidden]="!password.value" -->
-      <input class="form-control" type="password" placeholder="password" [(ngModel)]="user.configmPassword" name="confirmPassword" validateEqual="password" #confirmPassword="ngModel" [disabled]="!password.value" [required]="isSignUp || password.value">
+      <input class="form-control" type="password" placeholder="password" [(ngModel)]="user.configmPassword" name="confirmPassword" validateEqual="password" #confirmPassword="ngModel" [disabled]="!password.value" [required]="isSignUpForm || password.value">
     </div>
   </div>
   <div class="form__row form__row--message">
@@ -41,8 +41,8 @@
 
   <div class="form__row">
     <div class="form__col">
-      <button class="btn btn--wide" type="submit" [disabled]="!signUpForm.form.valid">{{ isSignUp ? "Sign Up" : "Approve edit"}}</button>
-      <label for="profile-edit" class="btn btn--wide btn--red btn--tiny" [hidden]="isSignUp">Cancel</label>
+      <button class="btn btn--wide" type="submit" [disabled]="!signUpForm.form.valid">{{ isSignUpForm ? "Sign Up" : "Approve edit"}}</button>
+      <label for="profile-edit" class="btn btn--wide btn--red btn--tiny" [hidden]="isSignUpForm">Cancel</label>
     </div>
   </div>
 </form>

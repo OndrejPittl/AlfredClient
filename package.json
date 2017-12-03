@@ -24,6 +24,7 @@
     "angular-imagesloaded": "^1.0.0",
     "angular2-masonry": "^0.4.0",
     "core-js": "^2.4.1",
+    "ngx-infinite-scroll": "^0.7.1",
     "rxjs": "^5.4.2",
     "salvattore": "^1.0.9",
     "savvior": "^0.6.0",

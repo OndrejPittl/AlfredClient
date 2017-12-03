@@ -27,6 +27,7 @@ import { SignUpFormComponent } from './shared/forms/sign-up-form/sign-up-form.co
 import { SignInFormComponent } from './shared/forms/sign-in-form/sign-in-form.component';
 import {MasonryModule} from "angular2-masonry";
 import {PostFormComponent} from "./shared/forms/post-form/post-form.component";
+import {InfiniteScrollModule} from "ngx-infinite-scroll";
 
 // services
 import { PostService } from "./services/post.service";
@@ -34,6 +35,7 @@ import { UserService } from "./services/user.service";
 import { EqualityValidatorDirective } from './directives/equality-validator.directive';
 import {AuthGuard} from "./guards/auth.guard";
 import {AuthService} from "./services/auth.service";
+
 
 
 
@@ -64,7 +66,8 @@ import {AuthService} from "./services/auth.service";
     BrowserModule,
     FormsModule,
     HttpModule,
-    routing
+    routing,
+    InfiniteScrollModule
   ],
   providers: [
     PostService,
