@@ -4,10 +4,13 @@
     <h2 *ngIf="post.title" class="post__title">{{post.title}}</h2>
 
     <header class="post__header">
-      <a href="" class="post__rating">
+
+      <a *ngIf="userLogged" href="" class="post__rating">
         <span *ngIf="post.rating">{{post.rating}}</span>
       </a>
-      <img *ngIf="post.images && post.images.length > 0" class="post__image" src="{{post.images[0]}}" alt="">
+
+      <app-img [imgPath]="post.image" [withClass]="'post__image'" [isImg]="true"></app-img>
+
       <ul *ngIf="post.tags" class="post__tag-list">
         <li class="post__tag" *ngFor="let tag of post.tags">
           <a routerLink="/tag/{{tag}}">#{{tag}}</a>
@@ -22,6 +25,56 @@
     <div class="post__footer">
       <a class="post__author" routerLink="/profile/{{post.author}}">{{post.author}}</a>
     </div>
+  </div>
+
+  <div class="comment-wrapper">
+    <h3>Comments:</h3>
+    <ul>
+      <li>
+        <div class="comment">
+          <header class="comment__header">
+            <a href="#" class="comment__name">Albert Einstein</a>
+          </header>
+          <div class="comment__content">
+            <img src="http://via.placeholder.com/50x50" alt="" class="comment__image">
+            <p class="commet__body">Lorem ipsum dolor sit amet, consectetur adipisicing elit. At atque cupiditate, dolorem earum eius est explicabo id illum inventore laudantium magni maiores nobis numquam pariatur quibusdam sequi, similique? Eius, quia?</p>
+          </div>
+        </div>
+      </li>
+      <li>
+        <div class="comment">
+          <header class="comment__header">
+            <a href="#" class="comment__name">Albert Einstein</a>
+          </header>
+          <div class="comment__content">
+            <img src="http://via.placeholder.com/50x50" alt="" class="comment__image">
+            <p class="commet__body">Lorem ipsum dolor sit amet, consectetur adipisicing elit. At atque cupiditate, dolorem earum eius est explicabo id illum inventore laudantium magni maiores nobis numquam pariatur quibusdam sequi, similique? Eius, quia?</p>
+          </div>
+        </div>
+      </li>
+      <li>
+        <div class="comment">
+          <header class="comment__header">
+            <a href="#" class="comment__name">Albert Einstein</a>
+          </header>
+          <div class="comment__content">
+            <img src="http://via.placeholder.com/50x50" alt="" class="comment__image">
+            <p class="commet__body">Lorem ipsum dolor sit amet, consectetur adipisicing elit. At atque cupiditate, dolorem earum eius est explicabo id illum inventore laudantium magni maiores nobis numquam pariatur quibusdam sequi, similique? Eius, quia?</p>
+          </div>
+        </div>
+      </li>
+      <li>
+        <div class="comment">
+          <header class="comment__header">
+            <a href="#" class="comment__name">Albert Einstein</a>
+          </header>
+          <div class="comment__content">
+            <img src="http://via.placeholder.com/50x50" alt="" class="comment__image">
+            <p class="commet__body">Lorem ipsum dolor sit amet, consectetur adipisicing elit. At atque cupiditate, dolorem earum eius est explicabo id illum inventore laudantium magni maiores nobis numquam pariatur quibusdam sequi, similique? Eius, quia?</p>
+          </div>
+        </div>
+      </li>
+    </ul>
   </div>
 </div>
 

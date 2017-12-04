@@ -5,18 +5,18 @@
       <app-sign-up-form [user]="user"></app-sign-up-form>
 
       <div class="profile__info">
-        <!-- <div class="profile__photo" style="background:url({{user.photo}})"></div> -->
-        <div class="profile__photo" style="background-image:url(http://via.placeholder.com/1000x1000)"></div>
+        <app-img [imgPath]="'http://via.placeholder.com/1000x1000'" [withClass]="'profile__photo'"></app-img>
+
         <div>
 
           <h2>{{user.firstName}} {{user.lastName}}</h2>
           <p>{{user.email}}</p>
-          <label for="profile-edit" class="btn btn--tiny">Edit</label>
+          <label *ngIf="userAuthorized" for="profile-edit" class="btn btn--tiny">Edit</label>
         </div>
       </div>
     </div>
   </div>
-  <div *ngIf="params">
+  <div *ngIf="params && userLogged">
     <app-post-feed [params]="params"></app-post-feed>
   </div>
 </div>

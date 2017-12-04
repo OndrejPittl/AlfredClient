@@ -29,8 +29,7 @@ export class MenuComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log("mmm:");
-    console.log(this.userLogged)
+
   }
 
 }

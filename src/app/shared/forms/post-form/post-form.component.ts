@@ -21,7 +21,8 @@ export class PostFormComponent implements OnInit, AfterViewInit {
     tag: ''
   };
 
-  @ViewChild('component') component: ElementRef;
+  @ViewChild('component')
+  private component: ElementRef;
 
   private modal: any = null;
 
@@ -61,6 +62,12 @@ export class PostFormComponent implements OnInit, AfterViewInit {
   }
 
   submitPost(): void {
+    this.postService.createPost(this.post).subscribe(
+      value => {
+        console.log("--- submitted post");
+        console.log(value);
+      }
+    );
     this.modal.close();
   }
 

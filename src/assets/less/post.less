@@ -3,7 +3,11 @@
 
 .post-wrapper {
   position: relative;
-  width: 33.33%;
+  width: 100%;
+
+  @media @sm {
+    width: 33.33%;
+  }
 }
 
 .post {
@@ -29,6 +33,10 @@
 
   &__image {
     width: 100%;
+
+    img {
+      width: 100%;
+    }
   }
 
   &__rating {
@@ -58,13 +66,17 @@
       .transform(scale(1));
       background-color: @color--secondary;
     }
+
+    &+.post__tag-list {
+      margin-top: 80px;
+    }
   }
 
   &__tag-list {
     .clearfix;
     background-color: fade(@color--white, 30%);
     display: inline-block;
-    margin-top: 80px;
+    margin-top: 20px;
     padding: 3px 10px;
     width: 100%;
 
@@ -75,16 +87,25 @@
 
   &__tag {
     .font-size(@font-size--footer;);
-    float: left;
-
-    &+& {
-      margin-left: 15px;
-    }
+    display: inline-block;
+    margin: 0 10px;
   }
 
   &__author {
     .font-size(@font-size--footer);
+    margin-bottom: 0;
     text-align: center;
+
+    a {
+      color: @color--secondary;
+    }
+
+    &--overlay {
+      .transform(translate(-50%, 0));
+      left: 50%;
+      margin-top: -20px;
+      position: absolute;
+    }
   }
 
   &__footer {
@@ -133,6 +154,7 @@
     }
 
     &__tag {
+      float: left;
       margin: 0 5px;
     }
 

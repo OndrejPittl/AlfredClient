@@ -1,19 +1,24 @@
 <div class="post">
   <div class="post__container">
     <header class="post__header">
-      <a href="" class="post__rating">
+      <a *ngIf="userLogged" href="" class="post__rating">
         <span *ngIf="post.rating">{{post.rating}}</span>
       </a>
-      <a *ngIf="post.images && post.images.length > 0" routerLink="/post/{{post.id}}">
-        <img class="post__image" src="{{post.images[0]}}" alt=""> <!-- bc-imagesloaded -->
+      <a *ngIf="post.image" routerLink="/post/{{post.id}}">
+        <img class="post__image" src="{{post.image}}" alt="">
       </a>
-      <p>ID: {{post.id}}</p>
     </header>
     <div *ngIf="post.title || post.body" class="post__content">
       <h3 *ngIf="post.title" class="post__title">
         <a routerLink="/post/{{post.id}}">{{post.title}}</a>
       </h3>
       <p *ngIf="post.body" class="post__body">{{post.body}}</p>
+      <p class="post__author">
+        <a routerLink="/profile/{{post?.author}}">– {{post?.author}} –</a>
+      </p>
+    </div>
+    <div *ngIf="!post.title && !post.body" class="post__author post__author--overlay">
+      <a routerLink="/profile/{{post?.author}}">– {{post?.author}} –</a>
     </div>
     <footer class="post__footer">
       <ul *ngIf="post.tags" class="post__tag-list">

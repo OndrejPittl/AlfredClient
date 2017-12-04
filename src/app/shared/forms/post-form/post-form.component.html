@@ -1,7 +1,6 @@
 <div class="modal remodal" data-remodal-id="new-post" #component>
   <button data-remodal-action="close" class="remodal-close"></button>
   <div class="modal__content">
-    {{diagnostic}}
     <h2>New post</h2>
     <form class="form form--compact form--post form--post-{{postType}}" #postForm="ngForm" (ngSubmit)="submitPost($event)" enctype='multipart/form-data'>
       <div class="form__row">

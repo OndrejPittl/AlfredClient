@@ -1,14 +1,22 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
 import {UserService} from "../../services/user.service";
 import {PostService} from "../../services/post.service";
 import {ActivatedRoute} from "@angular/router";
+import {AuthService} from "../../services/auth.service";
 
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html'
 })
-export class ProfileComponent implements OnInit, OnDestroy {
+export class ProfileComponent implements OnInit, OnDestroy, AfterViewInit {
+
+
+  private userLogged: boolean;
+
+  private userAuthorized: boolean;
+
+
 
   /**
    *  Current user.
@@ -26,15 +34,22 @@ export class ProfileComponent implements OnInit, OnDestroy {
   constructor(
     private userService: UserService,
     private postService: PostService,
-    private route: ActivatedRoute) { }
+    private route: ActivatedRoute,
+    private authService: AuthService) {
 
-
+    this.userLogged = false;
+    this.userAuthorized = false;
+  }
 
   ngOnInit() {
-    this.route.params.subscribe(routeParams => {
+    this.userLogged = this.authService.isLoggedIn();
 
-      // user info
-      this.userService.getUserBySlug(routeParams['slug'])
+    this.authService.userLoggedIn$.subscribe(
+      user => this.userLogged = !!user
+    );
+
+    this.route.params.subscribe(
+      routeParams => this.userService.getUserBySlug(routeParams['slug'])
         .subscribe(
           user => {
             this.user = user;
@@ -45,26 +60,28 @@ export class ProfileComponent implements OnInit, OnDestroy {
             this.user['confirmPassword'] = '';
             // --------------------
 
-
             this.params = {
               author: this.user['slug']
             };
 
-            // user posts info
-            /*this.postService.getPostsByUser(this.user.slug)
-              .subscribe(
-                posts => {
-                  this.posts = posts
-                }
-              );
-             */
+
+            this.authService.getLoggedUser().subscribe(
+              u => {
+                this.userAuthorized = u.id == this.user.id;
+              }
+            );
           }
-        );
-      }
+        )
     );
   }
 
+  public ngAfterViewInit():void {
+
+
+  }
+
   ngOnDestroy() {
+
   }
 
 

@@ -1,16 +1,21 @@
 <app-filter-form [params]="params"></app-filter-form>
 <h2 *ngIf="title">{{title}}</h2>
 <div class="feed{{!!modifier ? ' feed--' + modifier : ''}}"
-     [class.feed--loading]="loadingPosts"
      infiniteScroll
-     [infiniteScrollDistance]="1"
-     [infiniteScrollThrottle]="1000"
+     [infiniteScrollDistance]="2"
+     [infiniteScrollThrottle]="500"
      (scrolled)="loadPosts()">
-  <masonry [useImagesLoaded]="true">
-    <masonry-brick class="post-wrapper" *ngFor="let post of posts">
-      <app-post-item [post]="post"></app-post-item>
-    </masonry-brick>
-  </masonry>
-  <p class="feed__note" [hidden]="loadingPosts">– no more posts –</p>
+    <masonry [useImagesLoaded]="true">
+      <masonry-brick class="post-wrapper" *ngFor="let post of posts">
+        <app-post-item [post]="post" [userLogged]="userLogged"></app-post-item>
+      </masonry-brick>
+    </masonry>
 </div>
+<div class="feed__divider" [hidden]="!postRequestsFailed"></div>
+<div class="feed__loader" [hidden]="postRequestsFailed"></div>
+<p class="feed__note">
+  <span [hidden]="posts || posts.length > 0">– No posts. –</span>
+  <a class="feed__load-more" href="" (click)="resetAndLoadPosts($event)" [hidden]="failPostRequestCounter < 3"></a>
+</p>
+
 

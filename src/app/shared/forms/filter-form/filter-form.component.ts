@@ -16,7 +16,8 @@ export class FilterFormComponent implements OnInit {
   }
 
   filterPosts(event: Event):void {
-    this.postService.filterPosts(this.params);
+    //this.postService.filterPosts(this.params);
+    this.postService.registerFiltering(this.params);
   }
 
   resetFilter(): void {

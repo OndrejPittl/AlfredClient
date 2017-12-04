@@ -22,8 +22,6 @@ export class HeaderLayoutComponent implements OnInit {
     if(this.userLogged) {
       authService.getLoggedUser().subscribe(user => {
         this.addUserProfileMenuItem(user);
-        console.log("header uuuser");
-        console.log(user);
       });
     }
 

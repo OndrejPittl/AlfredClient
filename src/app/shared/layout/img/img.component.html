@@ -1,0 +1,4 @@
+<a href="{{imgPath}}" class="image-link">
+  <img *ngIf="isImg" src="{{imgPath}}"  alt="" class="{{withClass}}">
+  <div *ngIf="!isImg" class="{{withClass}}" [ngStyle]="{'background-image': 'url(' + imgPath + ')'}"></div>
+</a>

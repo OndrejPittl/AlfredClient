@@ -2,6 +2,11 @@
 
 .menu {
   color: @color--primary;
+  text-align: center;
+
+  @media @sm {
+    text-align: left;
+  }
 
   &__list {
     .clearfix;
@@ -16,15 +21,22 @@
   &__item {
     .font-size(@font-size--menu);
     cursor: pointer;
-    float: left;
+    display: block;
     font-weight: @font-weight--semibold;
     list-style: none;
     margin-bottom: -1px;
 
+    @media @sm {
+      float: left;
+    }
+
     &+&:before {
       color: @color--primary;
-      content: '/';
       margin: 0;
+
+      @media @sm {
+        content: '/';
+      }
     }
 
     &--active a {
@@ -49,20 +61,30 @@
       display: none;
     }
     .menu__item:last-of-type {
-      float: right;
+      margin: 15px 0;
+      @media @sm {
+        float: right;
+        margin: 0;
+      }
     }
   }
 
   &--secondary {
+    text-align: center;
     .menu__list {
       border-bottom: 1px solid @color--primary;
       display: inline-block;
       margin: 5px auto;
-      padding: 5px 20px;
+      padding: 0 20px;
     }
 
     .menu__item {
       .font-size(@font-size--footer);
     }
+  }
+
+
+  .active {
+    font-weight: @font-weight--bold;
   }
 }

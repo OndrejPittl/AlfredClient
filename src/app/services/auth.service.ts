@@ -71,6 +71,7 @@ export class AuthService implements OnDestroy {
     return false;
   }
 
+
   public static hashPassword(pwd: string): string {
     return Md5.hashStr(pwd + AuthService.MD5_SALT).toString();
   }

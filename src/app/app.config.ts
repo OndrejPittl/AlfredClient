@@ -2,7 +2,8 @@
 
 export const appConfig: any = {
   feed: {
-    limit: 3
+    limit: 10,
+    maxFailRequests: 3
   },
 
   'menu': {

@@ -7,6 +7,7 @@ import { PostFeedComponent } from './layout/post-feed/post-feed.component';
 import {SignUpFormComponent} from './forms/sign-up-form/sign-up-form.component';
 import { SignInFormComponent } from './forms/sign-in-form/sign-in-form.component';
 import { PostFormComponent } from './forms/post-form/post-form.component';
+import { ImgComponent } from './layout/img/img.component';
 
 @NgModule({
   imports: [
@@ -19,7 +20,8 @@ import { PostFormComponent } from './forms/post-form/post-form.component';
     PostFeedComponent,
     SignUpFormComponent,
     SignInFormComponent,
-    PostFormComponent
+    PostFormComponent,
+    ImgComponent
   ]
 })
 export class SharedModule { }

@@ -6,20 +6,26 @@
   text-align: center;
 
   &__row {
+    .flex-direction(column);
     &:extend(.flex);
     margin: 15px 0;
 
     &+&--message {
       margin-top: -14px;
     }
+
+    @media @xs {
+      .flex-direction(row);
+    }
   }
 
   &__col {
     &:extend(.flex__col);
     position: relative;
+    margin: 10px 0;
 
-    &+& {
-      margin-left: 15px;
+    @media @xs {
+      margin: 0 15px;
     }
   }
 
@@ -171,9 +177,9 @@
       text-shadow: 0 0 3px fade(@color--black, 30%);
 
       &--red {
-        background-color: fade(@color--red, 20%);
-        border: 1px solid fade(@color--red, 30%);
-        color: fade(@color--red, 60%);
+        background-color: fade(@color--red, 10%);
+        border: 1px solid fade(@color--red, 20%);
+        color: fade(@color--red, 50%);
       }
 
       &--green {
