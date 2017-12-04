@@ -112,7 +112,7 @@ export class PostService {
     let params: any = {
       'tag': 'tags_like',
       'rating': 'rating_gte',
-      'photo': 'images_like',
+      'photo': 'image_like',
       'author': 'author_like'
     };
 
