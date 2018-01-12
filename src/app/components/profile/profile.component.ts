@@ -53,12 +53,8 @@ export class ProfileComponent implements OnInit, OnDestroy, AfterViewInit {
         .subscribe(
           user => {
             this.user = user;
-
-            // --------------------
-            // @TODO: odebrat, server nebude posílat
             this.user['password'] = '';
             this.user['confirmPassword'] = '';
-            // --------------------
 
             this.params = {
               author: this.user['slug']
@@ -67,6 +63,7 @@ export class ProfileComponent implements OnInit, OnDestroy, AfterViewInit {
 
             this.authService.getLoggedUser().subscribe(
               u => {
+                //this.authService.setLoggedUser(u);
                 this.userAuthorized = u.id == this.user.id;
               }
             );

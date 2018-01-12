@@ -1,17 +1,21 @@
-import {EventEmitter, Injectable, OnDestroy, Output} from '@angular/core';
+import {EventEmitter, Injectable, OnDestroy, OnInit, Output} from '@angular/core';
 import {Router} from "@angular/router";
-import {Http} from "@angular/http";
-import {Observable} from "rxjs/Observable";
-import {Md5} from "ts-md5/dist/md5";
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
+import {Observable} from 'rxjs/Rx';
 import {IUser} from "../model/IUser";
 import {UserService} from "./user.service";
 import "rxjs/add/operator/takeWhile";
+import "rxjs/add/operator/catch";
 import {Subject} from "rxjs/Subject";
+import {appConfig} from "../app.config";
+import "rxjs/add/observable/of";
+
 
 @Injectable()
-export class AuthService implements OnDestroy {
+export class AuthService implements OnInit, OnDestroy {
 
-  private static MD5_SALT: string = "_@lFr3D";
+  //private static MD5_SALT: string = "_@lFr3D";
+  private static API_ENDPOINT: string = "http://localhost:8080/auth";
 
   // observable event – user logged in
   private userLoggedIn = new Subject<IUser>();
@@ -26,76 +30,84 @@ export class AuthService implements OnDestroy {
 
 
   constructor (
-    private http: Http,
-    private router: Router,
-    private userService: UserService
+    private http: HttpClient,
+    private router: Router
   ) {}
 
-
-
-  authenticate(email: string, password: string): boolean {
-    let hash: string = AuthService.hashPassword(password);
-
-    console.log(email + " logging in...");
-
-    this.userService.authUser(email, hash).subscribe(user => {
-
-      if(!user) {
-        console.log("ERROR: No user with " + email + " was found.");
-        console.log(user);
-        return false;
-      } else {
-        console.log("User with " + email + " found: ");
-        console.log(user);
-      }
-
-      this.loggedUser = { ...user };
-
-      // ----------------------------------------
-      // @TODO: odebrat, server nebude posílat
-      this.loggedUser['password'] = '';
-      this.loggedUser['confirmPassword'] = '';
-      // ----------------------------------------
-
-      this.storage.setItem('token', user.token);
-
-
-      console.log("User logged, pinging observers:");
-      console.log(this.loggedUser);
-      this.userLoggedIn.next(this.loggedUser);
-
-      this.router.navigate(['discover']);
-      return true;
+  ngOnInit(): void {
+    this.requestUser().subscribe(user => {
+      this.loggedUser = <IUser> user;
     });
-
-    return false;
   }
 
+  public auth(email: string, password: string): Observable<IUser> {
+    return this.authUser(email, password)
+      .map(user => {
+        this.loggedUser = { ...user };
+        this.loggedUser['password'] = '';
+        this.loggedUser['confirmPassword'] = '';
 
-  public static hashPassword(pwd: string): string {
-    return Md5.hashStr(pwd + AuthService.MD5_SALT).toString();
-  }
+        this.storage.setItem(appConfig.security.tokenStorageKey, user.token);
+        this.userLoggedIn.next(this.loggedUser);
 
-  /**
-   * Kontrola tokenu na SRV?
-   * @returns {boolean}
-   */
-  public isLoggedIn(): boolean {
-    return !!this.storage.getItem('token');
-  }
-
-  public logout() {
-    this.storage.removeItem('token');
-    this.router.navigate(['welcome']);
+        console.log("AuthService – Authenticated:");
+        console.log(this.loggedUser);
+        return user;
+      });
   }
 
   public getLoggedUser(): Observable<IUser> {
-    let token = this.storage.getItem('token') || "";
-    return this.userService.getUserByToken(token);
+    console.log("–––> AuthService – Getting logged user:");
+    console.log(this.loggedUser);
+
+    if(this.isLoggedUserStored()) {
+      console.log("   > AuthService – Logged user stored via AuthService:");
+      console.log(this.loggedUser);
+      return Observable.of(this.loggedUser);
+    }
+
+    return this.requestUser().map(user => {
+      this.loggedUser = user;
+      return user;
+    });
+  }
+
+  private requestUser(): Observable<IUser> {
+    console.log("   > AuthService – AuthService has no logged user stored. Connecting server...");
+
+    return this.http.get(AuthService.API_ENDPOINT + '/me')
+      .catch(() => {
+        this.kickoff();
+        return Observable.of([]);
+      });
+  }
+
+  private isLoggedUserStored(): boolean {
+    return this.loggedUser !== undefined;
+  }
+
+  private authUser(email: string, password: string): Observable<IUser> {
+    let u = <IUser>{};
+    u['email'] = email;
+    u['password'] = password;
+    return this.http.post(AuthService.API_ENDPOINT, u);
+  }
+
+  public isLoggedIn(): boolean {
+    return !!this.storage.getItem(appConfig.security.tokenStorageKey);
+  }
+
+  public logout() {
+    this.http.post(AuthService.API_ENDPOINT + '/logout', null);
+    this.kickoff();
+  }
+
+  public kickoff(): void {
+    this.storage.removeItem(appConfig.security.tokenStorageKey);
+    this.router.navigate(['welcome']);
   }
 
   public ngOnDestroy() {
     this.alive = false;
   }
-
 }

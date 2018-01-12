@@ -3,7 +3,8 @@
   <a href="#" class="header__sign-in-out" (click)="signInOut($event)">{{userLogged ? 'Sign out' : 'Sign in'}}</a>
 
   <div class="header__logo-wrapper">
-    <a href="/" class="header__logo"></a>
+    <a *ngIf="loggedUser" routerLink="/discover" class="header__logo"></a>
+    <a *ngIf="!loggedUser" routerLink="/welcome" class="header__logo"></a>
   </div>
 
   <div class="header__menu">

@@ -39,6 +39,8 @@ import { EqualityValidatorDirective } from './directives/equality-validator.dire
 import {AuthGuard} from "./guards/auth.guard";
 import {AuthService} from "./services/auth.service";
 import {ImgComponent} from "./shared/layout/img/img.component";
+import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
+import {CustomHttpInterceptor} from "./services/http-interceptor";
 
 
 @NgModule({
@@ -69,6 +71,7 @@ import {ImgComponent} from "./shared/layout/img/img.component";
     BrowserModule,
     FormsModule,
     HttpModule,
+    HttpClientModule,
     routing,
     InfiniteScrollModule,
     LightboxModule
@@ -78,7 +81,12 @@ import {ImgComponent} from "./shared/layout/img/img.component";
     UserService,
     AuthService,
     routingProviders,
-    AuthGuard
+    AuthGuard,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: CustomHttpInterceptor,
+      multi: true
+    },
   ],
   bootstrap: [AppComponent]
 })

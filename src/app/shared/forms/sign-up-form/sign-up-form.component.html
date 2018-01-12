@@ -18,22 +18,46 @@
   <div class="form__row">
     <div class="form__col">
       <input class="form-control" type="text" placeholder="e-mail" [(ngModel)]="user.email" name="email" #email="ngModel" email required>
-      <div [hidden]="email.valid || email.pristine" class="alert alert-danger">Valid e-mail is required.</div>
+      <div *ngIf="email.hasError('email') && !email.pristine" class="alert alert-danger">Valid e-mail is required.</div>
     </div>
   </div>
   <div class="form__row">
     <div class="form__col">
-      <input class="form-control" type="password" placeholder="password" [(ngModel)]="user.password" name="password" #password="ngModel" validateEqual="confirmPassword" reverse="true" minlength="5" [required]="isSignUpForm">
+      <input class="form-control" type="password" placeholder="password" [(ngModel)]="user.password" name="password" #password="ngModel" validateEqual="confirmPassword" reverse="true" minlength="8" [required]="isSignUpForm">
     </div>
     <div class="form__col">
       <!-- [hidden]="!password.value" -->
-      <input class="form-control" type="password" placeholder="password" [(ngModel)]="user.configmPassword" name="confirmPassword" validateEqual="password" #confirmPassword="ngModel" [disabled]="!password.value" [required]="isSignUpForm || password.value">
+      <input class="form-control" type="password" placeholder="password" [(ngModel)]="user.confirmPassword" name="confirmPassword" validateEqual="password" #confirmPassword="ngModel" [disabled]="!password.value" [required]="isSignUpForm || password.value">
     </div>
   </div>
   <div class="form__row form__row--message">
     <div class="form__col">
-      <div *ngIf="password.hasError('minlength')" class="alert alert-danger">Password must be at least 5 characters long.</div>
+      <div *ngIf="password.hasError('minlength')" class="alert alert-danger">Password must be at least 8 characters long.</div>
       <div [hidden]="(password.valid && confirmPassword.valid) || (password.pristine && confirmPassword.pristine) || confirmPassword.disabled" class="alert alert-danger">Password is required and must be equal.</div>
+    </div>
+  </div>
+  <div class="form__row">
+    <div class="form__col">
+      <div class="form__radio-item">
+        <input type="radio" name="sex" class="" [(ngModel)]="user.sex" id="radio_sex-male" value="MALE">
+        <label for="radio_sex-male" class="form__radio-label">male</label>
+      </div>
+    </div>
+    <div class="form__col">
+      <div class="form__radio-item">
+        <input type="radio" name="sex" class="" [(ngModel)]="user.sex" id="radio_sex-female" value="FEMALE">
+        <label for="radio_sex-female" class="form__radio-label">female</label>
+      </div>
+    </div>
+  </div>
+
+  <div class="form__row" *ngIf="validationMessages?.length">
+    <div class="form__col">
+      <div class="serverErrors">
+        <ul>
+          <li *ngFor="let item of validationMessages" class="serverErrors__item">{{item.message}}</li>
+        </ul>
+      </div>
     </div>
   </div>
 

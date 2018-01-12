@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable } from "rxjs/Observable";
 import { IPost } from "../model/IPost";
-import { Http } from "@angular/http";
+//import { Http } from "@angular/http";
+import {HttpClient} from "@angular/common/http";
 import 'rxjs/add/operator/map'
 import 'rxjs/add/operator/timeout'
 import {Subject} from "rxjs/Subject";
@@ -20,55 +21,70 @@ export class PostService {
   private postFilter = new Subject<IPost[]>();
   postFilter$ = this.postFilter.asObservable();
 
-  private static API_ENDPOINT: string = 'http://localhost:3000/posts';
+  private static API_ENDPOINT: string = 'http://localhost:8080/posts';
 
 
-  constructor(private http:Http, private authService: AuthService) { }
+  constructor(private http:HttpClient, private authService: AuthService) { }
 
 
   public getPost(id: number): Observable<IPost> {
+    return this.http.get(PostService.API_ENDPOINT + '/' + id);
+
+    /*
     return this.http.get(PostService.API_ENDPOINT + '/' + id)
       .map(value => {
         return value.json() || {}
       });
+    */
   }
 
-  public getAllPosts(
-    params: any = {},
-    page: number = 1,
-    limit: number = appConfig.feed.limit): Observable<IPost[]> {
-
+  public getAllPosts(params: any = {}, offset: number = 0): Observable<IPost[]> {
     let p = this.processFilterParamQuery(params);
+    console.log("params:");
     console.log(p);
 
-    let endpoint = PostService.API_ENDPOINT + '?' + p + '&_page=' + page + '&_limit=' + limit + '&_sort=id&_order=desc';
+    let endpoint = PostService.API_ENDPOINT + '?' + p + '&offset=' + offset;
+    console.log("POST endpoint:");
     console.log(endpoint);
 
-    //.timeout(3000, new Error('timeout exceeded'))
-    return this.http.get(endpoint).map(value => {
-        return value.json() || null
-      });
-  }
+    return this.http.get(endpoint);
 
+    /*
+    return this.http.get(endpoint).map(value => {
+      return value.json() || null
+    });
+    */
+  }
 
   // @TODO: userId
   public getPostsByUser(slug: number): Observable<IPost[]> {
+    return this.http.get(PostService.API_ENDPOINT + '?author=' + slug);
+
+    /*
     return this.http.get(PostService.API_ENDPOINT + '?author=' + slug)
       .map(value => {
         return value.json() || {}
     });
+    */
   }
 
   public getPostByTag(tag: string): Observable<IPost[]> {
+    return this.http.get(PostService.API_ENDPOINT + '?tags_like=' + tag);
+
+    /*
     return this.http.get(PostService.API_ENDPOINT + '?tags_like=' + tag)
       .map(value => {
         return value.json() || {}
       });
+    */
   }
 
   public createPost(post: IPost): Observable<any> {
     return this.authService.getLoggedUser().map(
       user => {
+
+        //this.authService.setLoggedUser(user);
+
         let p: IPost = { ...post };
         p.image = "http://via.placeholder.com/1000x1000";
         p.rating = 0;
@@ -76,11 +92,19 @@ export class PostService {
         delete p.id;
 
         return this.http.post(PostService.API_ENDPOINT, p)
+          .subscribe(response => {
+            console.log("--- srv response:");
+            console.log(response);
+          });
+
+        /*
+        return this.http.post(PostService.API_ENDPOINT, p)
           .map(response => response.json() || null)
           .subscribe(response => {
             console.log("--- srv response:");
             console.log(response);
           });
+        */
       }
     );
   }
@@ -98,12 +122,19 @@ export class PostService {
 
     console.log(endpoint);
 
+    /*
     this.http.get(endpoint)
       .map(
         posts => {
           return  posts.json() || {};
         }
       ).subscribe(posts => this.postsLoaded.next(posts) );
+      */
+
+    this.http.get(endpoint).subscribe(posts => {
+      // TODO: castění
+      this.postsLoaded.next(<Array<IPost>> posts)
+    });
   }
 
   private processFilterParamQuery(filter: any): string {

@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 
 import {ActivatedRoute, Params, Router, RoutesRecognized} from "@angular/router";
 import {AuthService} from "../../../services/auth.service";
+import {IUser} from "../../../model/IUser";
 
 
 @Component({
@@ -12,7 +13,7 @@ import {AuthService} from "../../../services/auth.service";
 export class SignInFormComponent implements OnInit {
 
   @Input()
-  private user = {};
+  private user:IUser = {} as IUser;
 
   @Input()
   private formId: string;
@@ -25,7 +26,7 @@ export class SignInFormComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private auth: AuthService
+    private authService: AuthService
   ) {}
 
 
@@ -37,18 +38,16 @@ export class SignInFormComponent implements OnInit {
 
   public signIn(event): void {
 
-    // autentizace
-    this.valid = this.auth.authenticate(
-      this.user['email'],
-      this.user['password']
-    );
-
-    // clear bound pwd
-    if(!this.valid) {
-      this.user = {
-        email: this.user['email']
-      };
-    }
+    // sign in
+    this.authService.auth(this.user['email'], this.user['password'])
+      .subscribe(user => {
+        console.log("Sign in form: User " + user.email + " signed in successfully.");
+        this.router.navigate(['discover']);
+      },error => {
+        console.log("Sign in form:");
+        this.user.password = "";
+        this.valid = false;
+      });
   }
 
 

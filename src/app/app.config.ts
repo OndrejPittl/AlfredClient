@@ -1,13 +1,19 @@
 
 
 export const appConfig: any = {
-  feed: {
-    limit: 10,
-    maxFailRequests: 3
+
+  security: {
+    authorization: 'Bearer',
+    tokenStorageKey: 'alfred_token'
   },
 
-  'menu': {
-    'primary': [
+  feed: {
+    limit: 10,
+    maxFailRequests: 1
+  },
+
+  menu: {
+    primary: [
       {
         identifier: 'discover',
         slug: 'discover',
@@ -31,7 +37,7 @@ export const appConfig: any = {
         loggedOnly: true
       }
     ],
-   'secondary': [
+   secondary: [
      {
        identifier: 'discover',
        slug: 'discover',

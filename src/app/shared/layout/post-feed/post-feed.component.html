@@ -11,11 +11,11 @@
       </masonry-brick>
     </masonry>
 </div>
-<div class="feed__divider" [hidden]="!postRequestsFailed"></div>
-<div class="feed__loader" [hidden]="postRequestsFailed"></div>
+<div *ngIf="postRequestsFailed" class="feed__divider"></div>
+<div *ngIf="!postRequestsFailed" class="feed__loader"></div>
 <p class="feed__note">
   <span [hidden]="posts || posts.length > 0">– No posts. –</span>
-  <a class="feed__load-more" href="" (click)="resetAndLoadPosts($event)" [hidden]="failPostRequestCounter < 3"></a>
+  <a *ngIf="postRequestsFailed" class="feed__load-more" (click)="resetAndLoadPosts($event)"></a>
 </p>
 
 

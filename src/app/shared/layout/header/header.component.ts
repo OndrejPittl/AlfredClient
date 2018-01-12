@@ -15,26 +15,28 @@ export class HeaderLayoutComponent implements OnInit {
   public primaryMenuItems: any[];
 
 
-  constructor(private authService: AuthService, private router: Router) {
+  constructor(
+    private authService: AuthService,
+    private router: Router
+  ) { }
+
+
+  ngOnInit() {
     this.primaryMenuItems = appConfig.menu.primary;
-    this.userLogged = authService.isLoggedIn();
+    this.userLogged = this.authService.isLoggedIn();
 
     if(this.userLogged) {
-      authService.getLoggedUser().subscribe(user => {
+      this.authService.getLoggedUser().subscribe(user => {
         this.addUserProfileMenuItem(user);
       });
     }
 
-    authService.userLoggedIn$.subscribe(
+    this.authService.userLoggedIn$.subscribe(
       user => {
         this.userLogged = !!user;
-        this.addUserProfileMenuItem(user);
+        //this.addUserProfileMenuItem(user);
       }
     );
-  }
-
-  ngOnInit() {
-
   }
 
   private addUserProfileMenuItem(user: IUser): void {
