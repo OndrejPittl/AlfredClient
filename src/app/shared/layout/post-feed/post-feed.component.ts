@@ -7,6 +7,7 @@ import {IPost} from "../../../model/IPost";
 import {appConfig} from "../../../app.config";
 import {post} from "selenium-webdriver/http";
 import {AuthService} from "../../../services/auth.service";
+import {Params} from "../../../model/Params";
 
 declare let $: any;
 
@@ -19,10 +20,15 @@ declare let $: any;
 export class PostFeedComponent implements OnInit {
 
   @Input()
-  private params: any = {};
+  private params: Params;
 
   @Input()
   private title: string;
+
+  @Input()
+  private hasFilteredFeed: boolean;
+
+
 
   private userLogged: boolean;
 
@@ -36,13 +42,14 @@ export class PostFeedComponent implements OnInit {
 
   private postRequestsFailed: boolean = false;
 
-  private loadingPostSubscription: any;
+  private loadingPostSubscription: any = null;
 
 
 
   constructor(private postService: PostService, private authService: AuthService) {}
 
   public ngOnInit():void {
+    this.reset();
     this.userLogged = this.authService.isLoggedIn();
 
     this.postService.postsLoaded$.subscribe(
@@ -58,11 +65,9 @@ export class PostFeedComponent implements OnInit {
     );
 
     this.postService.postFilter$.subscribe(
-      params => {
-        this.params = params;
-        this.posts = [];
-        this.loadingPostSubscription.unsubscribe();
-        this.loadingPosts = false;
+      filterParams => {
+        this.reset(true);
+        this.params.filterParams = filterParams;
         this.loadPosts();
       }
     );
@@ -83,7 +88,7 @@ export class PostFeedComponent implements OnInit {
     this.loadingPosts = true;
     console.log("loading posts...");
 
-    this.loadingPostSubscription = this.postService.getAllPosts(this.params, this.receivedPostCount)
+    this.loadingPostSubscription = this.postService.getPosts(this.params, this.receivedPostCount)
       .subscribe(
         posts => {
           let postCount = posts.length;
@@ -107,11 +112,25 @@ export class PostFeedComponent implements OnInit {
     );
   }
 
-  resetAndLoadPosts(e): void {
-    e.preventDefault();
+  private reset(clearPosts:boolean = true):void {
     this.failPostRequestCounter = 0;
     this.postRequestsFailed = false;
     this.loadingPosts = false;
+
+    if(this.loadingPostSubscription != null) {
+      this.loadingPostSubscription.unsubscribe();
+    }
+
+
+    if(clearPosts) {
+      this.receivedPostCount = 0;
+      this.posts = [];
+    }
+  }
+
+  private forceLoadPosts(e): void {
+    e.preventDefault();
+    this.reset(false);
     this.loadPosts();
   }
 }

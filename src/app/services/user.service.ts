@@ -24,7 +24,7 @@ export class UserService {
    * @returns {Observable<IUser[]>}   Observable resource of users.
    */
   public getUserBySlug(slug: string): Observable<IUser[]> {
-    return this.http.get(UserService.API_ENDPOINT + '?slug=' + slug);
+    return this.http.get(UserService.API_ENDPOINT + '/slug/' + slug);
 
     /*
     return this.http.get(UserService.API_ENDPOINT + '?slug=' + slug)

@@ -7,7 +7,9 @@ import {PostService} from "../../../services/post.service";
 })
 export class FilterFormComponent implements OnInit {
 
-  @Input() private params: any;
+  @Input()
+  private filterParams: any[] = {} as any[];
+
 
   constructor(private postService: PostService) { }
 
@@ -16,8 +18,7 @@ export class FilterFormComponent implements OnInit {
   }
 
   filterPosts(event: Event):void {
-    //this.postService.filterPosts(this.params);
-    this.postService.registerFiltering(this.params);
+    this.postService.registerFiltering(this.filterParams);
   }
 
   resetFilter(): void {
@@ -25,6 +26,6 @@ export class FilterFormComponent implements OnInit {
   }
 
   // TODO: Remove this when we're done
-  get diagnostic() { return JSON.stringify(this.params); }
+  get diagnostic() { return JSON.stringify(this.filterParams); }
 
 }

@@ -20,16 +20,8 @@ export class MenuComponent implements OnInit {
   private userLogged: boolean;
 
 
+  constructor() { }
 
-
-  private user: any;
-
-  constructor(private authService: AuthService) {
-
-  }
-
-  ngOnInit() {
-
-  }
+  ngOnInit() { }
 
 }

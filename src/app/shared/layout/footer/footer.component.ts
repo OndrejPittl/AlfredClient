@@ -9,21 +9,33 @@ import {IUser} from "../../../model/IUser";
 })
 
 export class FooterLayoutComponent implements OnInit {
-  secondaryMenuItems;
 
-  private userLogged: boolean;
+  public secondaryMenuItems: any[];
 
-  constructor(private authService: AuthService) {
-    this.secondaryMenuItems = appConfig.menu.secondary;
+  public userLogged: boolean = false;
+
+
+
+
+  constructor(
+    private authService: AuthService) { }
+
+  ngOnInit() {
+    this.init();
+
     this.userLogged = this.authService.isLoggedIn();
 
     this.authService.userLoggedIn$.subscribe(
       user => this.userLogged = !!user
     );
+
+    this.authService.userLoggedOut$.subscribe(
+      () => this.userLogged = false
+    );
   }
 
-  ngOnInit() {
-
+  private init(): void {
+    this.secondaryMenuItems = appConfig.menu.secondary;
   }
 
 }

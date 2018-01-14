@@ -1,4 +1,6 @@
-<app-filter-form [params]="params"></app-filter-form>
+<app-filter-form *ngIf="hasFilteredFeed" [filterParams]="params.filterParams"></app-filter-form>
+<div [hidden]="hasFilteredFeed" class="feed__divider feed__divider--tiny"></div>
+
 <h2 *ngIf="title">{{title}}</h2>
 <div class="feed{{!!modifier ? ' feed--' + modifier : ''}}"
      infiniteScroll
@@ -14,8 +16,8 @@
 <div *ngIf="postRequestsFailed" class="feed__divider"></div>
 <div *ngIf="!postRequestsFailed" class="feed__loader"></div>
 <p class="feed__note">
-  <span [hidden]="posts || posts.length > 0">– No posts. –</span>
-  <a *ngIf="postRequestsFailed" class="feed__load-more" (click)="resetAndLoadPosts($event)"></a>
+  <span [hidden]="posts.length > 0">– No posts. –</span>
+  <a *ngIf="postRequestsFailed" class="feed__load-more" (click)="forceLoadPosts($event)"></a>
 </p>
 
 

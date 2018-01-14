@@ -10,9 +10,15 @@ import {Router} from "@angular/router";
 })
 export class HeaderLayoutComponent implements OnInit {
 
-  public userLogged: boolean;
-
   public primaryMenuItems: any[];
+
+  private userProfileItemAdded: boolean = false;
+
+
+  public userLogged: boolean = false;
+
+  private user: IUser = null;
+
 
 
   constructor(
@@ -20,37 +26,67 @@ export class HeaderLayoutComponent implements OnInit {
     private router: Router
   ) { }
 
-
   ngOnInit() {
-    this.primaryMenuItems = appConfig.menu.primary;
-    this.userLogged = this.authService.isLoggedIn();
+    this.init();
 
-    if(this.userLogged) {
-      this.authService.getLoggedUser().subscribe(user => {
-        this.addUserProfileMenuItem(user);
-      });
-    }
+    this.authService.getLoggedUser().subscribe(user => {
+
+      if(user == null) {
+        return;
+      }
+
+      this.user = user;
+      this.userLogged = true;
+      this.addUserProfileMenuItem();
+    });
 
     this.authService.userLoggedIn$.subscribe(
       user => {
-        this.userLogged = !!user;
-        //this.addUserProfileMenuItem(user);
+        this.user = user;
+        this.userLogged = true;
+        this.addUserProfileMenuItem();
+      }
+    );
+
+    this.authService.userLoggedOut$.subscribe(
+      () => {
+        console.log("Header: logged OUT");
+        this.resetUser();
       }
     );
   }
 
-  private addUserProfileMenuItem(user: IUser): void {
+  private init(): void {
+    this.resetUser();
+    this.primaryMenuItems = appConfig.menu.primary;
+  }
+
+  private addUserProfileMenuItem(user: IUser = this.user): void {
+    if(this.userProfileItemAdded) {
+      return;
+    }
+
     this.primaryMenuItems.push({
       'title': user.firstName + ' ' + user.lastName,
       'identificator': 'profile',
       'slug': 'profile/' + user.slug
     });
+
+    this.userProfileItemAdded = true;
   }
 
-  signInOut(e) {
+  private resetUser(): void {
+    this.user = null;
+    this.userLogged = false;
+  }
+
+  private signInOut(e) {
     e.preventDefault();
-    if(this.userLogged) this.authService.logout();
-    else this.router.navigate(['welcome']);
+    if(this.userLogged) {
+      this.resetUser();
+      this.authService.logout();
+    } else {
+      this.router.navigate(['welcome']);
+    }
   }
-
 }

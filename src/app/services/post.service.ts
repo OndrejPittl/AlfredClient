@@ -1,14 +1,13 @@
-import { Injectable } from '@angular/core';
-import { Observable } from "rxjs/Observable";
-import { IPost } from "../model/IPost";
-//import { Http } from "@angular/http";
+import {Injectable} from '@angular/core';
+import {Observable} from "rxjs/Observable";
+import {IPost} from "../model/IPost";
 import {HttpClient} from "@angular/common/http";
 import 'rxjs/add/operator/map'
 import 'rxjs/add/operator/timeout'
 import {Subject} from "rxjs/Subject";
-import {appConfig} from "../app.config";
 import {AuthService} from "./auth.service";
-import {HttpHeaders} from "@angular/common/http";
+import {Params} from "../model/Params";
+import {PostSource} from "../model/PostSource";
 
 @Injectable()
 export class PostService {
@@ -17,36 +16,74 @@ export class PostService {
   private postsLoaded = new Subject<IPost[]>();
   postsLoaded$ = this.postsLoaded.asObservable();
 
-  // posts filtering
+  // posts being filtered
   private postFilter = new Subject<IPost[]>();
   postFilter$ = this.postFilter.asObservable();
 
   private static API_ENDPOINT: string = 'http://localhost:8080/posts';
 
 
-  constructor(private http:HttpClient, private authService: AuthService) { }
+  constructor(
+    private http:HttpClient,
+    private authService: AuthService) { }
 
 
   public getPost(id: number): Observable<IPost> {
     return this.http.get(PostService.API_ENDPOINT + '/' + id);
-
-    /*
-    return this.http.get(PostService.API_ENDPOINT + '/' + id)
-      .map(value => {
-        return value.json() || {}
-      });
-    */
   }
 
-  public getAllPosts(params: any = {}, offset: number = 0): Observable<IPost[]> {
-    let p = this.processFilterParamQuery(params);
-    console.log("params:");
-    console.log(p);
+  public getPosts(params: Params, offset: number = 0): Observable<IPost[]> {
 
-    let endpoint = PostService.API_ENDPOINT + '?' + p + '&offset=' + offset;
-    console.log("POST endpoint:");
-    console.log(endpoint);
+    let endpoint = PostService.API_ENDPOINT;
 
+    let allowedFilterParams: string[] = [];
+
+
+    switch (params.postSource) {
+      case PostSource.USER:
+        endpoint += '/author/' + params.getFilterParam("authorId");
+        break;
+
+      case PostSource.USER_RATED:
+        endpoint += '/rated';
+        break;
+
+      case PostSource.TAG:
+        endpoint += '/tag/' + params.getFilterParam("tag");
+        break;
+
+      case PostSource.FRIENDS:
+        endpoint += '/friends';
+        break;
+
+      default:
+      case PostSource.GENERAL:
+        allowedFilterParams = ['tag', 'rating', 'photo'];
+        break;
+    }
+
+    // offset – always a subset of all posts
+    endpoint += '?offset=' + offset;
+
+    let filterParamQuery: string = '';
+
+    // other params
+    for(let item of allowedFilterParams) {
+      if(params.hasFilterParam(item)) {
+        if(filterParamQuery.length > 0) {
+          filterParamQuery += '&';
+        }
+
+        filterParamQuery += item + '=' + params.getFilterParam(item);
+      }
+    }
+
+    // append filter params
+    if(filterParamQuery.length > 0) {
+      endpoint += '&' + filterParamQuery;
+    }
+
+    console.log('endpoint: ' + endpoint);
     return this.http.get(endpoint);
 
     /*

@@ -11,12 +11,12 @@
 
           <h2>{{user.firstName}} {{user.lastName}}</h2>
           <p>{{user.email}}</p>
-          <label *ngIf="userAuthorized" for="profile-edit" class="btn btn--tiny">Edit</label>
+          <label *ngIf="isAuthorizedUser" for="profile-edit" class="btn btn--tiny">Edit</label>
         </div>
       </div>
     </div>
   </div>
-  <div *ngIf="params && userLogged">
-    <app-post-feed [params]="params"></app-post-feed>
+  <div *ngIf="isUserLogged"> <!-- <div *ngIf="filterParams && isUserLogged">-->
+    <app-post-feed [params]="params" [hasFilteredFeed]="hasFilteredFeed"></app-post-feed>
   </div>
 </div>

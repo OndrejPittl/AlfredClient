@@ -2,14 +2,14 @@
   <div class="form__row">
     <div class="form__col">
       <span class="input-icon">#</span>
-      <input class="form-control" type="text" placeholder="tag" [(ngModel)]="params.tag" name="tag" (keydown.space)="$event.preventDefault()" #tag="ngModel">
+      <input class="form-control" type="text" placeholder="tag" [(ngModel)]="filterParams.tag" name="tag" (keydown.space)="$event.preventDefault()" #tag="ngModel">
     </div>
     <div class="form__col">
-      <input class="form-control" type="number" placeholder="min rating" [(ngModel)]="params.rating" name="rating" value="0" #rating="ngModel">
+      <input class="form-control" type="number" placeholder="min rating" [(ngModel)]="filterParams.rating" name="rating" value="0" #rating="ngModel">
     </div>
     <div class="form__col">
       <div class="checkbox">
-        <label class="checkbox-inline"><input type="checkbox" [(ngModel)]="params.photo" name="photo" #photo="ngModel">with photo</label>
+        <label class="checkbox-inline"><input type="checkbox" [(ngModel)]="filterParams.photo" name="photo" #photo="ngModel">with photo</label>
       </div>
     </div>
     <div class="form__col"> <!--!filterForm.form.valid || (tag.length <= 0 && rating.length <= 0 && photo.length <= 0) -->

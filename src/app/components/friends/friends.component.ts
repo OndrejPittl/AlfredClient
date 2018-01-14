@@ -1,20 +1,31 @@
 import { Component, OnInit } from '@angular/core';
 import {PostService} from "../../services/post.service";
+import {Params} from "../../model/Params";
+import {PostSource} from "../../model/PostSource";
+import {PostFeedPage} from "../PostFeedPage";
 
 
 @Component({
   selector: 'app-friends',
   templateUrl: './friends.component.html'
 })
-export class FriendsComponent implements OnInit {
+export class FriendsComponent extends PostFeedPage implements OnInit {
 
-  posts;
+  // inherited: title, params, _hasFilteredFeed
 
-  constructor(private postService:PostService) {
 
+  constructor() {
+    super();
   }
 
   ngOnInit() {
-    this.postService.getAllPosts().subscribe(posts => this.posts = posts );
+    this.title = "What do your friends know?";
+    this.params.postSource = PostSource.FRIENDS;
   }
 }
+
+
+
+
+
+

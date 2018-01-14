@@ -81,13 +81,7 @@ export class SignUpFormComponent implements OnInit {
       let err: IValidationError = <IValidationError> e;
       this.form.controls[err.field].setErrors({'incorrect': true, 'serverError': true});
       console.log(this.form.controls[err.field]);
-
-      //let valMsgContainer: Element =
-
     }
-  //let elem:Element = document.getElementById("myProgrammaticallyChosenIndex")
-
-    console.error(this.validationMessages);
   }
 
 

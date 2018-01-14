@@ -1,24 +1,23 @@
-import { Component, OnInit } from '@angular/core';
-import { PostService } from "../../services/post.service";
-import {ActivatedRoute} from "@angular/router";
+import {Component, OnInit} from '@angular/core';
+import {PostSource} from "../../model/PostSource";
+import {PostFeedPage} from "../PostFeedPage";
+
 
 
 @Component({
   selector: 'app-discover',
   templateUrl: './discover.component.html'
 })
-export class DiscoverComponent implements OnInit {
+export class DiscoverComponent extends PostFeedPage implements OnInit {
 
+  // inherited: params, _hasFilteredFeed
 
-
-  posts;
-
-  constructor(private postService:PostService) {
-
+  constructor() {
+    super();
   }
 
   ngOnInit() {
-    //this.postService.getAllPosts().subscribe(posts => this.posts = posts );
+    this.params.postSource = PostSource.GENERAL;
+    this.hasFilteredFeed = true;
   }
-
 }

@@ -1,51 +1,43 @@
-import {AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {UserService} from "../../services/user.service";
-import {PostService} from "../../services/post.service";
 import {ActivatedRoute} from "@angular/router";
 import {AuthService} from "../../services/auth.service";
+import {PostSource} from "../../model/PostSource";
+import {PostFeedPage} from "../PostFeedPage";
 
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html'
 })
-export class ProfileComponent implements OnInit, OnDestroy, AfterViewInit {
+export class ProfileComponent extends PostFeedPage implements OnInit {
 
+  private isUserLogged: boolean = false;
 
-  private userLogged: boolean;
-
-  private userAuthorized: boolean;
-
-
+  private isAuthorizedUser: boolean = false;
 
   /**
-   *  Current user.
+   *  Currently viewed user.
    */
   private user: any;
 
-  /**
-   * Current user's posts.
-   */
-  //private posts: any[];
 
-  private params: any;
 
 
   constructor(
     private userService: UserService,
-    private postService: PostService,
     private route: ActivatedRoute,
     private authService: AuthService) {
-
-    this.userLogged = false;
-    this.userAuthorized = false;
+    super();
   }
 
   ngOnInit() {
-    this.userLogged = this.authService.isLoggedIn();
+    this.params.postSource = PostSource.USER;
+
+    this.isUserLogged = this.authService.isLoggedIn();
 
     this.authService.userLoggedIn$.subscribe(
-      user => this.userLogged = !!user
+      user => this.isUserLogged = !!user
     );
 
     this.route.params.subscribe(
@@ -53,33 +45,17 @@ export class ProfileComponent implements OnInit, OnDestroy, AfterViewInit {
         .subscribe(
           user => {
             this.user = user;
-            this.user['password'] = '';
-            this.user['confirmPassword'] = '';
 
-            this.params = {
-              author: this.user['slug']
-            };
-
+            this.params.addFilterParam('authorSlug', this.user.slug);
+            this.params.addFilterParam('authorId', this.user.id);
 
             this.authService.getLoggedUser().subscribe(
               u => {
-                //this.authService.setLoggedUser(u);
-                this.userAuthorized = u.id == this.user.id;
+                this.isAuthorizedUser = u.id == this.user.id;
               }
             );
           }
         )
     );
   }
-
-  public ngAfterViewInit():void {
-
-
-  }
-
-  ngOnDestroy() {
-
-  }
-
-
 }
