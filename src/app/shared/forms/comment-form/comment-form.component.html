@@ -1,0 +1,11 @@
+<form class="form form--comment" #commentForm="ngForm" (ngSubmit)="commentPost($event)">
+  <div class="form__row">
+    <div class="form__col">
+      <p class="form__msg">Join a discuss:</p>
+      <div class="form__btn-group">
+        <textarea [(ngModel)]="comment.body" name="body" #body="ngModel" placeholder="Your comment"></textarea>
+        <button class="btn" type="submit" [hidden]="!commentForm.form.valid || !body.value">Comment</button>
+      </div>
+    </div>
+  </div>
+</form>

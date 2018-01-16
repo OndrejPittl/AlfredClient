@@ -1,15 +1,10 @@
-import {Component, Input, AfterViewInit, AfterViewChecked, OnChanges, OnInit} from '@angular/core';
-import salvattore from 'salvattore'
-import savvior from 'savvior'
-import { MasonryModule } from 'angular2-masonry';
+import {Component, Input, OnInit} from '@angular/core';
 import {PostService} from "../../../services/post.service";
 import {IPost} from "../../../model/IPost";
 import {appConfig} from "../../../app.config";
-import {post} from "selenium-webdriver/http";
 import {AuthService} from "../../../services/auth.service";
 import {Params} from "../../../model/Params";
-
-declare let $: any;
+import {IUser} from "../../../model/IUser";
 
 
 @Component({
@@ -29,6 +24,7 @@ export class PostFeedComponent implements OnInit {
   private hasFilteredFeed: boolean;
 
 
+  private user: IUser = null;
 
   private userLogged: boolean;
 
@@ -46,11 +42,26 @@ export class PostFeedComponent implements OnInit {
 
 
 
-  constructor(private postService: PostService, private authService: AuthService) {}
+  constructor(
+    private postService: PostService,
+    private authService: AuthService) {}
 
-  public ngOnInit():void {
-    this.reset();
-    this.userLogged = this.authService.isLoggedIn();
+  public ngOnInit(): void {
+    this.reset(true);
+    //this.userLogged = this.authService.isLoggedIn();
+    this.userLogged = false;
+
+    this.authService.getLoggedUser().subscribe(
+      user => {
+        this.user = user;
+
+        if(user != null) {
+          this.userLogged = true;
+        }
+
+        this.loadPosts();
+      }
+    );
 
     this.postService.postsLoaded$.subscribe(
       posts => {
@@ -58,8 +69,10 @@ export class PostFeedComponent implements OnInit {
       }
     );
 
+
     this.authService.userLoggedIn$.subscribe (
       user => {
+        this.user = user;
         this.userLogged = !!user;
       }
     );
@@ -72,7 +85,6 @@ export class PostFeedComponent implements OnInit {
       }
     );
 
-    this.loadPosts();
   }
 
   private loadPosts():void {
@@ -91,6 +103,15 @@ export class PostFeedComponent implements OnInit {
     this.loadingPostSubscription = this.postService.getPosts(this.params, this.receivedPostCount)
       .subscribe(
         posts => {
+
+          if(this.user != null) {
+            posts = this.postService.updatePostsRated(posts, this.user.id);
+          }
+
+          console.log("------------ posts: ");
+          console.log(posts);
+
+
           let postCount = posts.length;
 
           if(postCount <= 0) {

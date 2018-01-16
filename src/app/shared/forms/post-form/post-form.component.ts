@@ -1,6 +1,7 @@
 import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {PostService} from "../../../services/post.service";
 import {IPost} from "../../../model/IPost";
+import {Router} from "@angular/router";
 
 declare let $: any;
 
@@ -12,14 +13,11 @@ declare let $: any;
 export class PostFormComponent implements OnInit, AfterViewInit {
 
   private post: any = {
-    id: -1,
-    title: '',
-    body: '',
-    image: '',
-    tags: [],
-    rating: 0,
-    tag: ''
+
   };
+
+  private isEditingPost: boolean = false;
+
 
   @ViewChild('component')
   private component: ElementRef;
@@ -28,21 +26,63 @@ export class PostFormComponent implements OnInit, AfterViewInit {
 
 
 
-  constructor(private postService: PostService) { }
+  constructor(
+    private postService: PostService,
+    private router: Router) {}
 
-  ngOnInit() { }
+  private init(): void {
+    this.post = {
+      id: -1,
+      title: '',
+      body: '',
+      image: '',
+      tags: [],
+      tag: ''
+    };
 
-  addTag($event): void {
-    this.post.tags.push(this.post.tag.toLowerCase());
+    this.isEditingPost = false;
+  }
+
+  public ngOnInit() {
+    this.init();
+
+    this.postService.modalOpened$.subscribe(
+      post => {
+
+        if(post == null) {
+          this.init();
+          return;
+        }
+
+
+        this.isEditingPost = true;
+
+        this.post.id = post.id;
+        this.post.title = post.title;
+        this.post.body = post.body;
+        //this.post.image
+        this.post.tags = [];
+
+        for(let t of post.tags) {
+          this.post.tags.push(t['name']);
+        }
+
+        this.modal.open();
+      }
+    )
+  }
+
+  private addTag($event): void {
+    this.post.tags.push(this.post.tag.toLowerCase().replace(/^\s+|\s+$/g, ''));
     this.post.tag = '';
   }
 
-  removeTag($event):void {
+  private removeTag($event):void {
     let clickedTag = $event.currentTarget.innerHTML;
     this.removeFromArray(this.post.tags, clickedTag);
   }
 
-  fileSelected(image) {
+  private fileSelected(image) {
     if(image) {
       this.post.image = image.name;
     } else {
@@ -50,7 +90,7 @@ export class PostFormComponent implements OnInit, AfterViewInit {
     }
   }
 
-  removeImg(): any {
+  private removeImg(): any {
     this.post.image = "";
   }
 
@@ -61,17 +101,32 @@ export class PostFormComponent implements OnInit, AfterViewInit {
     }
   }
 
-  submitPost(): void {
-    this.postService.createPost(this.post).subscribe(
-      value => {
-        console.log("--- submitted post");
-        console.log(value);
-      }
-    );
+  private submitPost(): void {
+    delete this.post.tag;
+
+    if(this.isEditingPost) {
+
+      this.postService.updatePost(this.post).subscribe (
+        (post: IPost) => {
+          this.post = post;
+          this.isEditingPost = false;
+        }
+      );
+
+    } else {
+
+      delete this.post.id;
+
+      this.postService.createPost(this.post).subscribe (
+        () => this.router.navigate(['discover'])
+      );
+
+    }
+
     this.modal.close();
   }
 
-  ngAfterViewInit() {
+  public ngAfterViewInit() {
     if(this.modal == null) {
       this.modal = $(this.component.nativeElement).remodal();
     }

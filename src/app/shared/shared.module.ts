@@ -8,6 +8,7 @@ import {SignUpFormComponent} from './forms/sign-up-form/sign-up-form.component';
 import { SignInFormComponent } from './forms/sign-in-form/sign-in-form.component';
 import { PostFormComponent } from './forms/post-form/post-form.component';
 import { ImgComponent } from './layout/img/img.component';
+import { CommentFormComponent } from './forms/comment-form/comment-form.component';
 
 @NgModule({
   imports: [
@@ -21,7 +22,8 @@ import { ImgComponent } from './layout/img/img.component';
     SignUpFormComponent,
     SignInFormComponent,
     PostFormComponent,
-    ImgComponent
+    ImgComponent,
+    CommentFormComponent
   ]
 })
 export class SharedModule { }

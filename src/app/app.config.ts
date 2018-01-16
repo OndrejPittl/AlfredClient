@@ -37,7 +37,7 @@ export const appConfig: any = {
         loggedOnly: true
       }
     ],
-   secondary: [
+    secondary: [
      {
        identifier: 'discover',
        slug: 'discover',
@@ -49,6 +49,6 @@ export const appConfig: any = {
        title: 'friends',
        loggedOnly: true
      }
-   ]
+    ]
   }
 };

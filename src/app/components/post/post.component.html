@@ -3,90 +3,44 @@
 
     <h2 *ngIf="post.title" class="post__title">{{post.title}}</h2>
 
+    <div>
+      <a class="post__author" routerLink="/profile/{{post.user.slug}}">– {{post.user.firstName}} {{post.user.lastName}} –</a>
+    </div>
+
     <header class="post__header">
 
-      <a *ngIf="userLogged" href="" class="post__rating">
-        <span *ngIf="post.rating">{{post.rating}}</span>
+      <a *ngIf="userLogged" class="post__rating" [ngClass]="{'post__rating--active': post.userRated }" (click)="togglePostRating(post.id)">
+        <span *ngIf="post.rating">{{post.rating.length}}</span>
       </a>
 
-      <app-img *ngIf="post.image" [imgPath]="post.image" [withClass]="'post__image'" [isImg]="true"></app-img>
-
-      <ul *ngIf="post.tags" class="post__tag-list">
-        <li class="post__tag" *ngFor="let tag of post.tags">
-          <a routerLink="/tag/{{tag}}">#{{tag}}</a>
-        </li>
-      </ul>
+      <div class="post__image-wrapper">
+        <app-img *ngIf="post.image" [imgPath]="post.image" [withClass]="'post__image'" [isImg]="true"></app-img>
+      </div>
     </header>
 
     <div *ngIf="post.body" class="post__content">
       <p class="post__body">{{post.body}}</p>
     </div>
 
-    <div class="post__footer">
-      <a class="post__author" routerLink="/profile/{{post.author}}">{{post.author}}</a>
+    <ul *ngIf="post.tags" class="post__tag-list">
+      <li class="post__tag" *ngFor="let tag of post.tags">
+        <a routerLink="/tag/{{tag.name}}">#{{tag.name}}</a>
+      </li>
+    </ul>
+
+    <div class="post__controls" *ngIf="userLogged && user != null && post.user.id == user.id">
+      <a class="post__control-item" (click)="editPost()">(edit)</a>
+      <a class="post__control-item" (click)="deletePost()">(delete)</a>
     </div>
   </div>
 
-  <div class="comment-wrapper">
-    <h3>Comments:</h3>
-    <form class="form form--comment" action="">
-      <div class="form__row">
-        <div class="form__col">
-          <div class="form__btn-group">
-            <textarea name="" disabled></textarea>
-            <button class="btn" type="submit" disabled>Comment</button>
-          </div>
+  <div *ngIf="!postLoaded" class="loader"></div>
 
-        </div>
-      </div>
-    </form>
-    <ul>
-      <li>
-        <div class="comment">
-          <header class="comment__header">
-            <a href="#" class="comment__name">Albert Einstein</a>
-          </header>
-          <div class="comment__content">
-            <img src="http://via.placeholder.com/50x50" alt="" class="comment__image">
-            <p class="commet__body">Lorem ipsum dolor sit amet, consectetur adipisicing elit. At atque cupiditate, dolorem earum eius est explicabo id illum inventore laudantium magni maiores nobis numquam pariatur quibusdam sequi, similique? Eius, quia?</p>
-          </div>
-        </div>
-      </li>
-      <li>
-        <div class="comment">
-          <header class="comment__header">
-            <a href="#" class="comment__name">Albert Einstein</a>
-          </header>
-          <div class="comment__content">
-            <img src="http://via.placeholder.com/50x50" alt="" class="comment__image">
-            <p class="commet__body">Lorem ipsum dolor sit amet, consectetur adipisicing elit. At atque cupiditate, dolorem earum eius est explicabo id illum inventore laudantium magni maiores nobis numquam pariatur quibusdam sequi, similique? Eius, quia?</p>
-          </div>
-        </div>
-      </li>
-      <li>
-        <div class="comment">
-          <header class="comment__header">
-            <a href="#" class="comment__name">Albert Einstein</a>
-          </header>
-          <div class="comment__content">
-            <img src="http://via.placeholder.com/50x50" alt="" class="comment__image">
-            <p class="commet__body">Lorem ipsum dolor sit amet, consectetur adipisicing elit. At atque cupiditate, dolorem earum eius est explicabo id illum inventore laudantium magni maiores nobis numquam pariatur quibusdam sequi, similique? Eius, quia?</p>
-          </div>
-        </div>
-      </li>
-      <li>
-        <div class="comment">
-          <header class="comment__header">
-            <a href="#" class="comment__name">Albert Einstein</a>
-          </header>
-          <div class="comment__content">
-            <img src="http://via.placeholder.com/50x50" alt="" class="comment__image">
-            <p class="commet__body">Lorem ipsum dolor sit amet, consectetur adipisicing elit. At atque cupiditate, dolorem earum eius est explicabo id illum inventore laudantium magni maiores nobis numquam pariatur quibusdam sequi, similique? Eius, quia?</p>
-          </div>
-        </div>
-      </li>
-    </ul>
+  <div *ngIf="postLoaded && !post">
+    <h3>Post not found!</h3>
   </div>
+
+  <app-post-comments *ngIf="post && userLogged" [user]="user" [userLogged]="userLogged" [post]="post"></app-post-comments>
 </div>
 
 

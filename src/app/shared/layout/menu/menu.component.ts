@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import {UserService} from "../../../services/user.service";
 import {AuthService} from "../../../services/auth.service";
+import {PostService} from "../../../services/post.service";
 
 declare let $: any;
 
@@ -20,8 +21,12 @@ export class MenuComponent implements OnInit {
   private userLogged: boolean;
 
 
-  constructor() { }
+  constructor(private postService: PostService) { }
 
   ngOnInit() { }
+
+  private newPostTriggered(): void {
+    this.postService.registerNewPostModal();
+  }
 
 }

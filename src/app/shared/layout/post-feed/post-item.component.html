@@ -1,8 +1,8 @@
 <div class="post">
   <div class="post__container">
     <header class="post__header">
-      <a *ngIf="userLogged" href="" class="post__rating">
-        <span *ngIf="post.rating">{{post.rating}}</span>
+      <a *ngIf="userLogged" class="post__rating" [ngClass]="{'post__rating--active': post.userRated }" (click)="togglePostRating(post.id)">
+        <span *ngIf="post.rating">{{post.rating.length}}</span>
       </a>
       <a *ngIf="post.image" routerLink="/post/{{post.id}}">
         <img class="post__image" src="{{post.image}}" alt="">
@@ -14,7 +14,7 @@
       </h3>
       <p *ngIf="post.body" class="post__body">{{post.body}}</p>
       <p class="post__author">
-        <a routerLink="/profile/{{post?.author}}">– {{post?.author}} –</a>
+        <a routerLink="/profile/{{post.user?.slug}}">– {{post.user?.firstName}} {{post.user?.lastName}} –</a>
       </p>
     </div>
     <div *ngIf="!post.title && !post.body" class="post__author post__author--overlay">
@@ -23,7 +23,7 @@
     <footer class="post__footer">
       <ul *ngIf="post.tags" class="post__tag-list">
         <li class="post__tag" *ngFor="let tag of post.tags">
-          <a routerLink="/tag/{{tag}}">#{{tag}}</a>
+          <a routerLink="/tag/{{tag.name}}">#{{tag.name}}</a>
         </li>
       </ul>
     </footer>

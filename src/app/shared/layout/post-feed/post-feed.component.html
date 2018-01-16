@@ -2,7 +2,7 @@
 <div [hidden]="hasFilteredFeed" class="feed__divider feed__divider--tiny"></div>
 
 <h2 *ngIf="title">{{title}}</h2>
-<div class="feed{{!!modifier ? ' feed--' + modifier : ''}}"
+<div *ngIf="posts && posts.length > 0" class="feed{{!!modifier ? ' feed--' + modifier : ''}}"
      infiniteScroll
      [infiniteScrollDistance]="2"
      [infiniteScrollThrottle]="500"
@@ -14,7 +14,7 @@
     </masonry>
 </div>
 <div *ngIf="postRequestsFailed" class="feed__divider"></div>
-<div *ngIf="!postRequestsFailed" class="feed__loader"></div>
+<div *ngIf="!postRequestsFailed" class="loader"></div>
 <p class="feed__note">
   <span [hidden]="posts.length > 0">– No posts. –</span>
   <a *ngIf="postRequestsFailed" class="feed__load-more" (click)="forceLoadPosts($event)"></a>

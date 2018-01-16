@@ -1,0 +1,22 @@
+<div class="comment-wrapper">
+  <h3>Comments:</h3>
+  <ul class="comment-list">
+    <li class="comment-list__item" *ngFor="let comment of post.comments">
+      <div class="comment">
+        <header class="comment__header">
+          <a routerLink="/profile/{{comment.user.slug}}" class="comment__name">{{comment.user.firstName}} {{comment.user.lastName}}</a>
+          <a *ngIf="isMe(comment.user?.id)" class="comment__action" (click)="deleteComment(comment.id)">(delete)</a>
+          <a *ngIf="isMe(comment.user?.id)" class="comment__action" (click)="editComment(comment)">(edit) </a>
+        </header>
+        <div class="comment__container">
+          <a routerLink="/profile/{{comment.user.slug}}" class="comment__image" style="background-image: url('http://via.placeholder.com/50x50')"></a>
+          <div class="comment__content">
+            <p class="comment__body">{{comment.body}}</p>
+            <p class="comment__date">{{comment.date | date:'H:mm, dd. MM. yyyy'}} <span *ngIf="comment.lastModified">(last modified: {{comment.lastModified | date:'H:mm, dd. MM. yyyy'}})</span></p>
+          </div>
+        </div>
+      </div>
+    </li>
+  </ul>
+  <app-comment-form [post]="post" [comment]="editedComment" [isEditing]="isEditing"></app-comment-form>
+</div>

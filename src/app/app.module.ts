@@ -25,6 +25,8 @@ import { RatedComponent } from './components/rated/rated.component';
 import { PostFeedComponent } from './shared/layout/post-feed/post-feed.component';
 import { SignUpFormComponent } from './shared/forms/sign-up-form/sign-up-form.component';
 import { SignInFormComponent } from './shared/forms/sign-in-form/sign-in-form.component';
+import { CommentFormComponent} from "./shared/forms/comment-form/comment-form.component";
+import { PostCommentsComponent } from './shared/layout/post-comments/post-comments.component';
 import {MasonryModule} from "angular2-masonry";
 import {PostFormComponent} from "./shared/forms/post-form/post-form.component";
 import {InfiniteScrollModule} from "ngx-infinite-scroll";
@@ -41,6 +43,8 @@ import {AuthService} from "./services/auth.service";
 import {ImgComponent} from "./shared/layout/img/img.component";
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {CustomHttpInterceptor} from "./services/http-interceptor";
+import {CommentService} from "./services/comment.service";
+import {RatingService} from "./services/rating.service";
 
 
 @NgModule({
@@ -64,7 +68,9 @@ import {CustomHttpInterceptor} from "./services/http-interceptor";
     SignInFormComponent,
     PostFormComponent,
     EqualityValidatorDirective,
-    ImgComponent
+    ImgComponent,
+    PostCommentsComponent,
+    CommentFormComponent
   ],
   imports: [
     MasonryModule,
@@ -82,6 +88,8 @@ import {CustomHttpInterceptor} from "./services/http-interceptor";
     AuthService,
     routingProviders,
     AuthGuard,
+    CommentService,
+    RatingService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: CustomHttpInterceptor,

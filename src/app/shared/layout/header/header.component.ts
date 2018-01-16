@@ -86,7 +86,7 @@ export class HeaderLayoutComponent implements OnInit {
       this.resetUser();
       this.authService.logout();
     } else {
-      this.router.navigate(['welcome']);
+      this.authService.kickoff();
     }
   }
 }

@@ -8,6 +8,8 @@ import {Subject} from "rxjs/Subject";
 import {AuthService} from "./auth.service";
 import {Params} from "../model/Params";
 import {PostSource} from "../model/PostSource";
+import {CommentService} from "./comment.service";
+import {IUser} from "../model/IUser";
 
 @Injectable()
 export class PostService {
@@ -20,16 +22,30 @@ export class PostService {
   private postFilter = new Subject<IPost[]>();
   postFilter$ = this.postFilter.asObservable();
 
+  private modalOpened = new Subject<IPost>();
+  modalOpened$ = this.modalOpened.asObservable();
+
+  /*
+  private postsUpdated = new Subject<IPost[]>();
+  postsUpdated$ = this.postsUpdated.asObservable();
+  */
+
+
   private static API_ENDPOINT: string = 'http://localhost:8080/posts';
+
+  private user: IUser = {} as IUser;
+
 
 
   constructor(
     private http:HttpClient,
-    private authService: AuthService) { }
+    private authService: AuthService,
+    private commentService: CommentService) {}
 
 
   public getPost(id: number): Observable<IPost> {
-    return this.http.get(PostService.API_ENDPOINT + '/' + id);
+    return this.http.get(PostService.API_ENDPOINT + '/' + id)
+      .map((post:IPost) => this.modifyPost(post));
   }
 
   public getPosts(params: Params, offset: number = 0): Observable<IPost[]> {
@@ -84,7 +100,8 @@ export class PostService {
     }
 
     console.log('endpoint: ' + endpoint);
-    return this.http.get(endpoint);
+    return this.http.get<IPost[]>(endpoint)
+      .map(posts => this.modifyPosts(posts));
 
     /*
     return this.http.get(endpoint).map(value => {
@@ -93,57 +110,42 @@ export class PostService {
     */
   }
 
+  /*
   // @TODO: userId
   public getPostsByUser(slug: number): Observable<IPost[]> {
-    return this.http.get(PostService.API_ENDPOINT + '?author=' + slug);
-
-    /*
-    return this.http.get(PostService.API_ENDPOINT + '?author=' + slug)
-      .map(value => {
-        return value.json() || {}
-    });
-    */
+    return this.http.get<IPost[]>(PostService.API_ENDPOINT + '?author=' + slug)
+      .map(posts => this.modifyPosts(posts));
   }
 
   public getPostByTag(tag: string): Observable<IPost[]> {
-    return this.http.get(PostService.API_ENDPOINT + '?tags_like=' + tag);
+    return this.http.get<IPost[]>(PostService.API_ENDPOINT + '?tags_like=' + tag)
+      .map(posts => this.modifyPosts(posts));
+  }
+  */
 
-    /*
-    return this.http.get(PostService.API_ENDPOINT + '?tags_like=' + tag)
-      .map(value => {
-        return value.json() || {}
+  public createPost(post: IPost): Observable<IPost[]> {
+    let p: IPost = { ...post };
+    p.image = "http://via.placeholder.com/1000x1000";
+    return this.http.post<IPost[]>(PostService.API_ENDPOINT, p)
+      .map(posts => {
+        this.postsLoaded.next(posts);
+        return posts;
       });
-    */
   }
 
-  public createPost(post: IPost): Observable<any> {
-    return this.authService.getLoggedUser().map(
-      user => {
+  public updatePost(post: IPost): Observable<IPost> {
+    let p: IPost = { ...post };
 
-        //this.authService.setLoggedUser(user);
+    let endpoint: string = PostService.API_ENDPOINT + '/' + post.id;
 
-        let p: IPost = { ...post };
-        p.image = "http://via.placeholder.com/1000x1000";
-        p.rating = 0;
-        p.author = user.slug;
-        delete p.id;
+    p.image = "http://via.placeholder.com/1000x1000";
 
-        return this.http.post(PostService.API_ENDPOINT, p)
-          .subscribe(response => {
-            console.log("--- srv response:");
-            console.log(response);
-          });
-
-        /*
-        return this.http.post(PostService.API_ENDPOINT, p)
-          .map(response => response.json() || null)
-          .subscribe(response => {
-            console.log("--- srv response:");
-            console.log(response);
-          });
-        */
-      }
-    );
+    return this.http.put<IPost>(endpoint, p)
+      .map(post => {
+        let posts: IPost[] = [post];
+        this.postsLoaded.next(posts);
+        return post;
+      })
   }
 
   public registerFiltering(filter: any) {
@@ -158,15 +160,6 @@ export class PostService {
     }
 
     console.log(endpoint);
-
-    /*
-    this.http.get(endpoint)
-      .map(
-        posts => {
-          return  posts.json() || {};
-        }
-      ).subscribe(posts => this.postsLoaded.next(posts) );
-      */
 
     this.http.get(endpoint).subscribe(posts => {
       // TODO: castění
@@ -206,4 +199,71 @@ export class PostService {
     return query;
   }
 
+  public modifyPosts(posts: IPost[]):IPost[] {
+    for(let i = 0; i < posts.length; i++) {
+      posts[i] = this.modifyPost(posts[i]);
+    }
+    return posts;
+  }
+
+  public modifyPost(post: IPost): IPost {
+    post.date = this.modifyPostDate(new Date(post.date));
+
+    if(post.lastModified != null) {
+      post.lastModified = this.modifyPostDate(new Date(post.lastModified));
+    }
+
+    post.comments = this.commentService.modifyComments(post.comments);
+
+
+    /*
+    if(post.rating != null && post.rating.length > 0) {
+      for(let r: number = 0; r < post.rating.length; r++) {
+        if(post.rating[r] == this.user.id) {
+          post.userRated = true;
+          break;
+        }
+      }
+    }
+    */
+
+
+    return post;
+  }
+
+  private modifyPostDate(date: Date): Date {
+    date.setHours(date.getHours() + 1);
+    return date;
+  }
+
+  public updatePostsRated(posts: IPost[], uid: number): IPost[] {
+      for(let i: number = 0; i < posts.length; i++) {
+        this.updatePostRated(posts[i], uid);
+      }
+
+      return posts;
+  }
+
+  public updatePostRated(post: IPost, uid: number): IPost {
+    post.userRated = post.rating.indexOf(uid) >= 0;
+    return post;
+  }
+
+  public registerEditing(post: IPost): void {
+    this.modalOpened.next(post);
+  }
+
+  public registerNewPostModal(): void {
+    console.log("POST EDIT STOP REGISTERED");
+    this.modalOpened.next(null);
+  }
+
+  public deletePost(postId: number): Observable<IPost[]> {
+    let endpoint: string = PostService.API_ENDPOINT + '/' + postId;
+    return this.http.delete<IPost[]>(endpoint)
+      .map((posts: IPost[]) => {
+        this.postsLoaded.next(posts);
+        return posts;
+      });
+  }
 }
