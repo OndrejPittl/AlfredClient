@@ -11,10 +11,6 @@ export class RatingService {
 
   private static API_ENDPOINT: string = 'http://localhost:8080/posts';
 
-  /*
-  private commentEdited = new Subject<IComment[]>();
-  commentEdited$ = this.commentEdited.asObservable();
-  */
 
   constructor (private http:HttpClient, private postService: PostService) { }
 

@@ -1,5 +1,5 @@
 <header class="header">
-  <a href="#" class="header__sign-in-out" (click)="signInOut($event)">{{userLogged ? 'Sign out' : 'Sign in'}}</a>
+  <a href="#" class="header__sign-in-out" (click)="signInOut($event)" tabindex="1">{{userLogged ? 'Sign out' : 'Sign in'}}</a>
 
   <div class="header__logo-wrapper">
 
@@ -9,6 +9,22 @@
     <a *ngIf="loggedUser" routerLink="/discover" class="header__logo"></a>
     <a *ngIf="!loggedUser" routerLink="/welcome" class="header__logo"></a>
     -->
+  </div>
+
+
+  <div *ngIf="userLogged && user != null" class="header__notifications">
+    <ul class="notifications" *ngIf="user.inFReqs.length > 0">
+      <li class="notification__item notification__item--label">New friend requests:</li>
+      <li *ngFor="let u of user.inFReqs" class="notification__item">
+        <a routerLink="/profile/{{u.slug}}">{{u.firstName}} {{u.lastName}}</a>
+      </li>
+    </ul>
+    <ul class="notifications notifications--informing" *ngIf="user.outFReqs.length > 0">
+      <li class="notification__item notification__item--label">Pending friend requests:</li>
+      <li *ngFor="let u of user.outFReqs" class="notification__item">
+        <a routerLink="/profile/{{u.slug}}">{{u.firstName}} {{u.lastName}}</a>
+      </li>
+    </ul>
   </div>
 
   <div class="header__menu">

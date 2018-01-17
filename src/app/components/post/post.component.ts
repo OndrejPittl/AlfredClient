@@ -12,6 +12,8 @@ import {RatingService} from "../../services/rating.service";
 })
 export class PostComponent implements OnInit, OnDestroy {
 
+  private alive: boolean = true;
+
   private user: IUser = null;
 
   private userLogged: boolean = false;
@@ -38,21 +40,28 @@ export class PostComponent implements OnInit, OnDestroy {
     this.userLogged = false;
 
     this.authService.getLoggedUser()
+      .takeWhile(() => this.alive)
       .subscribe(user => {
         this.registerUserLoggedChange(user);
         this.loadPost();
       }
     );
 
-    this.authService.userLoggedIn$.subscribe (
+    this.authService.userLoggedIn$
+      .takeWhile(() => this.alive)
+      .subscribe (
       user => this.registerUserLoggedChange(user)
     );
 
-    this.authService.userLoggedOut$.subscribe (
+    this.authService.userLoggedOut$
+      .takeWhile(() => this.alive)
+      .subscribe (
       () => this.registerUserLoggedChange(null)
     );
 
-    this.postService.postsLoaded$.subscribe(
+    this.postService.postsLoaded$
+      .takeWhile(() => this.alive)
+      .subscribe(
       (posts: IPost[]) => {
         if(posts.length > 0) {
           this.post = posts[0];
@@ -62,15 +71,14 @@ export class PostComponent implements OnInit, OnDestroy {
     })
   }
 
-  ngOnDestroy() {
-
-  }
-
   private loadPost(): void {
-    this.route.params.subscribe(params => {
+    this.route.params
+      .takeWhile(() => this.alive)
+      .subscribe(params => {
       this.postID = +params['id'];
 
       this.postService.getPost(this.postID)
+        .takeWhile(() => this.alive)
         .subscribe(
           post => {
 
@@ -112,6 +120,7 @@ export class PostComponent implements OnInit, OnDestroy {
     let hasRated: boolean = this.post.userRated;
 
     this.ratingService.togglePostRating(postId, hasRated)
+      .takeWhile(() => this.alive)
       .subscribe((post: IPost) => {
         this.post = post;
         this.post.userRated = !hasRated;
@@ -124,6 +133,11 @@ export class PostComponent implements OnInit, OnDestroy {
 
   private deletePost() {
     this.postService.deletePost(this.post.id)
+      .takeWhile(() => this.alive)
       .subscribe(() => this.router.navigate(['discover']));
+  }
+
+  public ngOnDestroy(): void {
+    this.alive = false;
   }
 }

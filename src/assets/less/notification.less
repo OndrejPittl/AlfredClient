@@ -1,0 +1,49 @@
+// main: ./main.less
+
+.notifications {
+  .clearfix;
+  margin: 5px 0;
+
+  &--informing {
+
+
+  }
+}
+
+.notification__item {
+  display: inline-block;
+  margin: 0 5px;
+
+  &:not(&--label) {
+    .font-size(@font-size--paragraph);
+    background-color: @color--primary;
+    border-radius: 5px;
+    color: @color--white !important;
+    margin: 2px 5px;
+    padding: 2px 5px;
+
+    -webkit-transition: padding .15s, margin .15s;
+    transition: padding .15s, margin .15s;
+
+
+
+    &:hover {
+      margin: 0 0;
+      padding: 4px 10px;
+
+      a {
+        color: @color--white;
+      }
+    }
+
+    .notifications--informing & {
+      background-color: @color--grey;
+      color: @color--black;
+    }
+  }
+
+  &--label {
+    .font-size(@font-size--footer);
+    color: @color--dark-grey;
+  }
+}

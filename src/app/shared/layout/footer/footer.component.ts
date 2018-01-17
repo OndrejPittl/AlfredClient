@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {appConfig} from "../../../app.config";
 import {AuthService} from "../../../services/auth.service";
 import {IUser} from "../../../model/IUser";
@@ -8,7 +8,9 @@ import {IUser} from "../../../model/IUser";
   templateUrl: './footer.component.html'
 })
 
-export class FooterLayoutComponent implements OnInit {
+export class FooterLayoutComponent implements OnInit, OnDestroy {
+
+  private alive: boolean = true;
 
   public secondaryMenuItems: any[];
 
@@ -25,11 +27,15 @@ export class FooterLayoutComponent implements OnInit {
 
     this.userLogged = this.authService.isLoggedIn();
 
-    this.authService.userLoggedIn$.subscribe(
+    this.authService.userLoggedIn$
+      .takeWhile(() => this.alive)
+      .subscribe(
       user => this.userLogged = !!user
     );
 
-    this.authService.userLoggedOut$.subscribe(
+    this.authService.userLoggedOut$
+      .takeWhile(() => this.alive)
+      .subscribe(
       () => this.userLogged = false
     );
   }
@@ -38,4 +44,8 @@ export class FooterLayoutComponent implements OnInit {
     this.secondaryMenuItems = appConfig.menu.secondary;
   }
 
+
+  ngOnDestroy(): void {
+    this.alive = false;
+  }
 }

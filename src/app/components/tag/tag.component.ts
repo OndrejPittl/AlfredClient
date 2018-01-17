@@ -9,7 +9,9 @@ import {PostFeedPage} from "../PostFeedPage";
   selector: 'app-tag',
   templateUrl: './tag.component.html'
 })
-export class TagComponent extends PostFeedPage implements OnInit {
+export class TagComponent extends PostFeedPage implements OnInit, OnDestroy {
+
+  private alive: boolean = true;
 
   private tag: string;
 
@@ -21,10 +23,17 @@ export class TagComponent extends PostFeedPage implements OnInit {
   ngOnInit() {
     this.params.postSource = PostSource.TAG;
 
-    this.route.params.subscribe(params => {
+    this.route.params
+      .takeWhile(() => this.alive)
+      .subscribe(params => {
       this.tag = params['tag'];
       this.params.addFilterParam('tag', this.tag);
       this.title = 'Searching for a #' + this.tag;
     });
+  }
+
+
+  ngOnDestroy(): void {
+    this.alive = false;
   }
 }

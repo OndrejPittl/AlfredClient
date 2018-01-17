@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {PostService} from "../../../services/post.service";
 import {IPost} from "../../../model/IPost";
 import {appConfig} from "../../../app.config";
@@ -12,7 +12,11 @@ import {IUser} from "../../../model/IUser";
   templateUrl: './post-feed.component.html'
 })
 
-export class PostFeedComponent implements OnInit {
+export class PostFeedComponent implements OnInit, OnDestroy {
+
+  // mass unsubscription
+  private alive: boolean = true;
+
 
   @Input()
   private params: Params;
@@ -40,6 +44,8 @@ export class PostFeedComponent implements OnInit {
 
   private loadingPostSubscription: any = null;
 
+  private requestedCounter: number;
+
 
 
   constructor(
@@ -51,7 +57,11 @@ export class PostFeedComponent implements OnInit {
     //this.userLogged = this.authService.isLoggedIn();
     this.userLogged = false;
 
-    this.authService.getLoggedUser().subscribe(
+    console.log("zzzzzzzz post-feed");
+
+    this.authService.getLoggedUser()
+      .takeWhile(() => this.alive)
+      .subscribe(
       user => {
         this.user = user;
 
@@ -63,22 +73,29 @@ export class PostFeedComponent implements OnInit {
       }
     );
 
-    this.postService.postsLoaded$.subscribe(
+    this.postService.postsLoaded$
+      .takeWhile(() => this.alive)
+      .subscribe(
       posts => {
         this.posts = posts;
       }
     );
 
 
-    this.authService.userLoggedIn$.subscribe (
+    this.authService.userLoggedIn$
+      .takeWhile(() => this.alive)
+      .subscribe (
       user => {
         this.user = user;
         this.userLogged = !!user;
       }
     );
 
-    this.postService.postFilter$.subscribe(
+    this.postService.postFilter$
+      .takeWhile(() => this.alive)
+      .subscribe(
       filterParams => {
+        console.log("FILTERING REGISTERED");
         this.reset(true);
         this.params.filterParams = filterParams;
         this.loadPosts();
@@ -101,6 +118,7 @@ export class PostFeedComponent implements OnInit {
     console.log("loading posts...");
 
     this.loadingPostSubscription = this.postService.getPosts(this.params, this.receivedPostCount)
+      .takeWhile(() => this.alive)
       .subscribe(
         posts => {
 
@@ -117,17 +135,19 @@ export class PostFeedComponent implements OnInit {
           if(postCount <= 0) {
             this.failPostRequestCounter++;
             this.loadingPosts = false;
+            this.requestedCounter++;
+            console.log("+++++++");
             return;
           }
 
           this.receivedPostCount += postCount;
           this.posts = this.posts.concat(posts);
           this.loadingPosts = false;
+          this.requestedCounter++;
+          console.log("+++++++");
         },
 
         error => {
-
-
 
         }
     );
@@ -137,6 +157,7 @@ export class PostFeedComponent implements OnInit {
     this.failPostRequestCounter = 0;
     this.postRequestsFailed = false;
     this.loadingPosts = false;
+    this.requestedCounter = 0;
 
     if(this.loadingPostSubscription != null) {
       this.loadingPostSubscription.unsubscribe();
@@ -153,5 +174,9 @@ export class PostFeedComponent implements OnInit {
     e.preventDefault();
     this.reset(false);
     this.loadPosts();
+  }
+
+  public ngOnDestroy(): void {
+    this.alive = false;
   }
 }

@@ -1,14 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {AuthService} from "../../../services/auth.service";
 import {appConfig} from "../../../app.config";
 import {IUser} from "../../../model/IUser";
 import {Router} from "@angular/router";
+import {UserService} from "../../../services/user.service";
 
 @Component({
   selector: 'app-layout-header',
   templateUrl: './header.component.html'
 })
-export class HeaderLayoutComponent implements OnInit {
+export class HeaderLayoutComponent implements OnInit, OnDestroy {
+
+  private alive: boolean = true;
 
   public primaryMenuItems: any[];
 
@@ -23,14 +26,16 @@ export class HeaderLayoutComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
+    private userService: UserService,
     private router: Router
   ) { }
 
   ngOnInit() {
     this.init();
 
-    this.authService.getLoggedUser().subscribe(user => {
-
+    this.authService.getLoggedUser()
+      .takeWhile(() => this.alive)
+      .subscribe(user => {
       if(user == null) {
         return;
       }
@@ -40,7 +45,9 @@ export class HeaderLayoutComponent implements OnInit {
       this.addUserProfileMenuItem();
     });
 
-    this.authService.userLoggedIn$.subscribe(
+    this.authService.userLoggedIn$
+      .takeWhile(() => this.alive)
+      .subscribe(
       user => {
         this.user = user;
         this.userLogged = true;
@@ -48,17 +55,38 @@ export class HeaderLayoutComponent implements OnInit {
       }
     );
 
-    this.authService.userLoggedOut$.subscribe(
-      () => {
-        console.log("Header: logged OUT");
-        this.resetUser();
-      }
-    );
+    this.authService.userLoggedOut$
+      .takeWhile(() => this.alive)
+      .subscribe(
+        () => {
+          console.log("Header: logged OUT");
+          console.log(this.primaryMenuItems);
+          this.init();
+          console.log(this.primaryMenuItems);
+        }
+      );
+
+    this.userService.userUpdated$
+      .takeWhile(() => this.alive)
+      .subscribe(
+        (user: IUser) => {
+          this.user = user;
+          console.log("HEQADER: detected user updated");
+          console.log(user);
+        }
+      );
   }
 
   private init(): void {
     this.resetUser();
-    this.primaryMenuItems = appConfig.menu.primary;
+    this.userProfileItemAdded = false;
+    //this.primaryMenuItems = appConfig.menu.primary
+
+    this.primaryMenuItems = [];
+    for(let item of appConfig.menu.primary) {
+      this.primaryMenuItems.push({...item});
+    }
+
   }
 
   private addUserProfileMenuItem(user: IUser = this.user): void {
@@ -88,5 +116,10 @@ export class HeaderLayoutComponent implements OnInit {
     } else {
       this.authService.kickoff();
     }
+  }
+
+
+  ngOnDestroy(): void {
+    this.alive = false;
   }
 }

@@ -14,10 +14,10 @@
     </masonry>
 </div>
 <div *ngIf="postRequestsFailed" class="feed__divider"></div>
-<div *ngIf="!postRequestsFailed" class="loader"></div>
+<div [hidden]="postRequestsFailed || (posts.length <= 0 && requestedCounter > 0)" class="loader"></div>
 <p class="feed__note">
-  <span [hidden]="posts.length > 0">– No posts. –</span>
-  <a *ngIf="postRequestsFailed" class="feed__load-more" (click)="forceLoadPosts($event)"></a>
+  <span *ngIf="posts.length <= 0 && requestedCounter > 0">– No posts. –</span>
+  <a *ngIf="postRequestsFailed || (posts.length <= 0 && requestedCounter > 0)" class="feed__load-more" (click)="forceLoadPosts($event)"></a>
 </p>
 
 

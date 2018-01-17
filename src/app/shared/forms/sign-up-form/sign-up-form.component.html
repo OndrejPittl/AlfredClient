@@ -1,52 +1,74 @@
 <form class="form" id="{{formId}}" #signUpForm="ngForm" (ngSubmit)="isSignUpForm ? signUp($event) : doEdit($event)">
-  <div class="form__row">
-    <div class="form__col">
-      <div class="form__image"></div>
-      <!--<label class="btn btn--tiny btn--link">Upload<input type="file" hidden></label>-->
-    </div>
-  </div>
-  <div class="form__row">
-    <div class="form__col form-group">
-      <input class="form-control" type="text" placeholder="first name" [(ngModel)]="user.firstName" name="firstName" #firstName="ngModel" required>
-      <div [hidden]="firstName.valid || firstName.pristine" class="alert alert-danger">First name is required.</div>
-    </div>
-    <div class="form__col">
-      <input class="form-control" type="text" placeholder="last name" [(ngModel)]="user.lastName" name="lastName" #lastName="ngModel" required>
-      <div [hidden]="lastName.valid || lastName.pristine" class="alert alert-danger">Last name is required.</div>
-    </div>
-  </div>
-  <div class="form__row">
-    <div class="form__col">
-      <input class="form-control" type="text" placeholder="e-mail" [(ngModel)]="user.email" name="email" #email="ngModel" email required>
-      <div *ngIf="email.hasError('email') && !email.pristine" class="alert alert-danger">Valid e-mail is required.</div>
-    </div>
-  </div>
-  <div class="form__row">
-    <div class="form__col">
-      <input class="form-control" type="password" placeholder="password" [(ngModel)]="user.password" name="password" #password="ngModel" validateEqual="confirmPassword" reverse="true" minlength="8" [required]="isSignUpForm">
-    </div>
-    <div class="form__col">
-      <!-- [hidden]="!password.value" -->
-      <input class="form-control" type="password" placeholder="password" [(ngModel)]="user.confirmPassword" name="confirmPassword" validateEqual="password" #confirmPassword="ngModel" [disabled]="!password.value" [required]="isSignUpForm || password.value">
-    </div>
-  </div>
-  <div class="form__row form__row--message">
-    <div class="form__col">
-      <div *ngIf="password.hasError('minlength')" class="alert alert-danger">Password must be at least 8 characters long.</div>
-      <div [hidden]="(password.valid && confirmPassword.valid) || (password.pristine && confirmPassword.pristine) || confirmPassword.disabled" class="alert alert-danger">Password is required and must be equal.</div>
-    </div>
-  </div>
-  <div class="form__row">
-    <div class="form__col">
-      <div class="form__radio-item">
-        <input type="radio" name="sex" class="" [(ngModel)]="user.sex" id="radio_sex-male" value="MALE">
-        <label for="radio_sex-male" class="form__radio-label">male</label>
+
+  <div>
+    <div class="form__row">
+      <div class="form__col">
+        <div class="form__image"></div>
+        <!--<label class="btn btn--tiny btn--link">Upload<input type="file" hidden></label>-->
       </div>
     </div>
-    <div class="form__col">
-      <div class="form__radio-item">
-        <input type="radio" name="sex" class="" [(ngModel)]="user.sex" id="radio_sex-female" value="FEMALE">
-        <label for="radio_sex-female" class="form__radio-label">female</label>
+
+    <p [hidden]="!isSignUpForm" class="form__note">required fields:</p>
+
+    <div class="form__row">
+      <div class="form__col form-group">
+        <input class="form-control" type="text" placeholder="first name*" [(ngModel)]="user.firstName" name="firstName" #firstName="ngModel" required>
+        <div [hidden]="firstName.valid || firstName.pristine" class="alert alert-danger">First name is required.</div>
+      </div>
+      <div class="form__col">
+        <input class="form-control" type="text" placeholder="last name*" [(ngModel)]="user.lastName" name="lastName" #lastName="ngModel" required>
+        <div [hidden]="lastName.valid || lastName.pristine" class="alert alert-danger">Last name is required.</div>
+      </div>
+    </div>
+    <div class="form__row">
+      <div class="form__col">
+        <input class="form-control" type="text" placeholder="e-mail*" [(ngModel)]="user.email" name="email" #email="ngModel" email required>
+        <div *ngIf="email.hasError('email') && !email.pristine" class="alert alert-danger">Valid e-mail is required.</div>
+      </div>
+    </div>
+    <div class="form__row">
+      <div class="form__col">
+        <input class="form-control" type="password" placeholder="password*" [(ngModel)]="user.password" name="password" #password="ngModel" validateEqual="confirmPassword" reverse="true" minlength="8" [required]="isSignUpForm">
+      </div>
+      <div class="form__col">
+        <!-- [hidden]="!password.value" -->
+        <input class="form-control" type="password" placeholder="password*" [(ngModel)]="user.confirmPassword" name="confirmPassword" validateEqual="password" #confirmPassword="ngModel" [disabled]="!password.value" [required]="isSignUpForm || password.value">
+      </div>
+    </div>
+    <div class="form__row form__row--message">
+      <div class="form__col">
+        <div *ngIf="password.hasError('minlength')" class="alert alert-danger">Password must be at least 8 characters long.</div>
+        <div [hidden]="(password.valid && confirmPassword.valid) || (password.pristine && confirmPassword.pristine) || confirmPassword.disabled" class="alert alert-danger">Password is required and must be equal.</div>
+      </div>
+    </div>
+    <div class="form__row" [hidden]="!isSignUpForm">
+      <div class="form__col">
+        <div class="form__radio-item">
+          <input type="radio" name="sex" class="" [(ngModel)]="user.sex" id="radio_sex-male" value="MALE">
+          <label for="radio_sex-male" class="form__radio-label">male</label>
+        </div>
+      </div>
+      <div class="form__col">
+        <div class="form__radio-item">
+          <input type="radio" name="sex" class="" [(ngModel)]="user.sex" id="radio_sex-female" value="FEMALE">
+          <label for="radio_sex-female" class="form__radio-label">female</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="form__row" [hidden]="!isSignUpForm">
+      <div class="form__col">
+        <input class="form-control" type="text" [(ngModel)]="user.captcha" name="captcha" placeholder="31 - 17 =" #captcha="ngModel" [disabled]="!isSignUpForm" required>
+      </div>
+    </div>
+  </div>
+
+  <div [hidden]="!isSignUpForm">
+    <p class="form__note">optional birth date:</p>
+    <div class="form__row">
+      <div class="form__col">
+        <input class="form-control" type="date" placeholder="(birth date)" [(ngModel)]="user.birth" pattern="^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$" name="birth" #birth="ngModel" [disabled]="!isSignUpForm">
+        <div *ngIf="!pristine && !birth.valid" class="alert alert-danger">Invalid birth date (optional).</div>
       </div>
     </div>
   </div>
@@ -64,7 +86,7 @@
   <div class="form__row">
     <div class="form__col">
       <button class="btn btn--wide" type="submit" [disabled]="!signUpForm.form.valid">{{ isSignUpForm ? "Sign Up" : "Approve edit"}}</button>
-      <label for="profile-edit" class="btn btn--wide btn--red btn--tiny" [hidden]="isSignUpForm">Cancel</label>
+      <a class="btn btn--wide btn--red btn--tiny" [hidden]="isSignUpForm" (click)="cancelEditing()">Cancel</a>
     </div>
   </div>
 </form>

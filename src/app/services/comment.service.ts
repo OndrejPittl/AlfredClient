@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Injectable, OnDestroy} from '@angular/core';
 import {Observable} from "rxjs/Observable";
 import {IPost} from "../model/IPost";
 import {HttpClient} from "@angular/common/http";
@@ -15,6 +15,7 @@ import {PostService} from "./post.service";
 export class CommentService {
 
   private static API_ENDPOINT: string = 'http://localhost:8080/comments';
+
 
   private commentEdited = new Subject<IComment[]>();
   commentEdited$ = this.commentEdited.asObservable();
@@ -70,5 +71,4 @@ export class CommentService {
         return comments;
       });
   }
-
 }

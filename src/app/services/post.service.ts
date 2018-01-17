@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Injectable, OnDestroy} from '@angular/core';
 import {Observable} from "rxjs/Observable";
 import {IPost} from "../model/IPost";
 import {HttpClient} from "@angular/common/http";
@@ -12,7 +12,9 @@ import {CommentService} from "./comment.service";
 import {IUser} from "../model/IUser";
 
 @Injectable()
-export class PostService {
+export class PostService implements OnDestroy {
+
+  private alive: boolean = true;
 
   // posts loaded
   private postsLoaded = new Subject<IPost[]>();
@@ -161,7 +163,9 @@ export class PostService {
 
     console.log(endpoint);
 
-    this.http.get(endpoint).subscribe(posts => {
+    this.http.get(endpoint)
+      .takeWhile(() => this.alive)
+      .subscribe(posts => {
       // TODO: castění
       this.postsLoaded.next(<Array<IPost>> posts)
     });
@@ -214,20 +218,6 @@ export class PostService {
     }
 
     post.comments = this.commentService.modifyComments(post.comments);
-
-
-    /*
-    if(post.rating != null && post.rating.length > 0) {
-      for(let r: number = 0; r < post.rating.length; r++) {
-        if(post.rating[r] == this.user.id) {
-          post.userRated = true;
-          break;
-        }
-      }
-    }
-    */
-
-
     return post;
   }
 
@@ -265,5 +255,10 @@ export class PostService {
         this.postsLoaded.next(posts);
         return posts;
       });
+  }
+
+
+  ngOnDestroy(): void {
+    this.alive = false;
   }
 }

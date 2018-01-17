@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {PostService} from "../../../services/post.service";
 import {IPost} from "../../../model/IPost";
 import {Router} from "@angular/router";
@@ -10,11 +10,11 @@ declare let $: any;
   selector: 'app-post-form',
   templateUrl: './post-form.component.html'
 })
-export class PostFormComponent implements OnInit, AfterViewInit {
+export class PostFormComponent implements OnInit, AfterViewInit, OnDestroy {
 
-  private post: any = {
+  private alive: boolean = true;
 
-  };
+  private post: any = {};
 
   private isEditingPost: boolean = false;
 
@@ -46,7 +46,9 @@ export class PostFormComponent implements OnInit, AfterViewInit {
   public ngOnInit() {
     this.init();
 
-    this.postService.modalOpened$.subscribe(
+    this.postService.modalOpened$
+      .takeWhile(() => this.alive)
+      .subscribe(
       post => {
 
         if(post == null) {
@@ -106,7 +108,9 @@ export class PostFormComponent implements OnInit, AfterViewInit {
 
     if(this.isEditingPost) {
 
-      this.postService.updatePost(this.post).subscribe (
+      this.postService.updatePost(this.post)
+        .takeWhile(() => this.alive)
+        .subscribe (
         (post: IPost) => {
           this.post = post;
           this.isEditingPost = false;
@@ -117,7 +121,9 @@ export class PostFormComponent implements OnInit, AfterViewInit {
 
       delete this.post.id;
 
-      this.postService.createPost(this.post).subscribe (
+      this.postService.createPost(this.post)
+        .takeWhile(() => this.alive)
+        .subscribe (
         () => this.router.navigate(['discover'])
       );
 
@@ -138,4 +144,8 @@ export class PostFormComponent implements OnInit, AfterViewInit {
     return JSON.stringify(this.post);
   }
 
+
+  ngOnDestroy(): void {
+    this.alive = false;
+  }
 }

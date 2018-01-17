@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {IPost} from "../../../model/IPost";
 import {IUser} from "../../../model/IUser";
 import {IComment} from "../../../model/IComment";
@@ -9,7 +9,9 @@ import {CommentService} from "../../../services/comment.service";
   selector: 'app-post-comments',
   templateUrl: './post-comments.component.html'
 })
-export class PostCommentsComponent implements OnInit {
+export class PostCommentsComponent implements OnInit, OnDestroy {
+
+  private alive: boolean = true;
 
   @Input()
   private post: IPost = {} as IPost;
@@ -31,6 +33,7 @@ export class PostCommentsComponent implements OnInit {
 
   ngOnInit() {
     this.commentService.commentEdited$
+      .takeWhile(() => this.alive)
       .subscribe((comments: IComment[]) => {
         this.post.comments = comments;
         this.isEditing = false;
@@ -39,7 +42,9 @@ export class PostCommentsComponent implements OnInit {
   }
 
   private deleteComment(commentId: number) {
-    this.commentService.deleteComment(commentId).subscribe(
+    this.commentService.deleteComment(commentId)
+      .takeWhile(() => this.alive)
+      .subscribe(
       comments => {
         this.post.comments = comments;
       }
@@ -59,4 +64,7 @@ export class PostCommentsComponent implements OnInit {
   }
 
 
+  ngOnDestroy(): void {
+    this.alive = false;
+  }
 }

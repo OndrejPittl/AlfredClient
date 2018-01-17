@@ -15,6 +15,8 @@ export class AuthService implements OnInit, OnDestroy {
 
   private static API_ENDPOINT: string = "http://localhost:8080/auth";
 
+  private alive: boolean = true;
+
   // observable event – user logged in
   private userLoggedIn = new Subject<IUser>();
   userLoggedIn$ = this.userLoggedIn.asObservable();
@@ -28,8 +30,6 @@ export class AuthService implements OnInit, OnDestroy {
   private userLogged: boolean;        // is user logged flag
   private token: string = "";         // token
 
-  private alive: boolean = true;
-
 
 
   constructor (
@@ -40,7 +40,9 @@ export class AuthService implements OnInit, OnDestroy {
   public ngOnInit(): void {
     this.userLogged = false;
 
-    this.getLoggedUser().subscribe(user => {
+    this.getLoggedUser()
+      .takeWhile(() => this.alive)
+      .subscribe(user => {
       this.user = <IUser> user;
       this.userLogged = true;
     }, err => {
@@ -74,10 +76,10 @@ export class AuthService implements OnInit, OnDestroy {
     return this.http.post(AuthService.API_ENDPOINT, u);
   }
 
-  public getLoggedUser(): Observable<IUser> {
+  public getLoggedUser(update: boolean = false): Observable<IUser> {
     console.log("–––> AuthService");
 
-    if(this.isLoggedUserStored()) {
+    if(this.isLoggedUserStored() && !update) {
       console.log("   > AuthService – Logged User stored via AuthService:");
       console.log(this.user);
       return Observable.of(this.user);

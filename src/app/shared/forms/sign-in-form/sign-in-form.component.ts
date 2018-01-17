@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import {Component, OnInit, Input, OnDestroy} from '@angular/core';
 
 import {ActivatedRoute, Params, Router, RoutesRecognized} from "@angular/router";
 import {AuthService} from "../../../services/auth.service";
@@ -10,7 +10,9 @@ import {IUser} from "../../../model/IUser";
   templateUrl: './sign-in-form.component.html'
 })
 
-export class SignInFormComponent implements OnInit {
+export class SignInFormComponent implements OnInit, OnDestroy {
+
+  private alive: boolean = true;
 
   @Input()
   private user:IUser = {} as IUser;
@@ -31,7 +33,9 @@ export class SignInFormComponent implements OnInit {
 
 
   ngOnInit() {
-    this.route.queryParams.subscribe(params => {
+    this.route.queryParams
+      .takeWhile(() => this.alive)
+      .subscribe(params => {
       this.returnUrl = params['url'];
     });
   }
@@ -40,6 +44,7 @@ export class SignInFormComponent implements OnInit {
 
     // sign in
     this.authService.auth(this.user['email'], this.user['password'])
+      .takeWhile(() => this.alive)
       .subscribe(user => {
         console.log("Sign in form: User " + user.email + " signed in successfully.");
         this.router.navigate(['discover']);
@@ -51,6 +56,10 @@ export class SignInFormComponent implements OnInit {
   }
 
 
-  // TODO: Remove this when we're done
+  ngOnDestroy(): void {
+    this.alive = false;
+  }
+
+// TODO: Remove this when we're done
   get diagnostic() { return JSON.stringify(this.user); }
 }

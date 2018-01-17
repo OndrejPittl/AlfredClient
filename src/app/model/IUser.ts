@@ -8,10 +8,16 @@ export interface IUser {
   token:        string;
   sex:          string;
   password:     string;
+  birth:        Date;
+  captcha:      string;
+  confirmPassword: string;
+
+  friends:      IUser[];
+  inFReqs:      IUser[];
+  outFReqs:     IUser[];
 
   pwd:         string;
   pwdConf:     string;
   pwdHash:     string;
 }
-
 

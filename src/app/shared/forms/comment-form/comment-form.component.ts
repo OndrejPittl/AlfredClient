@@ -1,4 +1,4 @@
-import {Component, Inject, Input, OnInit} from '@angular/core';
+import {Component, Inject, Input, OnDestroy, OnInit} from '@angular/core';
 import {IComment} from "../../../model/IComment";
 import {IPost} from "../../../model/IPost";
 import {CommentService} from "../../../services/comment.service";
@@ -7,7 +7,9 @@ import {CommentService} from "../../../services/comment.service";
   selector: 'app-comment-form',
   templateUrl: './comment-form.component.html'
 })
-export class CommentFormComponent implements OnInit {
+export class CommentFormComponent implements OnInit, OnDestroy {
+
+  private alive: boolean = true;
 
   @Input()
   private post: IPost = {} as IPost;
@@ -34,6 +36,7 @@ export class CommentFormComponent implements OnInit {
     }
 
     this.commentService.createPostComment(this.comment, this.post.id)
+      .takeWhile(() => this.alive)
       .subscribe(comments => {
         this.post.comments = comments;
       });
@@ -45,11 +48,17 @@ export class CommentFormComponent implements OnInit {
     this.comment.lastModified = null;
 
     this.commentService.updateComment(this.comment)
+      .takeWhile(() => this.alive)
       .subscribe(comments => {
         console.log(comments);
 
         this.isEditing = false;
         this.comment = {} as IComment;
       });
+  }
+
+
+  ngOnDestroy(): void {
+    this.alive = false;
   }
 }

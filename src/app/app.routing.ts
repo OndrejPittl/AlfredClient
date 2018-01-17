@@ -21,7 +21,9 @@ export const appRoutes: Routes = [
   { path: 'tag/:tag',     component: TagComponent,          data: { identifier: 'tag' } },
   { path: 'post/:id',     component: PostComponent,         data: { identifier: 'post' } },
   { path: '',             pathMatch: 'full',                redirectTo: '/discover' },
-  { path: '**',           component: PageNotFoundComponent, data: { identifier: 'error' } }
+  { path: '**',           component: PageNotFoundComponent, data: { identifier: 'error' } },
+  { path: '404',          component: PageNotFoundComponent, data: { identifier: 'error' } }
+
 ];
 
 export const routingProviders = [];

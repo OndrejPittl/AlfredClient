@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import {Component, Input, OnDestroy} from '@angular/core';
 import {IPost} from "../../../model/IPost";
 import {RatingService} from "../../../services/rating.service";
 
@@ -7,7 +7,9 @@ import {RatingService} from "../../../services/rating.service";
   templateUrl: './post-item.component.html'
 })
 
-export class PostItemComponent {
+export class PostItemComponent implements OnDestroy {
+
+  private alive: boolean = true;
 
   @Input()
   private userLogged: boolean;
@@ -24,10 +26,15 @@ export class PostItemComponent {
     let hasRated: boolean = this.post.userRated;
 
     this.ratingService.togglePostRating(postId, hasRated)
+      .takeWhile(() => this.alive)
       .subscribe((post: IPost) => {
         this.post = post;
         this.post.userRated = !hasRated;
       });
   }
 
+
+  ngOnDestroy(): void {
+    this.alive = false;
+  }
 }
