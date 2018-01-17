@@ -65,7 +65,7 @@ export class PostComponent implements OnInit, OnDestroy {
       (posts: IPost[]) => {
         if(posts.length > 0) {
           this.post = posts[0];
-          console.log("POST UPDATED!");
+          //console.log("POST UPDATED!");
 
         }
     })
@@ -91,7 +91,7 @@ export class PostComponent implements OnInit, OnDestroy {
 
 
             this.postLoaded = true;
-            console.log(post);
+            //console.log(post);
           },
           err =>{
             this.post = null;

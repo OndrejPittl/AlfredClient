@@ -1,7 +1,7 @@
 import {Injectable, OnDestroy} from '@angular/core';
 import {Observable} from "rxjs/Observable";
 import {IPost} from "../model/IPost";
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 import 'rxjs/add/operator/map'
 import 'rxjs/add/operator/timeout'
 import {Subject} from "rxjs/Subject";
@@ -10,6 +10,8 @@ import {Params} from "../model/Params";
 import {PostSource} from "../model/PostSource";
 import {CommentService} from "./comment.service";
 import {IUser} from "../model/IUser";
+import {RequestMethod, RequestOptions} from "@angular/http";
+import {ReplaySubject} from "rxjs/ReplaySubject";
 
 @Injectable()
 export class PostService implements OnDestroy {
@@ -101,48 +103,32 @@ export class PostService implements OnDestroy {
       endpoint += '&' + filterParamQuery;
     }
 
-    console.log('endpoint: ' + endpoint);
+    //console.log('endpoint: ' + endpoint);
     return this.http.get<IPost[]>(endpoint)
       .map(posts => this.modifyPosts(posts));
-
-    /*
-    return this.http.get(endpoint).map(value => {
-      return value.json() || null
-    });
-    */
   }
 
-  /*
-  // @TODO: userId
-  public getPostsByUser(slug: number): Observable<IPost[]> {
-    return this.http.get<IPost[]>(PostService.API_ENDPOINT + '?author=' + slug)
-      .map(posts => this.modifyPosts(posts));
-  }
-
-  public getPostByTag(tag: string): Observable<IPost[]> {
-    return this.http.get<IPost[]>(PostService.API_ENDPOINT + '?tags_like=' + tag)
-      .map(posts => this.modifyPosts(posts));
-  }
-  */
 
   public createPost(post: IPost): Observable<IPost[]> {
     let p: IPost = { ...post };
-    p.image = "http://via.placeholder.com/1000x1000";
+    p.image = p.file;
+    delete p.file;
+
+    //console.log("___________");
+    //console.log(p);
+
     return this.http.post<IPost[]>(PostService.API_ENDPOINT, p)
       .map(posts => {
         this.postsLoaded.next(posts);
         return posts;
+
       });
   }
 
   public updatePost(post: IPost): Observable<IPost> {
-    let p: IPost = { ...post };
-
     let endpoint: string = PostService.API_ENDPOINT + '/' + post.id;
 
-    p.image = "http://via.placeholder.com/1000x1000";
-
-    return this.http.put<IPost>(endpoint, p)
+    return this.http.put<IPost>(endpoint, post)
       .map(post => {
         let posts: IPost[] = [post];
         this.postsLoaded.next(posts);
@@ -161,7 +147,7 @@ export class PostService implements OnDestroy {
       endpoint += '?' + this.processFilterParamQuery(filter) + '&_sort=id&_order=desc';
     }
 
-    console.log(endpoint);
+    //console.log(endpoint);
 
     this.http.get(endpoint)
       .takeWhile(() => this.alive)
@@ -244,7 +230,7 @@ export class PostService implements OnDestroy {
   }
 
   public registerNewPostModal(): void {
-    console.log("POST EDIT STOP REGISTERED");
+    //console.log("POST EDIT STOP REGISTERED");
     this.modalOpened.next(null);
   }
 
@@ -256,6 +242,28 @@ export class PostService implements OnDestroy {
         return posts;
       });
   }
+
+
+
+   public imageTest(data: string) {
+    return this.http.post('http://localhost:8080/upload', data, {
+      headers: new HttpHeaders().set('Content-Type', 'multipart/form-data'),
+    });
+  }
+
+  public readFile(fileToRead: File): Observable<MSBaseReader>{
+    let base64Observable = new ReplaySubject<MSBaseReader>(1);
+
+    let fileReader = new FileReader();
+    fileReader.onload = event => {
+      base64Observable.next(fileReader.result);
+    };
+    fileReader.readAsDataURL(fileToRead);
+
+    return base64Observable;
+  }
+
+
 
 
   ngOnDestroy(): void {

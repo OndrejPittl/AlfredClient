@@ -54,8 +54,8 @@ export class PostCommentsComponent implements OnInit, OnDestroy {
   private editComment(comment: IComment): void {
     this.editedComment = { ...comment };
     this.isEditing = true;
-    console.log("is editing...");
-    console.log(this.isEditing);
+    //console.log("is editing...");
+    //console.log(this.isEditing);
   }
 
   private isMe(authorId: number): boolean {

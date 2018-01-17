@@ -28,12 +28,14 @@
           <button class="btn btn--tiny btn--wide" (click)="addTag()" [disabled]="!tag.value">Add tag</button>
         </div>
       </div>
+      <!--
       <div class="form__row" *ngIf="post.image">
         <div class="form__col">
           <strong>image:</strong>
-          <span class="form__img" (click)="removeImg()">{{post.image.name}}</span>
+          <span class="form__img" (click)="removeImg()">{{post.image}}</span>
         </div>
       </div>
+      -->
       <div class="form__row" *ngIf="post.tags.length > 0">
         <div class="form__col">
           <strong>tags:</strong>

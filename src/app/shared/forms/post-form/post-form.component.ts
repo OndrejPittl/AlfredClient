@@ -22,6 +22,10 @@ export class PostFormComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('component')
   private component: ElementRef;
 
+  @ViewChild("fileInput")
+  private fileInput;
+
+
   private modal: any = null;
 
 
@@ -31,6 +35,7 @@ export class PostFormComponent implements OnInit, AfterViewInit, OnDestroy {
     private router: Router) {}
 
   private init(): void {
+
     this.post = {
       id: -1,
       title: '',
@@ -121,16 +126,51 @@ export class PostFormComponent implements OnInit, AfterViewInit, OnDestroy {
 
       delete this.post.id;
 
-      this.postService.createPost(this.post)
-        .takeWhile(() => this.alive)
-        .subscribe (
-        () => this.router.navigate(['discover'])
-      );
+
+      let fi = this.fileInput.nativeElement;
+      if (fi.files && fi.files[0]) {
+        let fileToUpload: File = fi.files[0];
+        this.postService.readFile(fileToUpload)
+          .subscribe(img => {
+            this.post.file = img;
+            this.postService.createPost(this.post)
+              .subscribe(() => this.router.navigate(['discover']));
+          });
+      }
+
+
+
+
+
+      /*
+      let formData: FormData = new FormData();
+
+      let fi = this.fileInput.nativeElement;
+      if (fi.files && fi.files[0]) {
+        let fileToUpload = fi.files[0];
+
+        formData.append("file", fileToUpload);
+
+        this.postService.imageTest(fileToUpload)
+          .subscribe(res => {
+            //console.log(res);
+          },
+            error => {
+              //console.error(error);
+            });
+        }
+      */
+
+
+
 
     }
 
     this.modal.close();
   }
+
+
+
 
   public ngAfterViewInit() {
     if(this.modal == null) {
@@ -147,5 +187,15 @@ export class PostFormComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.alive = false;
+  }
+
+  addImage(event) {
+    let fi = this.fileInput.nativeElement;
+    if (fi.files && fi.files[0]) {
+      this.post.image = fi.files[0];
+      //console.log("__________ image added:");
+      //console.log(this.post);
+    }
+
   }
 }

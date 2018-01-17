@@ -59,10 +59,10 @@ export class HeaderLayoutComponent implements OnInit, OnDestroy {
       .takeWhile(() => this.alive)
       .subscribe(
         () => {
-          console.log("Header: logged OUT");
-          console.log(this.primaryMenuItems);
+          //console.log("Header: logged OUT");
+          //console.log(this.primaryMenuItems);
           this.init();
-          console.log(this.primaryMenuItems);
+          //console.log(this.primaryMenuItems);
         }
       );
 
@@ -71,8 +71,15 @@ export class HeaderLayoutComponent implements OnInit, OnDestroy {
       .subscribe(
         (user: IUser) => {
           this.user = user;
-          console.log("HEQADER: detected user updated");
-          console.log(user);
+          //console.log("HEQADER: detected user updated");
+          //console.log(this.user);
+
+          if(user != null ) {
+            this.resetMenu();
+            this.userProfileItemAdded = false;
+          }
+
+          this.addUserProfileMenuItem();
         }
       );
   }
@@ -82,11 +89,14 @@ export class HeaderLayoutComponent implements OnInit, OnDestroy {
     this.userProfileItemAdded = false;
     //this.primaryMenuItems = appConfig.menu.primary
 
+    this.resetMenu();
+  }
+
+  private resetMenu() {
     this.primaryMenuItems = [];
     for(let item of appConfig.menu.primary) {
       this.primaryMenuItems.push({...item});
     }
-
   }
 
   private addUserProfileMenuItem(user: IUser = this.user): void {

@@ -63,8 +63,8 @@ export class AuthService implements OnInit, OnDestroy {
 
         this.userLoggedIn.next(this.user);
 
-        console.log("AuthService – Authenticated:");
-        console.log(this.user);
+        //console.log("AuthService – Authenticated:");
+        //console.log(this.user);
         return user;
       });
   }
@@ -77,17 +77,17 @@ export class AuthService implements OnInit, OnDestroy {
   }
 
   public getLoggedUser(update: boolean = false): Observable<IUser> {
-    console.log("–––> AuthService");
+    //console.log("–––> AuthService");
 
     if(this.isLoggedUserStored() && !update) {
-      console.log("   > AuthService – Logged User stored via AuthService:");
-      console.log(this.user);
+      //console.log("   > AuthService – Logged User stored via AuthService:");
+      //console.log(this.user);
       return Observable.of(this.user);
     }
 
     return this.requestUser().map(user => {
-      console.log("   > AuthService – Logged User info got from server.");
-      console.log(user);
+      //console.log("   > AuthService – Logged User info got from server.");
+      //console.log(user);
 
       this.user = user;
       this.userLogged = true;
@@ -97,7 +97,7 @@ export class AuthService implements OnInit, OnDestroy {
   }
 
   private requestUser(): Observable<IUser> {
-    console.log("   > AuthService – AuthService has no logged user stored. Connecting server...");
+    //console.log("   > AuthService – AuthService has no logged user stored. Connecting server...");
 
     return this.http.get(AuthService.API_ENDPOINT + '/me')
       .catch(() => {

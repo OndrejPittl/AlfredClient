@@ -5,8 +5,7 @@
       <app-sign-up-form [user]="viewedUser" (edited)="registerEditingDone($event)"></app-sign-up-form>
 
       <div class="profile__info">
-        <app-img [imgPath]="'http://via.placeholder.com/1000x1000'" [withClass]="'profile__photo'"></app-img>
-
+        <app-img [imgPath]="viewedUser.photo" [withClass]="'profile__photo'"></app-img>
         <div>
 
           <h2>{{viewedUser.firstName}} {{viewedUser.lastName}}</h2>

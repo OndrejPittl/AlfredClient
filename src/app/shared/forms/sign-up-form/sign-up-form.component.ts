@@ -6,6 +6,7 @@ import { Router } from "@angular/router";
 import {IValidationError} from "../../../model/IValidationError";
 import {Observable} from "rxjs/Observable";
 import {User} from "../../../model/User";
+import {PostService} from "../../../services/post.service";
 
 
 @Component({
@@ -22,13 +23,16 @@ export class SignUpFormComponent implements OnInit, OnDestroy {
     sex: "MALE"
   } as IUser;
 
-  private formData: FormData;
 
   @Input()
   private formId: string;
 
+
   @Output('edited')
   change: EventEmitter<IUser> = new EventEmitter<IUser>();
+
+  @ViewChild("fileInput")
+  private fileInput;
 
 
   private valid:boolean = false;
@@ -37,7 +41,6 @@ export class SignUpFormComponent implements OnInit, OnDestroy {
 
   private validationMessages: Array<IValidationError>;
 
-  // form fields
 
   @ViewChild('signUpForm') form;
 
@@ -45,7 +48,8 @@ export class SignUpFormComponent implements OnInit, OnDestroy {
   constructor(
     private userService: UserService,
     private authService: AuthService,
-    private router: Router) { }
+    private router: Router,
+    private postService: PostService) { }
 
 
   ngOnInit() {
@@ -60,8 +64,8 @@ export class SignUpFormComponent implements OnInit, OnDestroy {
   public signUp(event): void {
     this.init();
 
-    console.log("oooooooo signing up");
-    console.log(this.user);
+    //console.log("Creating new user: ");
+    //console.log(this.user);
 
     //sign up
     this.userService.createUser(this.user)
@@ -72,15 +76,15 @@ export class SignUpFormComponent implements OnInit, OnDestroy {
           this.authService.auth(this.user['email'], this.user['password'])
             .takeWhile(() => this.alive)
             .subscribe(user => {
-              console.log("Sign up form – sign in: User " + user.email + " signed up successfully.");
+              //console.log("Sign up form – sign in: User " + user.email + " signed up successfully.");
               this.router.navigate(['discover']);
             },error => {
-              console.log("Sign up form – sign in:");
+              //console.log("Sign up form – sign in:");
               this.registerErrors(error);
             });
 
         }, error => {
-          console.log("Sign up form – sign up:");
+          //console.log("Sign up form – sign up:");
           this.registerErrors(error);
           this.user.password = this.user.confirmPassword = this.user.captcha = "";
         }
@@ -94,22 +98,20 @@ export class SignUpFormComponent implements OnInit, OnDestroy {
     for(let e of this.validationMessages) {
       let err: IValidationError = <IValidationError> e;
       this.form.controls[err.field].setErrors({'incorrect': true, 'serverError': true});
-      console.log(this.form.controls[err.field]);
+      //console.log(this.form.controls[err.field]);
     }
   }
 
 
   // TODO: editace údajů
   public doEdit(event): void {
-    console.log("TODO: submitting edit of a user:");
-
     this.userService.updateUser(this.user)
       .takeWhile(() => this.alive)
       .subscribe(user => {
         this.user = user;
 
-        console.log("UPDATED: ");
-        console.log(user);
+        //console.log("UPDATED: ");
+        //console.log(user);
 
         this.change.emit(user);
       });
@@ -122,5 +124,18 @@ export class SignUpFormComponent implements OnInit, OnDestroy {
 
   cancelEditing() {
     this.change.emit(null);
+  }
+
+  private changePhoto(): void {
+    let fi = this.fileInput.nativeElement;
+
+    if (fi.files && fi.files[0]) {
+      let fileToUpload: File = fi.files[0];
+
+      this.postService.readFile(fileToUpload)
+        .subscribe(img => {
+          this.user.photo = img;
+        });
+    }
   }
 }

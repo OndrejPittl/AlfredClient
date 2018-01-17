@@ -53,13 +53,7 @@ export class UserService {
   */
 
   public createUser(user: any): Observable<IUser> {
-    let u = { ...user };
-    u['photo'] = "http://via.placeholder.com/1000x1000";
-    //u['slug'] = (u['firstName'] + "-" + u['lastName']).toLowerCase();
-    //u[appConfig.security.tokenStorageKey] = "simpleToken" + '-' + u['slug'];
-    //u['password'] = AuthService.hashPassword(u['password']);
-    //return this.http.post(UserService.API_ENDPOINT, u).map(response => response.json() || null);
-    return this.http.post(UserService.API_ENDPOINT, u);
+    return this.http.post(UserService.API_ENDPOINT, user);
   }
 
   public sendFriendship(userId: number): Observable<IUser> {

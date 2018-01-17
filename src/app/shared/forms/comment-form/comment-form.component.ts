@@ -27,8 +27,8 @@ export class CommentFormComponent implements OnInit, OnDestroy {
   ngOnInit() { }
 
   public commentPost(e): void {
-    console.log("commenting post");
-    console.log(this.isEditing);
+    //console.log("commenting post");
+    //console.log(this.isEditing);
 
     if(this.isEditing) {
       this.editComment();
@@ -43,14 +43,14 @@ export class CommentFormComponent implements OnInit, OnDestroy {
   }
 
   public editComment(): void {
-    console.log("oooo comment update:");
+    //console.log("oooo comment update:");
     this.comment.date = null;
     this.comment.lastModified = null;
 
     this.commentService.updateComment(this.comment)
       .takeWhile(() => this.alive)
       .subscribe(comments => {
-        console.log(comments);
+        //console.log(comments);
 
         this.isEditing = false;
         this.comment = {} as IComment;

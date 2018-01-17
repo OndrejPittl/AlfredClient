@@ -9,7 +9,7 @@
           <a *ngIf="isMe(comment.user?.id)" class="comment__action" (click)="editComment(comment)">(edit) </a>
         </header>
         <div class="comment__container">
-          <a routerLink="/profile/{{comment.user.slug}}" class="comment__image" style="background-image: url('http://via.placeholder.com/50x50')"></a>
+          <a routerLink="/profile/{{comment.user.slug}}" class="comment__image" style="background-image: url('https://goo.gl/eTQXRf')"></a>
           <div class="comment__content">
             <p class="comment__body">{{comment.body}}</p>
             <p class="comment__date">{{comment.date | date:'H:mm, dd. MM. yyyy'}} <span *ngIf="comment.lastModified">(last modified: {{comment.lastModified | date:'H:mm, dd. MM. yyyy'}})</span></p>

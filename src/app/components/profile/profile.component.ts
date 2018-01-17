@@ -110,8 +110,8 @@ export class ProfileComponent extends PostFeedPage implements OnInit, OnDestroy 
               return;
             }
 
-            console.log("Viewing user::::::");
-            console.log(this.viewedUser);
+            //console.log("Viewing user::::::");
+            //console.log(this.viewedUser);
 
             this.isAuthorizedUser = u.id == this.viewedUser.id;
             this.updateRelation();
@@ -120,8 +120,6 @@ export class ProfileComponent extends PostFeedPage implements OnInit, OnDestroy 
             this.router.navigate(['404']);
           })
         );
-
-
     });
 
 
@@ -141,7 +139,7 @@ export class ProfileComponent extends PostFeedPage implements OnInit, OnDestroy 
     this.viewedUser = user;
     let timeDiff: number = Math.abs(Date.now() - this.viewedUser.birth);
     this.viewAge = Math.floor((timeDiff / (1000 * 3600 * 24))/365);
-
+    this.userService.updateLoggedUser(this.viewedUser);
   }
 
   private resetUser():void {
@@ -157,8 +155,8 @@ export class ProfileComponent extends PostFeedPage implements OnInit, OnDestroy 
     this.hasIncomingFRequest = false;
     this.hasOutcomingFRequest = false;
 
-    console.log("--- updating relation");
-    console.log(this.viewedUser);
+    //console.log("--- updating relation");
+    //console.log(this.viewedUser);
 
 
     for(let i = 0; i < this.viewedUser.friends.length; i++) {
@@ -168,7 +166,7 @@ export class ProfileComponent extends PostFeedPage implements OnInit, OnDestroy 
       }
     }
 
-    console.log(this.isFriend);
+    //console.log(this.isFriend);
 
     if(!this.isFriend) {
       for(let i = 0; i < this.viewedUser.inFReqs.length; i++) {
@@ -179,7 +177,7 @@ export class ProfileComponent extends PostFeedPage implements OnInit, OnDestroy 
       }
     }
 
-    console.log(this.hasIncomingFRequest);
+    //console.log(this.hasIncomingFRequest);
 
     if(!this.isFriend && !this.hasIncomingFRequest) {
       for(let i = 0; i < this.viewedUser.outFReqs.length; i++) {
@@ -190,7 +188,7 @@ export class ProfileComponent extends PostFeedPage implements OnInit, OnDestroy 
       }
     }
 
-    console.log(this.hasOutcomingFRequest);
+    //console.log(this.hasOutcomingFRequest);
   }
 
   private sendFriendRequest(): void {
@@ -218,13 +216,12 @@ export class ProfileComponent extends PostFeedPage implements OnInit, OnDestroy 
   }
 
   private handleFrienshipProcessed(friend: IUser) {
-    console.log("Požadavek zpracován: "); console.log(friend);
+    //console.log("Požadavek zpracován: "); //console.log(friend);
     this.registerUserViewedChange(friend);
     this.updateRelation();
 
     this.authService.getLoggedUser(true)
       .subscribe((user: IUser) => {
-        //this.user = user;
         this.registerUserLoggedChange(user);
         this.userService.updateLoggedUser(this.user);
       });

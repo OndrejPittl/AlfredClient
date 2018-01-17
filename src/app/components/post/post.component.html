@@ -3,12 +3,11 @@
 
     <h2 *ngIf="post.title" class="post__title">{{post.title}}</h2>
 
-    <div>
-      <a class="post__author" routerLink="/profile/{{post.user.slug}}">– {{post.user.firstName}} {{post.user.lastName}} –</a>
+    <div *ngIf="post.date">
+      <p>{{post.date | date:'H:mm, dd. MM. yyyy'}}</p>
     </div>
 
     <header class="post__header">
-
       <a *ngIf="userLogged" class="post__rating" [ngClass]="{'post__rating--active': post.userRated }" (click)="togglePostRating(post.id)">
         <span *ngIf="post.rating">{{post.rating.length}}</span>
       </a>
@@ -17,6 +16,10 @@
         <app-img *ngIf="post.image" [imgPath]="post.image" [withClass]="'post__image'" [isImg]="true"></app-img>
       </div>
     </header>
+
+    <div>
+      <a class="post__author" routerLink="/profile/{{post.user.slug}}">– {{post.user.firstName}} {{post.user.lastName}} –</a>
+    </div>
 
     <div *ngIf="post.body" class="post__content">
       <p class="post__body">{{post.body}}</p>
