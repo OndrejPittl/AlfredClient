@@ -54,10 +54,7 @@ export class PostFeedComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
     this.reset(true);
-    //this.userLogged = this.authService.isLoggedIn();
     this.userLogged = false;
-
-    //console.log("zzzzzzzz post-feed");
 
     this.authService.getLoggedUser()
       .takeWhile(() => this.alive)
@@ -95,7 +92,6 @@ export class PostFeedComponent implements OnInit, OnDestroy {
       .takeWhile(() => this.alive)
       .subscribe(
       filterParams => {
-        //console.log("FILTERING REGISTERED");
         this.reset(true);
         this.params.filterParams = filterParams;
         this.loadPosts();
@@ -115,7 +111,6 @@ export class PostFeedComponent implements OnInit, OnDestroy {
     }
 
     this.loadingPosts = true;
-    //console.log("loading posts...");
 
     this.loadingPostSubscription = this.postService.getPosts(this.params, this.receivedPostCount)
       .takeWhile(() => this.alive)
@@ -126,17 +121,12 @@ export class PostFeedComponent implements OnInit, OnDestroy {
             posts = this.postService.updatePostsRated(posts, this.user.id);
           }
 
-          //console.log("------------ posts: ");
-          //console.log(posts);
-
-
           let postCount = posts.length;
 
           if(postCount <= 0) {
             this.failPostRequestCounter++;
             this.loadingPosts = false;
             this.requestedCounter++;
-            //console.log("+++++++");
             return;
           }
 
@@ -144,7 +134,9 @@ export class PostFeedComponent implements OnInit, OnDestroy {
           this.posts = this.posts.concat(posts);
           this.loadingPosts = false;
           this.requestedCounter++;
-          //console.log("+++++++");
+
+          console.log(posts);
+          console.log(this.posts);
         },
 
         error => {

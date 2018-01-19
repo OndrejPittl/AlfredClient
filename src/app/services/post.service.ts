@@ -29,6 +29,9 @@ export class PostService implements OnDestroy {
   private modalOpened = new Subject<IPost>();
   modalOpened$ = this.modalOpened.asObservable();
 
+  private postBeingUpdated = new Subject();
+  postBeingUpdated$ = this.postBeingUpdated.asObservable();
+
   /*
   private postsUpdated = new Subject<IPost[]>();
   postsUpdated$ = this.postsUpdated.asObservable();
@@ -103,7 +106,8 @@ export class PostService implements OnDestroy {
       endpoint += '&' + filterParamQuery;
     }
 
-    //console.log('endpoint: ' + endpoint);
+    console.log("Requesting: " + endpoint);
+
     return this.http.get<IPost[]>(endpoint)
       .map(posts => this.modifyPosts(posts));
   }
@@ -113,9 +117,8 @@ export class PostService implements OnDestroy {
     let p: IPost = { ...post };
     p.image = p.file;
     delete p.file;
-
-    //console.log("___________");
-    //console.log(p);
+    delete p.id;
+    delete p['tag'];
 
     return this.http.post<IPost[]>(PostService.API_ENDPOINT, p)
       .map(posts => {
@@ -126,9 +129,21 @@ export class PostService implements OnDestroy {
   }
 
   public updatePost(post: IPost): Observable<IPost> {
+    console.log("service: updating");
+    console.log("service: post");
+    console.log(post);
+
     let endpoint: string = PostService.API_ENDPOINT + '/' + post.id;
 
-    return this.http.put<IPost>(endpoint, post)
+    let p: IPost = { ...post };
+    p.image = p.file != null ? p.file : "";
+    delete p.file;
+    delete p['tag'];
+
+    console.log("service: p");
+    console.log(p);
+
+    return this.http.put<IPost>(endpoint, p)
       .map(post => {
         let posts: IPost[] = [post];
         this.postsLoaded.next(posts);
@@ -146,8 +161,6 @@ export class PostService implements OnDestroy {
     if(filter !== null) {
       endpoint += '?' + this.processFilterParamQuery(filter) + '&_sort=id&_order=desc';
     }
-
-    //console.log(endpoint);
 
     this.http.get(endpoint)
       .takeWhile(() => this.alive)
@@ -227,10 +240,21 @@ export class PostService implements OnDestroy {
 
   public registerEditing(post: IPost): void {
     this.modalOpened.next(post);
+    console.log("___ service ")
+  }
+
+  public registerPostUpdating(): void {
+    this.postBeingUpdated.next();
+  }
+
+  public checkPostUpdatingRegistered() {
+    let l = this.postBeingUpdated.observers.length;
+    console.log(this.postBeingUpdated.observers);
+    console.log(l);
+    return l > 0;
   }
 
   public registerNewPostModal(): void {
-    //console.log("POST EDIT STOP REGISTERED");
     this.modalOpened.next(null);
   }
 

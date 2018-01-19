@@ -31,13 +31,16 @@
       <div class="form__row" *ngIf="post.image">
         <div class="form__col">
           <strong>image:</strong>
-          <span class="form__img" (click)="removeImg()">{{post.image.name}}</span>
+          <span class="form__img" (click)="removeImg()">{{post.image}}</span>
         </div>
       </div>
-      <div class="form__row" *ngIf="post.tags.length > 0">
-        <div class="form__col">
+      <div class="form__row">
+        <div *ngIf="post.tags.length > 0" class="form__col">
           <strong>tags:</strong>
           <span class="form__hash" *ngFor="let t of post.tags" (click)="removeTag($event)">{{t}}</span>
+        </div>
+        <div *ngIf="post.tags.length <= 0" class="form__col">
+          <span class="form__note">no tags</span>
         </div>
       </div>
       <div class="form__row">
@@ -45,13 +48,18 @@
           <button class="btn btn--tiny btn--wide" type="submit" [disabled]="!postForm.form.valid || post.tags.length <= 0 || (!body.value && !post.image)">Submit</button>
         </div>
       </div>
-      <div class="form__row" *ngIf="!body.value && !post.image || post.tags.length <= 0">
+      <!--*ngIf="!body.value && !post.image || post.tags.length <= 0"-->
+      <div class="form__row" >
         <div class="form__col">
           <ul class="form__note">
             <li *ngIf="!body.value && !post.image">Text and/or an image of a post is missing.</li>
             <li *ngIf="post.tags.length <= 0">At least one tag is required.</li>
           </ul>
         </div>
+      </div>
+
+      <div>
+        <p class="form__error" [hidden]="postFileValid">The image is too large.</p>
       </div>
     </form>
   </div>

@@ -1,10 +1,11 @@
 <div class="content">
-  <div class="post" *ngIf="post">
+  <div *ngIf="updating" class="loader"></div>
+  <div class="post" *ngIf="post && !updating">
 
     <h2 *ngIf="post.title" class="post__title">{{post.title}}</h2>
 
     <div *ngIf="post.date">
-      <p>{{post.date | date:'H:mm, dd. MM. yyyy'}}</p>
+      <p>{{post.date | date:'H:mm, dd. MM. yyyy'}} <span *ngIf="post.lastModified">({{post.lastModified | date:'H:mm, dd. MM. yyyy'}})</span></p>
     </div>
 
     <header class="post__header">
@@ -17,19 +18,19 @@
       </div>
     </header>
 
-    <div>
-      <a class="post__author" routerLink="/profile/{{post.user.slug}}">– {{post.user.firstName}} {{post.user.lastName}} –</a>
-    </div>
-
-    <div *ngIf="post.body" class="post__content">
-      <p class="post__body">{{post.body}}</p>
-    </div>
-
     <ul *ngIf="post.tags" class="post__tag-list">
       <li class="post__tag" *ngFor="let tag of post.tags">
         <a routerLink="/tag/{{tag.name}}">#{{tag.name}}</a>
       </li>
     </ul>
+
+    <div *ngIf="post.body" class="post__content">
+      <p class="post__body">{{post.body}}</p>
+    </div>
+
+    <div>
+      <a class="post__author" routerLink="/profile/{{post.user.slug}}">– {{post.user.firstName}} {{post.user.lastName}} –</a>
+    </div>
 
     <div class="post__controls" *ngIf="userLogged && user != null && post.user.id == user.id">
       <a class="post__control-item" (click)="editPost()">(edit)</a>

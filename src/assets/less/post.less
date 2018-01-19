@@ -38,6 +38,10 @@
     max-height: 300px;
     overflow: hidden;
     position: relative;
+
+    & > * {
+      width: 100%;
+    }
   }
 
   &__image {
@@ -45,6 +49,20 @@
 
     img {
       width: 100%;
+    }
+  }
+
+  &__date {
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    font-size: 11px;
+    margin: 5px 0 10px;
+
+    &--no-offset {
+      border-bottom: none;
+      border-top: none;
+      margin: 0;
+      margin-top: 5px;
     }
   }
 
@@ -120,12 +138,14 @@
       color: @color--secondary;
     }
 
+  /*
     &--overlay {
       .transform(translate(-50%, 0));
       left: 50%;
       margin-top: -20px;
       position: absolute;
     }
+    */
   }
 
   &__footer {
@@ -137,6 +157,12 @@
   }
 
   &__control-item {
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline !important;
+    }
+
     & + & {
       margin-left: 10px;
     }
@@ -158,11 +184,13 @@
       border: 3px solid @color--white;
       border-radius: 10px;
       box-shadow: 0 0 13px fade(@color--black, 25%);
+      overflow: hidden;
     }
 
     &__content {
       padding-left: 10px;
       padding-right: 10px;
+      text-align: center;
     }
 
     &__image {
@@ -191,6 +219,11 @@
       margin-bottom: 0;
       margin-top: 20px;
       width: 100%;
+
+      &--no-offset {
+        margin: 0;
+        margin-bottom: 5px;
+      }
     }
 
     &__title {
@@ -217,6 +250,13 @@
       border-bottom-right-radius: 9px;
       margin-top: 0;
       padding: 10px 5px;
+    }
+
+    &__continue {
+      color: @color--primary;
+      display: inline-block;
+      font-style: italic;
+      margin: 15px 0 5px;
     }
   }
 }

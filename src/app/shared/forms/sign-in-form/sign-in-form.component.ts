@@ -46,10 +46,8 @@ export class SignInFormComponent implements OnInit, OnDestroy {
     this.authService.auth(this.user['email'], this.user['password'])
       .takeWhile(() => this.alive)
       .subscribe(user => {
-        //console.log("Sign in form: User " + user.email + " signed in successfully.");
         this.router.navigate(['discover']);
       },error => {
-        //console.log("Sign in form:");
         this.user.password = "";
         this.valid = false;
       });

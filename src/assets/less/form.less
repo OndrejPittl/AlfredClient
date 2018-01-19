@@ -47,7 +47,8 @@
     position: relative;
 
     img {
-      .transform(translate(-50%,0));
+      //.transform(translate(-50%,0));
+      .transform(translate(-50%,-50%));
       left: 50%;
       max-width: none;
       min-width: 100%;
@@ -55,6 +56,9 @@
       max-height: 200%;
       max-width: 200%;
       position: absolute;
+
+      width: 100%;
+      top: 50%;
     }
   }
 
@@ -66,6 +70,10 @@
     //color: @color--dark-grey;
     color: @color--white;
     margin-top: 20px;
+
+    .form--post & {
+      color: @color--dark-grey;
+    }
   }
 
   &__msg {

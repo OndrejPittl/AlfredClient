@@ -18,9 +18,7 @@ export class PostItemComponent implements OnDestroy {
   private post: IPost;
 
 
-  constructor(private ratingService: RatingService) {
-
-  }
+  constructor(private ratingService: RatingService) {}
 
   private togglePostRating(postId: number): void {
     let hasRated: boolean = this.post.userRated;
@@ -30,6 +28,7 @@ export class PostItemComponent implements OnDestroy {
       .subscribe((post: IPost) => {
         this.post = post;
         this.post.userRated = !hasRated;
+        console.log(this.post);
       });
   }
 

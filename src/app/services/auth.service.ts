@@ -62,9 +62,6 @@ export class AuthService implements OnInit, OnDestroy {
         this.storage.setItem(appConfig.security.tokenStorageKey, user.token);
 
         this.userLoggedIn.next(this.user);
-
-        //console.log("AuthService – Authenticated:");
-        //console.log(this.user);
         return user;
       });
   }
@@ -77,28 +74,32 @@ export class AuthService implements OnInit, OnDestroy {
   }
 
   public getLoggedUser(update: boolean = false): Observable<IUser> {
-    //console.log("–––> AuthService");
 
     if(this.isLoggedUserStored() && !update) {
-      //console.log("   > AuthService – Logged User stored via AuthService:");
-      //console.log(this.user);
       return Observable.of(this.user);
     }
 
-    return this.requestUser().map(user => {
-      //console.log("   > AuthService – Logged User info got from server.");
-      //console.log(user);
+    // no token set
+    if(!this.isLoggedIn()) {
+      return Observable.of(null);
+    }
 
-      this.user = user;
-      this.userLogged = true;
+    return this.requestUser()
+      .map(user => {
+        this.user = user;
 
-      return user;
+        if(user == null) {
+          // not authorized –> token set && not stored at server
+          this.storage.removeItem(appConfig.security.tokenStorageKey);
+        } else {
+          this.userLogged = true;
+        }
+
+        return user;
     });
   }
 
   private requestUser(): Observable<IUser> {
-    //console.log("   > AuthService – AuthService has no logged user stored. Connecting server...");
-
     return this.http.get(AuthService.API_ENDPOINT + '/me')
       .catch(() => {
         this.resetUser();

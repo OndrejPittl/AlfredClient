@@ -8,7 +8,7 @@ export const appConfig: any = {
   },
 
   feed: {
-    limit: 10,
+    limit: 5,
     maxFailRequests: 1
   },
 

@@ -64,9 +64,6 @@ export class SignUpFormComponent implements OnInit, OnDestroy {
   public signUp(event): void {
     this.init();
 
-    //console.log("Creating new user: ");
-    //console.log(this.user);
-
     //sign up
     this.userService.createUser(this.user)
       .takeWhile(() => this.alive)
@@ -76,15 +73,12 @@ export class SignUpFormComponent implements OnInit, OnDestroy {
           this.authService.auth(this.user['email'], this.user['password'])
             .takeWhile(() => this.alive)
             .subscribe(user => {
-              //console.log("Sign up form – sign in: User " + user.email + " signed up successfully.");
               this.router.navigate(['discover']);
             },error => {
-              //console.log("Sign up form – sign in:");
               this.registerErrors(error);
             });
 
         }, error => {
-          //console.log("Sign up form – sign up:");
           this.registerErrors(error);
           this.user.password = this.user.confirmPassword = this.user.captcha = "";
         }
@@ -98,8 +92,9 @@ export class SignUpFormComponent implements OnInit, OnDestroy {
     for(let e of this.validationMessages) {
       let err: IValidationError = <IValidationError> e;
       this.form.controls[err.field].setErrors({'incorrect': true, 'serverError': true});
-      //console.log(this.form.controls[err.field]);
     }
+
+    console.log(this.validationMessages);
   }
 
 
@@ -109,11 +104,10 @@ export class SignUpFormComponent implements OnInit, OnDestroy {
       .takeWhile(() => this.alive)
       .subscribe(user => {
         this.user = user;
-
-        //console.log("UPDATED: ");
-        //console.log(user);
-
         this.change.emit(user);
+      }, error => {
+        this.registerErrors(error);
+        this.user.password = this.user.confirmPassword = this.user.captcha = "";
       });
   }
 

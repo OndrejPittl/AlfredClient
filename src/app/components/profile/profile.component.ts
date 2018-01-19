@@ -110,9 +110,6 @@ export class ProfileComponent extends PostFeedPage implements OnInit, OnDestroy 
               return;
             }
 
-            //console.log("Viewing user::::::");
-            //console.log(this.viewedUser);
-
             this.isAuthorizedUser = u.id == this.viewedUser.id;
             this.updateRelation();
           }, err => {
@@ -155,9 +152,6 @@ export class ProfileComponent extends PostFeedPage implements OnInit, OnDestroy 
     this.hasIncomingFRequest = false;
     this.hasOutcomingFRequest = false;
 
-    //console.log("--- updating relation");
-    //console.log(this.viewedUser);
-
 
     for(let i = 0; i < this.viewedUser.friends.length; i++) {
       if(this.viewedUser.friends[i].id == this.user.id) {
@@ -165,8 +159,6 @@ export class ProfileComponent extends PostFeedPage implements OnInit, OnDestroy 
         break;
       }
     }
-
-    //console.log(this.isFriend);
 
     if(!this.isFriend) {
       for(let i = 0; i < this.viewedUser.inFReqs.length; i++) {
@@ -177,8 +169,6 @@ export class ProfileComponent extends PostFeedPage implements OnInit, OnDestroy 
       }
     }
 
-    //console.log(this.hasIncomingFRequest);
-
     if(!this.isFriend && !this.hasIncomingFRequest) {
       for(let i = 0; i < this.viewedUser.outFReqs.length; i++) {
         if(this.viewedUser.outFReqs[i].id == this.user.id) {
@@ -187,8 +177,6 @@ export class ProfileComponent extends PostFeedPage implements OnInit, OnDestroy 
         }
       }
     }
-
-    //console.log(this.hasOutcomingFRequest);
   }
 
   private sendFriendRequest(): void {
@@ -216,7 +204,6 @@ export class ProfileComponent extends PostFeedPage implements OnInit, OnDestroy 
   }
 
   private handleFrienshipProcessed(friend: IUser) {
-    //console.log("Požadavek zpracován: "); //console.log(friend);
     this.registerUserViewedChange(friend);
     this.updateRelation();
 

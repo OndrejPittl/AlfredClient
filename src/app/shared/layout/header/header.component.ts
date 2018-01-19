@@ -57,14 +57,7 @@ export class HeaderLayoutComponent implements OnInit, OnDestroy {
 
     this.authService.userLoggedOut$
       .takeWhile(() => this.alive)
-      .subscribe(
-        () => {
-          //console.log("Header: logged OUT");
-          //console.log(this.primaryMenuItems);
-          this.init();
-          //console.log(this.primaryMenuItems);
-        }
-      );
+      .subscribe(() => this.init());
 
     this.userService.userUpdated$
       .takeWhile(() => this.alive)

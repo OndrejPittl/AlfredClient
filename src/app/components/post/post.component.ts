@@ -14,6 +14,8 @@ export class PostComponent implements OnInit, OnDestroy {
 
   private alive: boolean = true;
 
+  private updating: boolean = false;
+
   private user: IUser = null;
 
   private userLogged: boolean = false;
@@ -59,14 +61,19 @@ export class PostComponent implements OnInit, OnDestroy {
       () => this.registerUserLoggedChange(null)
     );
 
+    this.postService.postBeingUpdated$
+      .takeWhile(() => this.alive)
+      .subscribe (
+        () => this.updating = true
+      );
+
     this.postService.postsLoaded$
       .takeWhile(() => this.alive)
       .subscribe(
       (posts: IPost[]) => {
+        this.updating = false;
         if(posts.length > 0) {
           this.post = posts[0];
-          //console.log("POST UPDATED!");
-
         }
     })
   }
@@ -87,11 +94,7 @@ export class PostComponent implements OnInit, OnDestroy {
             }
 
             this.post = post;
-
-
-
             this.postLoaded = true;
-            //console.log(post);
           },
           err =>{
             this.post = null;
@@ -129,6 +132,7 @@ export class PostComponent implements OnInit, OnDestroy {
 
   private editPost() {
     this.postService.registerEditing(this.post);
+    console.log("___ post")
   }
 
   private deletePost() {

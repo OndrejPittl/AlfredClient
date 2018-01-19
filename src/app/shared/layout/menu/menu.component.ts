@@ -26,6 +26,7 @@ export class MenuComponent implements OnInit {
   ngOnInit() { }
 
   private newPostTriggered(): void {
+    console.log("--");
     this.postService.registerNewPostModal();
   }
 
