@@ -52,8 +52,6 @@ export class PostFormComponent implements OnInit, AfterViewInit, OnDestroy {
 
           this.init();
 
-          console.log("OPENED");
-
           if(post == null) {
             // == new post
             this.isEditingPost = false;
@@ -82,7 +80,6 @@ export class PostFormComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private init(): void {
-    console.log("init called");
     this.isEditingPost = false;
     this.post = {
       id: -1,
@@ -131,7 +128,6 @@ export class PostFormComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private submitPost(): void {
-    console.log("submitPost()");
 
     delete this.post.tag;
 
@@ -145,18 +141,12 @@ export class PostFormComponent implements OnInit, AfterViewInit, OnDestroy {
           this.post.file = img;
           this.fileInput.nativeElement.value = "";
 
-          console.log("post image processed");
-          console.log("triggering post processed");
-          console.log(this.post);
           this.postService.registerPostUpdating();
           this.handlePostSubmit();
 
         });
     } else {
 
-      console.log("triggering post processed");
-      console.log(this.post);
-      //this.post.file = null;
       this.postService.registerPostUpdating();
       this.handlePostSubmit();
 
@@ -169,9 +159,6 @@ export class PostFormComponent implements OnInit, AfterViewInit, OnDestroy {
     // is editting?
     if(this.isEditingPost) {
 
-      console.log("post-form: updating");
-      console.log(this.post);
-
       this.postService.updatePost(this.post)
         .takeWhile(() => this.alive)
         .subscribe (
@@ -179,13 +166,10 @@ export class PostFormComponent implements OnInit, AfterViewInit, OnDestroy {
             this.init();
             this.post = post;
             this.isEditingPost = false;
-            console.log("submitted (updated) and isEditting=" + this.isEditingPost);
           }
         );
 
     } else {
-
-      console.log("post-form: creating");
 
       this.postService.createPost(this.post)
         .takeWhile(() => this.alive)
@@ -193,7 +177,6 @@ export class PostFormComponent implements OnInit, AfterViewInit, OnDestroy {
           () => {
             this.init();
             this.isEditingPost = false;
-            console.log("submitted (created) and isEditting=" + this.isEditingPost);
             this.router.navigate(['discover']);
           }
         );
@@ -205,8 +188,6 @@ export class PostFormComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
   public ngAfterViewInit() {
-    console.log("AFTER VIEW INIT");
-
     if(this.modal == null) {
       this.modal = $(this.component.nativeElement).remodal();
 

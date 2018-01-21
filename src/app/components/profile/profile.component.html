@@ -2,7 +2,7 @@
   <div *ngIf="viewedUser">
     <input type="checkbox" id="profile-edit" class="profile__edit-checkbox" hidden>
     <div class="profile" #profileContainer>
-      <app-sign-up-form [user]="viewedUser" (edited)="registerEditingDone($event)"></app-sign-up-form>
+      <app-sign-up-form [user]="viewedUser" (edited)="registerEditingDone($event)" #form></app-sign-up-form>
 
       <div class="profile__info">
         <app-img [imgPath]="viewedUser.photo" [withClass]="'profile__photo'"></app-img>
@@ -13,7 +13,6 @@
           <p [hidden]="!viewedUser.birth">{{viewedUser.birth | date:'dd. MM. yyyy'}} ({{viewAge}})</p>
 
           <div *ngIf="isUserLogged" class="profile__controls">
-            <!--<label *ngIf="isAuthorizedUser" for="profile-edit" class="btn btn--tiny">Edit</label>-->
             <a *ngIf="isAuthorizedUser" class="btn btn--tiny" (click)="registerEditing()">Edit</a>
             <a *ngIf="!isAuthorizedUser && !hasIncomingFRequest && !hasOutcomingFRequest && !isFriend" class="profile__friend-request" (click)="sendFriendRequest()">Send friend request</a>
             <a *ngIf="!isAuthorizedUser && hasIncomingFRequest" class="profile__friend-request profile__friend-request--cancel" (click)="cancelFriendship()">Cancel friend request</a>

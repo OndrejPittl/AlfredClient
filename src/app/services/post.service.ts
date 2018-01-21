@@ -106,10 +106,13 @@ export class PostService implements OnDestroy {
       endpoint += '&' + filterParamQuery;
     }
 
-    console.log("Requesting: " + endpoint);
-
     return this.http.get<IPost[]>(endpoint)
-      .map(posts => this.modifyPosts(posts));
+      .map(posts => {
+        let output: IPost[] = this.modifyPosts(posts);
+        console.log("Posts from server were received:");
+        console.log(output);
+        return output;
+      });
   }
 
 
@@ -129,19 +132,12 @@ export class PostService implements OnDestroy {
   }
 
   public updatePost(post: IPost): Observable<IPost> {
-    console.log("service: updating");
-    console.log("service: post");
-    console.log(post);
-
     let endpoint: string = PostService.API_ENDPOINT + '/' + post.id;
 
     let p: IPost = { ...post };
     p.image = p.file != null ? p.file : "";
     delete p.file;
     delete p['tag'];
-
-    console.log("service: p");
-    console.log(p);
 
     return this.http.put<IPost>(endpoint, p)
       .map(post => {
@@ -240,7 +236,6 @@ export class PostService implements OnDestroy {
 
   public registerEditing(post: IPost): void {
     this.modalOpened.next(post);
-    console.log("___ service ")
   }
 
   public registerPostUpdating(): void {
@@ -249,8 +244,6 @@ export class PostService implements OnDestroy {
 
   public checkPostUpdatingRegistered() {
     let l = this.postBeingUpdated.observers.length;
-    console.log(this.postBeingUpdated.observers);
-    console.log(l);
     return l > 0;
   }
 

@@ -70,7 +70,7 @@ export class AuthService implements OnInit, OnDestroy {
     let u = <IUser>{};
     u['email'] = email;
     u['password'] = password;
-    return this.http.post(AuthService.API_ENDPOINT, u);
+    return this.http.post<IUser>(AuthService.API_ENDPOINT, u);
   }
 
   public getLoggedUser(update: boolean = false): Observable<IUser> {

@@ -3,6 +3,7 @@ import {IPost} from "../../../model/IPost";
 import {IUser} from "../../../model/IUser";
 import {IComment} from "../../../model/IComment";
 import {CommentService} from "../../../services/comment.service";
+import {appConfig} from "../../../app.config";
 
 
 @Component({

@@ -5,7 +5,8 @@
     <h2 *ngIf="post.title" class="post__title">{{post.title}}</h2>
 
     <div *ngIf="post.date">
-      <p>{{post.date | date:'H:mm, dd. MM. yyyy'}} <span *ngIf="post.lastModified">({{post.lastModified | date:'H:mm, dd. MM. yyyy'}})</span></p>
+      <p class="post__date">{{post.date | date:'H:mm, dd. MM. yyyy'}} </p>
+      <p *ngIf="post.lastModified" class="note">(last modified: {{post.lastModified | date:'H:mm, dd. MM. yyyy'}})</p>
     </div>
 
     <header class="post__header">

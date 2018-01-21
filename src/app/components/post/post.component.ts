@@ -132,7 +132,6 @@ export class PostComponent implements OnInit, OnDestroy {
 
   private editPost() {
     this.postService.registerEditing(this.post);
-    console.log("___ post")
   }
 
   private deletePost() {

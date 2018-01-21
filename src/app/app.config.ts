@@ -2,6 +2,8 @@
 
 export const appConfig: any = {
 
+  uploaded_images_directory: "/assets/images/uploaded/",
+
   security: {
     authorization: 'Bearer',
     tokenStorageKey: 'alfred_token'

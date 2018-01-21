@@ -3,9 +3,8 @@
   <div>
     <div class="form__row">
       <div class="form__col">
-        <!--<div class="form__image" *ngIf="user.image" [style.background-image]="user.image"></div>-->
-        <div *ngIf="user.photo" class="form__image"><img src="{{user.photo}}" alt=""></div>
-        <label class="btn btn--tiny btn--link">Upload<input type="file" accept=".png,.jpg,.jpeg" name="image" (change)="changePhoto(event)" #fileInput hidden></label>
+        <div *ngIf="user.photo" class="form__image" [style.background-image]="'url(' + user.photo + ')'"></div>
+        <label class="btn btn--tiny btn--link">Upload<input type="file" accept=".jpg,.jpeg" name="image" (change)="changePhoto(event)" #fileInput hidden></label>
       </div>
     </div>
 
@@ -74,7 +73,7 @@
     </div>
   </div>
 
-  <div class="form__row" *ngIf="validationMessages?.length">
+  <div class="form__row" *ngIf="validationMessages?.length > 0">
     <div class="form__col">
       <div class="serverErrors">
         <ul>

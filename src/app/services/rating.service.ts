@@ -29,10 +29,8 @@ export class RatingService {
 
   public togglePostRating(postId: number, hasUserRated: boolean):Observable<IPost> {
     if(hasUserRated) {
-      //console.log("------>>>> removing rating " + hasUserRated);
       return this.unratePost(postId);
     } else {
-      //console.log("------>>>> sending new rating " + hasUserRated);
       return this.ratePost(postId);
     }
   }

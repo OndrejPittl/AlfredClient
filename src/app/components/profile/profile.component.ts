@@ -5,6 +5,7 @@ import {AuthService} from "../../services/auth.service";
 import {PostSource} from "../../model/PostSource";
 import {PostFeedPage} from "../PostFeedPage";
 import {IUser} from "../../model/IUser";
+import {SignUpFormComponent} from "../../shared/forms/sign-up-form/sign-up-form.component";
 
 
 @Component({
@@ -47,6 +48,10 @@ export class ProfileComponent extends PostFeedPage implements OnInit, OnDestroy 
   @ViewChild('profileContainer')
   private profileContainer: ElementRef;
 
+  @ViewChild('form')
+  private form: SignUpFormComponent;
+
+
 
 
 
@@ -83,6 +88,7 @@ export class ProfileComponent extends PostFeedPage implements OnInit, OnDestroy 
       .takeWhile(() => this.alive)
       .subscribe(
       u => {
+
         this.registerUserLoggedChange(u);
 
 
@@ -136,7 +142,10 @@ export class ProfileComponent extends PostFeedPage implements OnInit, OnDestroy 
     this.viewedUser = user;
     let timeDiff: number = Math.abs(Date.now() - this.viewedUser.birth);
     this.viewAge = Math.floor((timeDiff / (1000 * 3600 * 24))/365);
-    this.userService.updateLoggedUser(this.viewedUser);
+
+    if(this.isAuthorizedUser) {
+      this.userService.updateLoggedUser(this.viewedUser);
+    }
   }
 
   private resetUser():void {
@@ -228,6 +237,7 @@ export class ProfileComponent extends PostFeedPage implements OnInit, OnDestroy 
 
   public registerEditing() {
     this.profileContainer.nativeElement.className = 'profile profile--editing';
+    this.form.init();
   }
 
 }

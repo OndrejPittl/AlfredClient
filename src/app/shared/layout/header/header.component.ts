@@ -64,8 +64,6 @@ export class HeaderLayoutComponent implements OnInit, OnDestroy {
       .subscribe(
         (user: IUser) => {
           this.user = user;
-          //console.log("HEQADER: detected user updated");
-          //console.log(this.user);
 
           if(user != null ) {
             this.resetMenu();

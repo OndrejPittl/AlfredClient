@@ -9,11 +9,16 @@
 
   &__logo {
     background: transparent url('../images/logo.png') no-repeat center;
-    background-size: 350px 157px;
+    background-size: 80% auto;
     display: inline-block;
-    height: 40vh;
+    height: 35vh;
     margin: 10vh 0;
     width: 100%;
+
+    @media @sm {
+      background-size: 350px 157px;
+      height: 40vh;
+    }
   }
 
   &__notifications {

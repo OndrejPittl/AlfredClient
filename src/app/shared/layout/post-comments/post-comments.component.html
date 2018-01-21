@@ -9,7 +9,8 @@
           <a *ngIf="isMe(comment.user?.id)" class="comment__action" (click)="editComment(comment)">(edit) </a>
         </header>
         <div class="comment__container">
-          <a routerLink="/profile/{{comment.user.slug}}" class="comment__image" [style.background-image]="'url(' + comment.user.photo + ')'"></a>
+          <a *ngIf="comment.user.photo" routerLink="/profile/{{comment.user.slug}}" class="comment__image" [style.background-image]="'url(' + comment.user.photo + ')'"></a>
+          <a *ngIf="!comment.user.photo" routerLink="/profile/{{comment.user.slug}}" class="comment__image"></a>
           <div class="comment__content">
             <p class="comment__body">{{comment.body}}</p>
             <p class="comment__date">{{comment.date | date:'H:mm, dd. MM. yyyy'}} <span *ngIf="comment.lastModified">(last modified: {{comment.lastModified | date:'H:mm, dd. MM. yyyy'}})</span></p>

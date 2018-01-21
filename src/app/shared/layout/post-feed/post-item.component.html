@@ -17,7 +17,7 @@
       <p *ngIf="post.date" class="post__date">{{post.date | date:'H:mm, dd. MM. yyyy'}}</p>
 
       <div *ngIf="post.body && post.body.length > 500">
-        <p class="post__body">{{post.body | slice:0:500}}</p>
+        <p class="post__body">{{post.body | slice:0:500}}...</p>
         <div>
           <a class="post__continue" routerLink="/post/{{post.id}}"> (continue reading)</a>
         </div>
@@ -32,9 +32,9 @@
       </p>
     </div>
 
-    <div *ngIf="!(post.title || post.body)">
+    <div *ngIf="!(post.title || post.body)" class="post__content">
       <p *ngIf="post.date" class="post__date post__date--no-offset">{{post.date | date:'H:mm, dd. MM. yyyy'}}</p>
-      <div class="post__author post__author--no-offset">
+      <div class="post__author post__author">
         <a routerLink="/profile/{{post.user?.slug}}">– {{post.user?.firstName}} {{post.user?.lastName}} –</a>
       </div>
     </div>

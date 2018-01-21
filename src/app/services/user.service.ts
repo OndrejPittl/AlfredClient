@@ -53,7 +53,7 @@ export class UserService {
   */
 
   public createUser(user: any): Observable<IUser> {
-    return this.http.post(UserService.API_ENDPOINT, user);
+    return this.http.post<IUser>(UserService.API_ENDPOINT, user);
   }
 
   public sendFriendship(userId: number): Observable<IUser> {

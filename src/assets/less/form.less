@@ -27,16 +27,10 @@
     @media @xs {
       margin: 0 15px;
     }
-
-    /*
-    &:first-child:last-child {
-      margin: 0;
-    }
-    */
-
   }
 
   &__image {
+    background-size: cover;
     border-radius: 50%;
     margin-bottom: 10px;
     margin-left: auto;
@@ -47,7 +41,6 @@
     position: relative;
 
     img {
-      //.transform(translate(-50%,0));
       .transform(translate(-50%,-50%));
       left: 50%;
       max-width: none;
@@ -119,6 +112,7 @@
 
     .btn {
       margin-left: 10px;
+      width: auto;
     }
   }
 

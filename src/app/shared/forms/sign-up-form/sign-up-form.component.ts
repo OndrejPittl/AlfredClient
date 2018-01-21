@@ -1,11 +1,9 @@
-import {Component, OnInit, Input, ViewChild, OnDestroy, Output, EventEmitter} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
 import {UserService} from "../../../services/user.service";
 import {AuthService} from "../../../services/auth.service";
 import {IUser} from "../../../model/IUser";
-import { Router } from "@angular/router";
+import {Router} from "@angular/router";
 import {IValidationError} from "../../../model/IValidationError";
-import {Observable} from "rxjs/Observable";
-import {User} from "../../../model/User";
 import {PostService} from "../../../services/post.service";
 
 
@@ -23,10 +21,10 @@ export class SignUpFormComponent implements OnInit, OnDestroy {
     sex: "MALE"
   } as IUser;
 
+  private userBackup: IUser;
 
   @Input()
   private formId: string;
-
 
   @Output('edited')
   change: EventEmitter<IUser> = new EventEmitter<IUser>();
@@ -57,8 +55,9 @@ export class SignUpFormComponent implements OnInit, OnDestroy {
     this.isSignUpForm = this.user['email'] == undefined;
   }
 
-  private init(): void {
+  public init(): void {
     this.validationMessages = [];
+    this.userBackup = {...this.user};
   }
 
   public signUp(event): void {
@@ -94,7 +93,7 @@ export class SignUpFormComponent implements OnInit, OnDestroy {
       this.form.controls[err.field].setErrors({'incorrect': true, 'serverError': true});
     }
 
-    console.log(this.validationMessages);
+    console.log(this.validationMessages)
   }
 
 
@@ -112,12 +111,16 @@ export class SignUpFormComponent implements OnInit, OnDestroy {
   }
 
 
+
+
   ngOnDestroy(): void {
     this.alive = false;
   }
 
   cancelEditing() {
-    this.change.emit(null);
+    this.user = this.userBackup;
+    this.change.emit(this.userBackup);
+
   }
 
   private changePhoto(): void {

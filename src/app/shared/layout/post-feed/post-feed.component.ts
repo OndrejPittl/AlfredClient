@@ -135,8 +135,6 @@ export class PostFeedComponent implements OnInit, OnDestroy {
           this.loadingPosts = false;
           this.requestedCounter++;
 
-          console.log(posts);
-          console.log(this.posts);
         },
 
         error => {

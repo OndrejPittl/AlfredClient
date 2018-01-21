@@ -52,20 +52,6 @@
     }
   }
 
-  &__date {
-    border-top: 1px solid black;
-    border-bottom: 1px solid black;
-    font-size: 11px;
-    margin: 5px 0 10px;
-
-    &--no-offset {
-      border-bottom: none;
-      border-top: none;
-      margin: 0;
-      margin-top: 5px;
-    }
-  }
-
   &__rating {
     .transform(scale(.8));
     background-color: @color--primary;
@@ -107,6 +93,10 @@
 
   &__body {
     margin: 0;
+  }
+
+  &__date {
+    margin: 20px 0 5px;
   }
 
   &__tag-list {
@@ -242,6 +232,20 @@
 
     &__body {
       text-align: justify;
+    }
+
+    &__date {
+      border-top: 1px solid black;
+      border-bottom: 1px solid black;
+      font-size: 11px;
+      margin: 5px 0 10px;
+
+      &--no-offset {
+        border-bottom: none;
+        border-top: none;
+        margin: 0;
+        margin-top: 5px;
+      }
     }
 
     &__footer {
