@@ -39,7 +39,7 @@ export class Params {
   public hasFilterParam(key: string): boolean {
     return this._filterParams[key] !== undefined
       && this._filterParams[key] !== null
-      && (this._filterParams[key].length > 0 || typeof this._filterParams[key] === "boolean");
+      && (this._filterParams[key].length > 0 || typeof this._filterParams[key] === "boolean"  || typeof this._filterParams[key] === "number");
   }
 
   public getFilterParamQuery(startChar: string = '?'): string {

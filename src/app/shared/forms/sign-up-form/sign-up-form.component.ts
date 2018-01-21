@@ -93,12 +93,16 @@ export class SignUpFormComponent implements OnInit, OnDestroy {
       this.form.controls[err.field].setErrors({'incorrect': true, 'serverError': true});
     }
 
-    console.log(this.validationMessages)
+    console.log(this.valid)
   }
 
 
   // TODO: editace údajů
   public doEdit(event): void {
+    if(!this.ifPhotoSelected()) {
+      this.user.photo = null;
+    }
+
     this.userService.updateUser(this.user)
       .takeWhile(() => this.alive)
       .subscribe(user => {
@@ -120,13 +124,17 @@ export class SignUpFormComponent implements OnInit, OnDestroy {
   cancelEditing() {
     this.user = this.userBackup;
     this.change.emit(this.userBackup);
+  }
 
+  private ifPhotoSelected(): boolean {
+    let fi = this.fileInput.nativeElement;
+    return fi.files && fi.files[0];
   }
 
   private changePhoto(): void {
     let fi = this.fileInput.nativeElement;
 
-    if (fi.files && fi.files[0]) {
+    if (this.ifPhotoSelected()) {
       let fileToUpload: File = fi.files[0];
 
       this.postService.readFile(fileToUpload)

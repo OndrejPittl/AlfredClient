@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {AuthService} from "../../../services/auth.service";
 import {appConfig} from "../../../app.config";
 import {IUser} from "../../../model/IUser";
-import {Router} from "@angular/router";
+import {NavigationEnd, NavigationStart, Router} from "@angular/router";
 import {UserService} from "../../../services/user.service";
 
 @Component({
@@ -73,6 +73,18 @@ export class HeaderLayoutComponent implements OnInit, OnDestroy {
           this.addUserProfileMenuItem();
         }
       );
+
+
+    this.router.events
+      .takeWhile(() => this.alive)
+      .filter((event) => event instanceof NavigationEnd)
+      .subscribe((event) => {
+        this.authService.getLoggedUser(true)
+          .takeWhile(() => this.alive)
+          .subscribe((user) => {
+            this.user = user;
+          });
+      });
   }
 
   private init(): void {
@@ -88,6 +100,10 @@ export class HeaderLayoutComponent implements OnInit, OnDestroy {
     for(let item of appConfig.menu.primary) {
       this.primaryMenuItems.push({...item});
     }
+  }
+
+  private checkFriendRequests():void {
+
   }
 
   private addUserProfileMenuItem(user: IUser = this.user): void {
